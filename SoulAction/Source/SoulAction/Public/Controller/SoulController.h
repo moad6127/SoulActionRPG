@@ -9,9 +9,33 @@
 /**
  * 
  */
+
+struct FInputActionValue;
+class UInputMappingContext;
+class UInputAction;
+
 UCLASS()
 class SOULACTION_API ASoulController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputMappingContext> ShooterIMC;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> LookAction;
+
+	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_Look(const FInputActionValue& InputActionValue);
 };

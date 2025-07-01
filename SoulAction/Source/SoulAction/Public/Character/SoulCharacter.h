@@ -6,6 +6,10 @@
 #include "GameFramework/Character.h"
 #include "SoulCharacter.generated.h"
 
+
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class SOULACTION_API ASoulCharacter : public ACharacter
 {
@@ -20,6 +24,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+private:
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 
 };
