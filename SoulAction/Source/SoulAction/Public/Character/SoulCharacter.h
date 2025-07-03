@@ -11,7 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class SOULACTION_API ASoulCharacter : public ACharacter
+class SOULACTION_API ASoulCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -21,10 +21,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 protected:
 	virtual void BeginPlay() override;
 
 private:
+	void InitAbilityActorInfo();
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
 

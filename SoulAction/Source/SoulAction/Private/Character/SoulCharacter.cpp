@@ -4,6 +4,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Controller/SoulPlayerState.h"
+#include "AbilitySystem/SoulAbilitySystemComponent.h"
 
 ASoulCharacter::ASoulCharacter()
 {
@@ -43,5 +45,31 @@ void ASoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ASoulCharacter::InitAbilityActorInfo()
+{
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+
+	SoulPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(SoulPlayerState, this);
+	AbilitySystemComponent = SoulPlayerState->GetAbilitySystemComponent();
+	AttributeSet = SoulPlayerState->GetAttributeSet();
+}
+
+void ASoulCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	//서버용 Ability Actor 초기화 하기
+	InitAbilityActorInfo();
+}
+
+void ASoulCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	//클라이언트용 Actor초기화
+	InitAbilityActorInfo();
 }
 

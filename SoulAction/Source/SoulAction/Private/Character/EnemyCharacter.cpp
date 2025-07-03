@@ -1,23 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Controller/SoulPlayerState.h"
+#include "Character/EnemyCharacter.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "AbilitySystem/SoulAttributeSet.h"
 
-ASoulPlayerState::ASoulPlayerState()
+AEnemyCharacter::AEnemyCharacter()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<USoulAbilitySystemComponent>("AbilitySystemCopmonent");
-
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full); // 멀티도 가능하지만 싱글로 만들거라서 Full로 설정
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
 	AttributeSet = CreateDefaultSubobject<USoulAttributeSet>("AttributeSet");
 
-	NetUpdateFrequency = 100.f;
 }
 
-UAbilitySystemComponent* ASoulPlayerState::GetAbilitySystemComponent() const
+void AEnemyCharacter::BeginPlay()
 {
-	return AbilitySystemComponent;
+	Super::BeginPlay();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
