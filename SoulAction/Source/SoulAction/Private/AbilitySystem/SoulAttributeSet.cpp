@@ -2,12 +2,15 @@
 
 
 #include "AbilitySystem/SoulAttributeSet.h"
-#include "AbilitySystem/SoulAbilitySystemComponent.h"
+
 #include "Net/UnrealNetwork.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
-
+	InitHealth(100.f);
+	InitMaxHealth(100.f);
+	InitStamina(200.f);
+	InitMaxStamina(200.f);
 }
 
 void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
