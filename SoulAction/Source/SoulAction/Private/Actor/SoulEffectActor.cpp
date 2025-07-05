@@ -14,9 +14,8 @@ ASoulEffectActor::ASoulEffectActor()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	SetRootComponent(Mesh);
 
-	Sphere->CreateDefaultSubobject<USphereComponent>("Sphere");
-	Sphere->SetupAttachment(GetRootComponent());
-
+	Sphere = CreateDefaultSubobject<USphereComponent>("SphereComp");
+	Sphere->SetupAttachment(Mesh);
 }
 
 void ASoulEffectActor::OnOverlap(UPrimitiveComponent* OverlappingComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
