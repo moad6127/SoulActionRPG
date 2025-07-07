@@ -3,3 +3,10 @@
 
 #include "UI/WidgetController/SoulWidgetController.h"
 
+void USoulWidgetController::SetWidgetControllerParams(const FWidgetControllerParams& WCParams)
+{
+	PlayerController = WCParams.PlayerController;
+	PlayerState = WCParams.PlayerState;
+	AbilitySystemComponent = WCParams.AbilitySystemComponent;
+	AttributeSet = WCParams.AttributeSet;
+}

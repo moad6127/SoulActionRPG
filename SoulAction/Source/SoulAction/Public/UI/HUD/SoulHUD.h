@@ -10,6 +10,10 @@
  * 
  */
 class USoulUserWidget;
+class UOverlayWidgetController;
+struct FWidgetControllerParams;
+class UAbilitySystemComponent;
+class UAttributeSet;
 
 UCLASS()
 class SOULACTION_API ASoulHUD : public AHUD
@@ -20,10 +24,18 @@ public:
 	UPROPERTY()
 	TObjectPtr<USoulUserWidget> OverlayWidget;
 
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
+	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<USoulUserWidget> OverlayWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 };

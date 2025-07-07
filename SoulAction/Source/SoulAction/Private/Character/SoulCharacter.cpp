@@ -5,7 +5,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Controller/SoulPlayerState.h"
+#include "Controller/SoulController.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
+#include "UI/HUD/SoulHUD.h"
 
 ASoulCharacter::ASoulCharacter()
 {
@@ -55,6 +57,14 @@ void ASoulCharacter::InitAbilityActorInfo()
 	SoulPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(SoulPlayerState, this);
 	AbilitySystemComponent = SoulPlayerState->GetAbilitySystemComponent();
 	AttributeSet = SoulPlayerState->GetAttributeSet();
+
+	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
+	{
+		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(SoulPlayerController->GetHUD()))
+		{
+			SoulHUD->InitOverlay(SoulPlayerController, SoulPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
 
 void ASoulCharacter::PossessedBy(AController* NewController)
