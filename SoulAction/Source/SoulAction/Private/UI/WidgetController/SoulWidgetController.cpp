@@ -10,3 +10,12 @@ void USoulWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 	AbilitySystemComponent = WCParams.AbilitySystemComponent;
 	AttributeSet = WCParams.AttributeSet;
 }
+
+void USoulWidgetController::BroadcastInitialValues()
+{
+}
+
+void USoulWidgetController::BindCallbacksToDependencies()
+{
+}
+

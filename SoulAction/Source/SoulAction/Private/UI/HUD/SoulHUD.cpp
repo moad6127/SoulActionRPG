@@ -11,6 +11,7 @@ UOverlayWidgetController* ASoulHUD::GetOverlayWidgetController(const FWidgetCont
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
+		OverlayWidgetController->BindCallbacksToDependencies();
 	}
 	return OverlayWidgetController;
 }
@@ -28,6 +29,8 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 		if (GetOverlayWidgetController(WidgetControllerParams))
 		{
 			OverlayWidget->SetWidgetController(OverlayWidgetController);
+			OverlayWidgetController->BroadcastInitialValues();
+
 			OverlayWidget->AddToViewport();
 		}
 	}
