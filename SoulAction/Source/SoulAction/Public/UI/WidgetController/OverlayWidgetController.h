@@ -6,9 +6,7 @@
 #include "UI/WidgetController/SoulWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
 /**
  * 
  */
@@ -26,13 +24,21 @@ public:
 	virtual void BindCallbacksToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnHealthChangedSignature OnHealthChanged;
+	FOnVitalChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+	FOnVitalChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnVitalChangedSignature OnStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnVitalChangedSignature OnMaxStaminaChanged;
 
 protected:
 
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
+	void StaminaChanged(const FOnAttributeChangeData& Data) const;
+	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
 };

@@ -10,6 +10,8 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	
 	OnHealthChanged.Broadcast(SAS->GetHealth());
 	OnMaxHealthChanged.Broadcast(SAS->GetMaxHealth());
+	OnStaminaChanged.Broadcast(SAS->GetStamina());
+	OnMaxStaminaChanged.Broadcast(SAS->GetMaxStamina());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
@@ -17,6 +19,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::StaminaChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxStaminaChanged);
 
 }
 
@@ -28,4 +32,14 @@ void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data)
 void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxHealthChanged.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetController::StaminaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnStaminaChanged.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnMaxStaminaChanged.Broadcast(Data.NewValue);
 }
