@@ -51,11 +51,13 @@ void ASoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ASoulCharacter::InitAbilityActorInfo()
 {
+
 	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
 	check(SoulPlayerState);
 
 	SoulPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(SoulPlayerState, this);
 	AbilitySystemComponent = SoulPlayerState->GetAbilitySystemComponent();
+	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = SoulPlayerState->GetAttributeSet();
 
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
