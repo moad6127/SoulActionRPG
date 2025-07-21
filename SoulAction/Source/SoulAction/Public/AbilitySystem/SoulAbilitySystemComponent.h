@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */);
+
 UCLASS()
 class SOULACTION_API USoulAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -17,10 +20,9 @@ public:
 
 	void AbilityActorInfoSet();
 
+	FEffectAssetTags EffectAssetTags;
+
 protected:
-
-
-
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 	
 };
