@@ -4,14 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "UI/WidgetController/SoulWidgetController.h"
+#include "GameplayTagContainer.h" 
 #include "OverlayWidgetController.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
 /**
  * 
  */
-
 struct FOnAttributeChangeData;
+class USoulUserWidget;
+
+
+USTRUCT(BlueprintType)
+struct FUIWidgtRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag MessageTag = FGameplayTag();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText Message = FText();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<USoulUserWidget> MessageWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UTexture2D* Image = nullptr;
+};
+
+
 
 UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API UOverlayWidgetController : public USoulWidgetController
@@ -37,8 +59,20 @@ public:
 
 protected:
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
+	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
+
+	template<typename T>
+	T* GetDataTableRowByType(UDataTable* DataTable, const FGameplayTag& Tag);
 };
+
+template<typename T>
+inline T* UOverlayWidgetController::GetDataTableRowByType(UDataTable* DataTable, const FGameplayTag& Tag)
+{
+	return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+}
