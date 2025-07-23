@@ -7,13 +7,9 @@
 #include "GameplayTagContainer.h" 
 #include "OverlayWidgetController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
-/**
- * 
- */
+
 struct FOnAttributeChangeData;
 class USoulUserWidget;
-
 
 USTRUCT(BlueprintType)
 struct FUIWidgtRow : public FTableRowBase
@@ -33,6 +29,9 @@ struct FUIWidgtRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgtRow, Row);
 
 
 UCLASS(BlueprintType, Blueprintable)
@@ -56,6 +55,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnVitalChangedSignature OnMaxStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
 protected:
 
