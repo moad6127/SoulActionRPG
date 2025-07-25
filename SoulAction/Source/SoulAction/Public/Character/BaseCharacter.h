@@ -9,6 +9,7 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class SOULACTION_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -24,10 +25,14 @@ protected:
 
 	virtual void InitAbilityActorInfo();
 
+	void InitializePrimaryAttributes() const;
+
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 };

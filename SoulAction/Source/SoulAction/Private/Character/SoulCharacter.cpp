@@ -67,6 +67,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 			SoulHUD->InitOverlay(SoulPlayerController, SoulPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	InitializePrimaryAttributes();
 }
 
 void ASoulCharacter::PossessedBy(AController* NewController)

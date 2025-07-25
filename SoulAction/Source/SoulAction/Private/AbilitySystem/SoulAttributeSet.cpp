@@ -20,6 +20,10 @@ void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Dexterity, COND_None, REPNOTIFY_Always);
+
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
@@ -92,7 +96,6 @@ void USoulAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) co
 void USoulAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, MaxHealth, OldMaxHealth);
-
 }
 
 void USoulAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
@@ -103,6 +106,22 @@ void USoulAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) 
 void USoulAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, MaxStamina, OldMaxStamina);
+}
+
+void USoulAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Strength, OldStrength);
+}
+
+void USoulAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Vigor, OldVigor);
+}
+
+void USoulAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Dexterity, OldDexterity);
+
 }
 
 
