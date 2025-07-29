@@ -20,10 +20,20 @@ void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	//Primary
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Dexterity, COND_None, REPNOTIFY_Always);
 
+	//Secondary
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, ArmorPertration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, StaminaRegeneration, COND_None, REPNOTIFY_Always);
+
+	//Vital
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
@@ -121,7 +131,36 @@ void USoulAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) cons
 void USoulAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Dexterity, OldDexterity);
+}
 
+void USoulAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Armor, OldArmor);
+}
+
+void USoulAttributeSet::OnRep_ArmorPertration(const FGameplayAttributeData& OldArmorPertration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, ArmorPertration, OldArmorPertration);
+}
+
+void USoulAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+
+void USoulAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+
+void USoulAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, HealthRegeneration, OldHealthRegeneration);
+}
+
+void USoulAttributeSet::OnRep_StaminaRegeneration(const FGameplayAttributeData& OldStaminaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, StaminaRegeneration, OldStaminaRegeneration);
 }
 
 
