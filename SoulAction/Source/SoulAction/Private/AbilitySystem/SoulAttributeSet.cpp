@@ -11,9 +11,7 @@
 USoulAttributeSet::USoulAttributeSet()
 {
 	InitHealth(50.f);
-	InitMaxHealth(100.f);
 	InitStamina(200.f);
-	InitMaxStamina(200.f);
 }
 
 void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
