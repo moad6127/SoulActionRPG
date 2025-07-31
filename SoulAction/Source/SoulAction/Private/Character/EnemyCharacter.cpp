@@ -15,6 +15,11 @@ AEnemyCharacter::AEnemyCharacter()
 
 }
 
+int32 AEnemyCharacter::GetPlayerLevel()
+{
+	return EnenyLevel;
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();

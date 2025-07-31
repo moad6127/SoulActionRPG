@@ -16,7 +16,16 @@ class SOULACTION_API AEnemyCharacter : public ABaseCharacter
 public:
 	AEnemyCharacter();
 
+
+	/* CombatInterface*/
+	virtual int32 GetPlayerLevel() override;
+	/* CombatInterface*/
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defautls")
+	int32 EnenyLevel = 1;
+
+
 };

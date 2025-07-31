@@ -86,3 +86,10 @@ void ASoulCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 ASoulCharacter::GetPlayerLevel()
+{
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->GetPlayerLevel();
+}
+
