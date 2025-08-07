@@ -20,6 +20,7 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 {
 	checkf(OverlayWidgetClass, TEXT("OverlayWidgetClass uninit, Fill BP_HUD"));
 	checkf(OverlayWidgetControllerClass, TEXT("OverlayWidgetControllerClass uninit, Fill BP_HUD"));
+	checkf(MenuClass, TEXT("AttributeMenuClass uninit, Fill BP_HUD"));
 
 	const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
 	
@@ -34,9 +35,55 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 			OverlayWidget->AddToViewport();
 		}
 	}
+
+	Menu = CreateWidget<USoulUserWidget>(GetWorld(),MenuClass);
+	if (Menu)
+	{
+		Menu->SetWidgetController(OverlayWidgetController);
+		Menu->AddToViewport();
+		Menu->SetVisibility(ESlateVisibility::Hidden);
+		bVisibleMenu = false;
+	}
+	
+}
+
+void ASoulHUD::ShowMenu()
+{
+	if (bVisibleMenu)
+	{
+		HideMenu();
+	}
+	else
+	{
+		DisplayMenu();
+	}
 }
 
 void ASoulHUD::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASoulHUD::HideMenu()
+{
+	if (Menu)
+	{
+		bVisibleMenu = false;
+		Menu->SetVisibility(ESlateVisibility::Hidden);
+		const FInputModeGameOnly InputMode;
+		GetOwningPlayerController()->SetInputMode(InputMode);
+		GetOwningPlayerController()->SetShowMouseCursor(false);
+	}
+}
+
+void ASoulHUD::DisplayMenu()
+{
+	if (Menu)
+	{
+		bVisibleMenu = true;
+		Menu->SetVisibility(ESlateVisibility::Visible);
+		const FInputModeGameAndUI InputMode;
+		GetOwningPlayerController()->SetInputMode(InputMode);
+		GetOwningPlayerController()->SetShowMouseCursor(true);
+	}
 }

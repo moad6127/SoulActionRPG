@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "UI/HUD/SoulHUD.h"
 
 void ASoulController::BeginPlay()
 {
@@ -24,7 +25,7 @@ void ASoulController::SetupInputComponent()
 	UEnhancedInputComponent* ShooterInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	ShooterInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Move);
 	ShooterInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Look);
-
+	ShooterInputComponent->BindAction(AttributeMenu, ETriggerEvent::Completed, this, &ASoulController::ShowAttributeMenu);
 }
 
 void ASoulController::Input_Move(const FInputActionValue& InputActionValue)
@@ -49,3 +50,12 @@ void ASoulController::Input_Look(const FInputActionValue& InputActionValue)
 	AddYawInput(InputAxisVector.X);
 	AddPitchInput(-1 * InputAxisVector.Y);
 }
+
+void ASoulController::ShowAttributeMenu()
+{
+	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
+	{
+		SoulHUD->ShowMenu();
+	}
+}
+

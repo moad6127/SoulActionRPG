@@ -26,16 +26,30 @@ public:
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
+	void ShowMenu();
 protected:
 	virtual void BeginPlay() override;
 
+	void HideMenu();
+	void DisplayMenu();
+
 private:
+
+	UPROPERTY()
+	TObjectPtr<USoulUserWidget> Menu;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<USoulUserWidget> OverlayWidgetClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<USoulUserWidget> MenuClass;
 
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+
+
+	bool bVisibleMenu;
 };
