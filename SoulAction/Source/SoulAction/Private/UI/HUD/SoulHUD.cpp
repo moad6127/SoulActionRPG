@@ -83,6 +83,7 @@ void ASoulHUD::DisplayMenu()
 		bVisibleMenu = true;
 		Menu->SetVisibility(ESlateVisibility::Visible);
 		const FInputModeGameAndUI InputMode;
+
 		GetOwningPlayerController()->SetInputMode(InputMode);
 		GetOwningPlayerController()->SetShowMouseCursor(true);
 	}
