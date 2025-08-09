@@ -12,6 +12,9 @@
  *  .cpp 파일 UE_DEFINE_GAMEPLAY_TAG_COMMENT(ListFleets, "DedicatedServersTag.GameSessionsAPI.ListFleets", "List Fleets resource on the GameSessions API")
  */
 
+// 매크로 대신에 싱글톤 형식으로 사용하기
+// 에셋매니저 클래스를 선언한후 사용해야 한다.
+// 
 //struct FSoulGameplayTags
 //{
 //public:
@@ -27,5 +30,18 @@
 
 namespace SoulGameplayTags
 {
+	/*Primary*/
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Strength);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Dexterity);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Vigor);
+
+	/*Secondary*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_Armor);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ArmorPertration);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitChance);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitDamage);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_HealthRegeneration);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_StaminaRegeneration);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxHealth);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxStamina);
 }
