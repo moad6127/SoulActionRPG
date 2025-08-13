@@ -24,3 +24,21 @@ UOverlayWidgetController* USoulAbilitySystemLibrary::GetOverlayWidgetController(
 
 	return nullptr;
 }
+
+UAttributeMenuWidgetController* USoulAbilitySystemLibrary::GetAttributeMeuWidgetController(const UObject* WorldContextObject)
+{
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	{
+		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(PC->GetHUD()))
+		{
+			ASoulPlayerState* PS = PC->GetPlayerState<ASoulPlayerState>();
+			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
+			UAttributeSet* AS = PS->GetAttributeSet();
+
+			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+			return SoulHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+		}
+	}
+
+	return nullptr;
+}

@@ -19,4 +19,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
+	static UAttributeMenuWidgetController* GetAttributeMeuWidgetController(const UObject* WorldContextObject);
 };

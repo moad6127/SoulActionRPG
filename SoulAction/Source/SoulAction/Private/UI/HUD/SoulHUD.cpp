@@ -4,6 +4,7 @@
 #include "UI/HUD/SoulHUD.h"
 #include "UI/Widget/SoulUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 
 UOverlayWidgetController* ASoulHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -14,6 +15,17 @@ UOverlayWidgetController* ASoulHUD::GetOverlayWidgetController(const FWidgetCont
 		OverlayWidgetController->BindCallbacksToDependencies();
 	}
 	return OverlayWidgetController;
+}
+
+UAttributeMenuWidgetController* ASoulHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return AttributeMenuWidgetController;
 }
 
 void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
@@ -39,10 +51,13 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	Menu = CreateWidget<USoulUserWidget>(GetWorld(),MenuClass);
 	if (Menu)
 	{
-		Menu->SetWidgetController(OverlayWidgetController);
-		Menu->AddToViewport();
-		Menu->SetVisibility(ESlateVisibility::Hidden);
-		bVisibleMenu = false;
+		if (GetAttributeMenuWidgetController(WidgetControllerParams))
+		{
+			Menu->SetWidgetController(AttributeMenuWidgetController);
+			Menu->AddToViewport();
+			Menu->SetVisibility(ESlateVisibility::Hidden);
+			bVisibleMenu = false;
+		}
 	}
 	
 }

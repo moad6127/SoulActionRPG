@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API UAttributeMenuWidgetController : public USoulWidgetController
 {
 	GENERATED_BODY()
