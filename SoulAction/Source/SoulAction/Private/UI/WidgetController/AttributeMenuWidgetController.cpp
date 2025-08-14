@@ -2,13 +2,25 @@
 
 
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "AbilitySystem/SoulAttributeSet.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
+#include "SoulGameplayTags.h"
 
-void UAttributeMenuWidgetController::BroadcastInitialValues()
-{
-
-}
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
 
 }
+
+
+void UAttributeMenuWidgetController::BroadcastInitialValues()
+{
+	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
+
+	check(AttributeInfomation);
+	FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(SoulGameplayTags::Attributes_Primary_Strength);
+	Info.AttributeValue = AS->GetStrength();
+
+	AttributeInfoDelegate.Broadcast(Info);
+}
+

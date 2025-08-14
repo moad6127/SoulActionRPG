@@ -60,6 +60,8 @@ void ASoulCharacter::InitAbilityActorInfo()
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = SoulPlayerState->GetAttributeSet();
 
+	InitializeDefaultAttributes();
+
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
 		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(SoulPlayerController->GetHUD()))
@@ -67,7 +69,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 			SoulHUD->InitOverlay(SoulPlayerController, SoulPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
+
 }
 
 void ASoulCharacter::PossessedBy(AController* NewController)
