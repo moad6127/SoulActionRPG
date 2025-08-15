@@ -7,9 +7,14 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "SoulGameplayTags.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
+
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Strength, GetStrengthAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Dexterity, GetDexterityAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Vigor, GetVigorAttribute);
 
 }
 

@@ -17,6 +17,7 @@
 	 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -52,6 +53,8 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
+typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+
 
 UCLASS()
 class SOULACTION_API USoulAttributeSet : public UAttributeSet
@@ -63,6 +66,9 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+
+	TMap<FGameplayTag, FAttributeFuncPtr> TagsToAttributes;
 
 	/*
 	* PrimaryAttributes

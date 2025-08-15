@@ -18,9 +18,12 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
 
 	check(AttributeInfomation);
-	FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(SoulGameplayTags::Attributes_Primary_Strength);
-	Info.AttributeValue = AS->GetStrength();
 
-	AttributeInfoDelegate.Broadcast(Info);
+	for (auto& Pair : AS->TagsToAttributes)
+	{
+		FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(Pair.Key);
+		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
+		AttributeInfoDelegate.Broadcast(Info);
+	}
 }
 
