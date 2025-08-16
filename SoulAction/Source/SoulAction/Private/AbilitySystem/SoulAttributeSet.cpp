@@ -12,10 +12,23 @@
 USoulAttributeSet::USoulAttributeSet()
 {
 
+	/*Primary*/
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Strength, GetStrengthAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Dexterity, GetDexterityAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Primary_Vigor, GetVigorAttribute);
+	/*Primary*/
 
+	/*Secondary*/
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_Armor, GetArmorAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_ArmorPertration, GetArmorPertrationAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_StaminaRegeneration, GetStaminaRegenerationAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_MaxHealth, GetMaxHealthAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_MaxStamina, GetMaxStaminaAttribute);
+
+	/*Secondary*/
 }
 
 void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -34,12 +47,13 @@ void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, StaminaRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
 
 	//Vital
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Health, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
+
 }
 
 void USoulAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

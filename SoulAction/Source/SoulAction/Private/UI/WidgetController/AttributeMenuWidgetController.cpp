@@ -9,8 +9,21 @@
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
+	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
 
+	check(AttributeInfomation);
+
+	for (auto& Pair : AS->TagsToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+			[this, Pair](const FOnAttributeChangeData& Data)
+			{
+				BroadcastAttributeInfo(Pair.Key, Pair.Value());
+			}
+		);
+	}
 }
+
 
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
@@ -21,9 +34,15 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	for (auto& Pair : AS->TagsToAttributes)
 	{
-		FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(Pair.Key);
-		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-		AttributeInfoDelegate.Broadcast(Info);
+		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
 }
+
+void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute)
+{
+	FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(AttributeTag);
+	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
+	AttributeInfoDelegate.Broadcast(Info);
+}
+
 
