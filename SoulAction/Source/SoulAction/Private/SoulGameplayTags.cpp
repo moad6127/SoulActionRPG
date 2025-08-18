@@ -13,6 +13,7 @@
 
 namespace SoulGameplayTags
 {
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Primary_Strength, "Attributes.Primary.Strength", "Strength");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Primary_Dexterity, "Attributes.Primary.Dexterity", "Dexterity");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Primary_Vigor, "Attributes.Primary.Vigor", "Vigor");
@@ -26,6 +27,9 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_StaminaRegeneration, "Attributes.Secondary.StaminaRegeneration", "StaminaRegeneration");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_MaxHealth, "Attributes.Secondary.MaxHealth", "MaxHealth");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_MaxStamina, "Attributes.Secondary.MaxStamina", "MaxStamina");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LMB, "InputTag.LMB", "InputTag LMB");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_RMB, "InputTag.RMB", "InputTag RMB");
 
 
 }

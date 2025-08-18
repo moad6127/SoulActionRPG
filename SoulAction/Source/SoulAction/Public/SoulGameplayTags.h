@@ -44,4 +44,7 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_StaminaRegeneration);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxHealth);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxStamina);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LMB);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_RMB);
 }
