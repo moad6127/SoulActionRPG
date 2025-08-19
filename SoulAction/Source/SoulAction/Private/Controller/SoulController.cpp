@@ -14,7 +14,7 @@ void ASoulController::BeginPlay()
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	if (Subsystem)
 	{
-		Subsystem->AddMappingContext(ShooterIMC, 0);
+		Subsystem->AddMappingContext(SoulIMC, 0);
 	}
 }
 
@@ -22,10 +22,10 @@ void ASoulController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* ShooterInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	ShooterInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Move);
-	ShooterInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Look);
-	ShooterInputComponent->BindAction(AttributeMenu, ETriggerEvent::Completed, this, &ASoulController::ShowAttributeMenu);
+	UEnhancedInputComponent* SoulInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	SoulInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Move);
+	SoulInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Look);
+	SoulInputComponent->BindAction(AttributeMenu, ETriggerEvent::Completed, this, &ASoulController::ShowAttributeMenu);
 }
 
 void ASoulController::Input_Move(const FInputActionValue& InputActionValue)
