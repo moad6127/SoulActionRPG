@@ -3,10 +3,12 @@
 
 #include "Controller/SoulController.h"
 
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "UI/HUD/SoulHUD.h"
+#include "Input/SoulEnhancedInputComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/SoulAbilitySystemComponent.h"
 
 void ASoulController::BeginPlay()
 {
@@ -22,10 +24,22 @@ void ASoulController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* SoulInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	USoulEnhancedInputComponent* SoulInputComponent = CastChecked<USoulEnhancedInputComponent>(InputComponent);
 	SoulInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Move);
 	SoulInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Look);
 	SoulInputComponent->BindAction(AttributeMenu, ETriggerEvent::Completed, this, &ASoulController::ShowAttributeMenu);
+
+	SoulInputComponent->BindAbilityAction(InputConfig, this, &ASoulController::AbilityInputTagPressed, &ASoulController::AbilityInputTagReleased, &ASoulController::AbilityInputTagHeld);
+
+}
+
+USoulAbilitySystemComponent* ASoulController::GetASC()
+{
+	if (SoulAbilitySystemComp == nullptr)
+	{
+		SoulAbilitySystemComp = Cast<USoulAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return SoulAbilitySystemComp;
 }
 
 void ASoulController::Input_Move(const FInputActionValue& InputActionValue)
@@ -49,6 +63,29 @@ void ASoulController::Input_Look(const FInputActionValue& InputActionValue)
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	AddYawInput(InputAxisVector.X);
 	AddPitchInput(-1 * InputAxisVector.Y);
+}
+
+void ASoulController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void ASoulController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (GetASC() == nullptr)
+	{
+		return;
+	}
+	GetASC()->AbilityInputTagReleased(InputTag);
+}
+
+void ASoulController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (GetASC() == nullptr)
+	{
+		return;
+	}
+	GetASC()->AbilityInputTagHeld(InputTag);
 }
 
 void ASoulController::ShowAttributeMenu()

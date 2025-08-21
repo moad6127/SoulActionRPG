@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "SoulController.generated.h"
 
 /**
@@ -13,6 +14,8 @@
 struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
+class USoulInputConfig;
+class USoulAbilitySystemComponent;
 
 UCLASS()
 class SOULACTION_API ASoulController : public APlayerController
@@ -39,7 +42,21 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> AttributeMenu;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<USoulInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<USoulAbilitySystemComponent> SoulAbilitySystemComp;
+
+	USoulAbilitySystemComponent* GetASC();
+
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
 	void ShowAttributeMenu();
+
 };
