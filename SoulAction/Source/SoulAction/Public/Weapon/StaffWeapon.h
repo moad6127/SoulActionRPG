@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Weapon/BaseWeapon.h"
-#include "AStaffWeapon.generated.h"
+#include "StaffWeapon.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SOULACTION_API AAStaffWeapon : public ABaseWeapon
+class SOULACTION_API AStaffWeapon : public ABaseWeapon
 {
 	GENERATED_BODY()
 	
