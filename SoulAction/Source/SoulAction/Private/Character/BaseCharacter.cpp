@@ -4,6 +4,8 @@
 #include "Character/BaseCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
+#include "Weapon/BaseWeapon.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -23,6 +25,7 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
 
 void ABaseCharacter::InitAbilityActorInfo()
 {
@@ -55,5 +58,32 @@ void ABaseCharacter::AddCharacterAbilities()
 	}
 
 	SoulASC->AddCharacterAbilities(StartupAbilities);
+}
+
+FVector ABaseCharacter::GetCombatSocketLocation()
+{
+	if (!EquippedWeapon)
+	{
+		return FVector();
+	}
+	return EquippedWeapon->GetSocketLocation();
+}
+
+void ABaseCharacter::Equip(ABaseWeapon* Weapon)
+{
+	EquipWeapon(Weapon);
+}
+
+void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
+{
+	if (WeaponToEquip)
+	{
+		if (EquippedWeapon)
+		{
+			EquippedWeapon->Unequip(this);
+		}
+		EquippedWeapon = WeaponToEquip;
+		EquippedWeapon->Equip(this);
+	}
 }
 

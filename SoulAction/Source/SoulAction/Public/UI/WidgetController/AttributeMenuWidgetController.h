@@ -13,6 +13,7 @@ struct FSoulAttributeInfo;
 class UAttributeInfo;
 struct FGameplayTag;
 struct FGameplayAttribute;
+class ABaseWeapon;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FSoulAttributeInfo&, Info);
 
@@ -26,8 +27,13 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
+	UFUNCTION(BlueprintCallable)
+	void EquipWeapon(const FGameplayTag& WeaponTag);
+
 	UPROPERTY(BlueprintAssignable, Category ="GAS|Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
+
+
 
 protected:
 

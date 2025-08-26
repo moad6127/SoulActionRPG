@@ -9,3 +9,13 @@ int32 ICombatInterface::GetPlayerLevel()
 {
 	return int32();
 }
+
+void ICombatInterface::Equip(ABaseWeapon* Weapon)
+{
+}
+
+
+FVector ICombatInterface::GetCombatSocketLocation()
+{
+	return FVector();
+}

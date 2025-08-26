@@ -4,6 +4,8 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "SoulGameplayTags.h"
 #include "AbilitySystem/Abilities/SoulGameplayAbility.h"
+#include "Weapon/BaseWeapon.h"
+#include "Interaction/CombatInterface.h"
 
 void USoulAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -53,6 +55,24 @@ void USoulAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputReleased(AbilitySpec);
+		}
+	}
+}
+
+void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
+{
+	WeaponDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/Blueprint/AbilitySystem/Data/DT_WeaponDataTable"));
+	if (!WeaponDataTable)
+	{
+		return;
+	}
+	FName RowName = WeaponTag.GetTagName();
+	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
+	{
+		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
+		if (ICombatInterface* Combat =Cast<ICombatInterface>(GetAvatarActor()))
+		{
+			Combat->Equip(SpawnedWeapon);
 		}
 	}
 }

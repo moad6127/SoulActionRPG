@@ -23,6 +23,7 @@ public:
 
 	FGameplayTag GetWeaponType() const { return WeaponType; }
 	const TArray<TSubclassOf<UGameplayAbility>>& GetGrantedAbilities() const { return GrantedAbilities; }
+	FVector GetSocketLocation() const;
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	FName AttachWeaponSocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	FName WeaponTipSocketName;
 
 	// 이 무기가 제공하는 Ability (추후 GAS 연결)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")

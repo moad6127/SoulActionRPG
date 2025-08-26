@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/SoulAttributeSet.h"
+#include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "SoulGameplayTags.h"
 
@@ -35,6 +36,15 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	for (auto& Pair : AS->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
+	}
+}
+
+void UAttributeMenuWidgetController::EquipWeapon(const FGameplayTag& WeaponTag)
+{
+	USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
+	if (ASC)
+	{
+		ASC->EquiWeaponByTag(WeaponTag);
 	}
 }
 

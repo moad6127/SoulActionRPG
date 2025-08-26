@@ -32,4 +32,5 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_RMB, "InputTag.RMB", "InputTag RMB");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Shift, "InputTag.Shift", "InputTag Shift");
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Staff, "WeaponTag.Staff", "WeaponTag Staff");
 }

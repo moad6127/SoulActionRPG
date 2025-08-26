@@ -9,6 +9,7 @@
 /**
  * 
  */
+class ASoulProjectile;
 UCLASS()
 class SOULACTION_API USoulProjectileSpell : public USoulGameplayAbility
 {
@@ -17,6 +18,9 @@ class SOULACTION_API USoulProjectileSpell : public USoulGameplayAbility
 
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<ASoulProjectile> ProjectileClass;
 
 
 };
