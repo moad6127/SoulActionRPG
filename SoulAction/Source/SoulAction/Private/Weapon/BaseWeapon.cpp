@@ -26,7 +26,7 @@ void ABaseWeapon::Unequip(ABaseCharacter* Character)
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
-FVector ABaseWeapon::GetSocketLocation() const
+FVector ABaseWeapon::GetTipSocketLocation() const
 {
 	return WeaponMesh->GetSocketLocation(WeaponTipSocketName);
 }

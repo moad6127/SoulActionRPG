@@ -66,7 +66,7 @@ FVector ABaseCharacter::GetCombatSocketLocation()
 	{
 		return FVector();
 	}
-	return EquippedWeapon->GetSocketLocation();
+	return EquippedWeapon->GetTipSocketLocation();
 }
 
 void ABaseCharacter::Equip(ABaseWeapon* Weapon)

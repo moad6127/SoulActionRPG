@@ -23,7 +23,7 @@ public:
 
 	FGameplayTag GetWeaponType() const { return WeaponType; }
 	const TArray<TSubclassOf<UGameplayAbility>>& GetGrantedAbilities() const { return GrantedAbilities; }
-	FVector GetSocketLocation() const;
+	FVector GetTipSocketLocation() const;
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")

@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/SoulProjectileSpell.h"
 #include "Actor/SoulProjectile.h"
+#include "Interaction/CombatInterface.h"
 
 
 void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -14,12 +15,25 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	{
 		return;
 	}
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	if (CombatInterface)
+	{
+		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 
-	FTransform SpawnTransform;
-	GetWorld()->SpawnActorDeferred<ASoulProjectile>(
-		ProjectileClass,
-		SpawnTransform,
-		GetOwningActorFromActorInfo(),
-		Cast<APawn>(GetOwningActorFromActorInfo()),
-		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		//TODO : Rotation 추가하기
+
+		ASoulProjectile* Projectile =  GetWorld()->SpawnActorDeferred<ASoulProjectile>(
+			ProjectileClass,
+			SpawnTransform,
+			GetOwningActorFromActorInfo(),
+			Cast<APawn>(GetOwningActorFromActorInfo()),
+			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		//TODO : 발사체에 데미지를 위해서 GameplayEffectSpec부여하기
+
+		Projectile->FinishSpawning(SpawnTransform);
+	}
+
 }
