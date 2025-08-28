@@ -49,6 +49,15 @@ void ABaseCharacter::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
 }
 
+void ABaseCharacter::InitStartWeapon(const FGameplayTag& WeaponTag)
+{
+	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
+	if (SoulASC)
+	{
+		SoulASC->EquiWeaponByTag(WeaponTag);
+	}
+}
+
 void ABaseCharacter::AddCharacterAbilities()
 {
 	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);

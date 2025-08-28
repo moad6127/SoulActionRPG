@@ -8,6 +8,7 @@
 #include "Controller/SoulController.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "UI/HUD/SoulHUD.h"
+#include "SoulGameplayTags.h"
 
 ASoulCharacter::ASoulCharacter()
 {
@@ -61,7 +62,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 	AttributeSet = SoulPlayerState->GetAttributeSet();
 
 	InitializeDefaultAttributes();
-
+	InitStartWeapon(SoulGameplayTags::WeaponTag_Staff);
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
 		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(SoulPlayerController->GetHUD()))

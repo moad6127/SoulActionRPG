@@ -13,6 +13,7 @@ class UAttributeSet;
 class UGameplayEffect;
 class UGameplayAbility;
 class ABaseWeapon;
+struct FGameplayTag;
 
 UCLASS(Abstract)
 class SOULACTION_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -29,6 +30,7 @@ protected:
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayeffectClass, float Level) const;
 	void InitializeDefaultAttributes() const;
+	void InitStartWeapon(const FGameplayTag& WeaponTag);
 
 	void AddCharacterAbilities();
 

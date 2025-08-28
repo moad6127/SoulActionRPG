@@ -24,6 +24,7 @@ void ABaseWeapon::Equip(ABaseCharacter* Character)
 void ABaseWeapon::Unequip(ABaseCharacter* Character)
 {
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	Destroy();
 }
 
 FVector ABaseWeapon::GetTipSocketLocation() const
