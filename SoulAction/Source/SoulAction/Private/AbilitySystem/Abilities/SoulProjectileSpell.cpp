@@ -10,7 +10,11 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const bool bIsServer = HasAuthority(&ActivationInfo);
+}
+
+void USoulProjectileSpell::SpawnProjectile()
+{
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
 	{
 		return;
@@ -24,7 +28,7 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 		SpawnTransform.SetLocation(SocketLocation);
 		//TODO : Rotation 추가하기
 
-		ASoulProjectile* Projectile =  GetWorld()->SpawnActorDeferred<ASoulProjectile>(
+		ASoulProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASoulProjectile>(
 			ProjectileClass,
 			SpawnTransform,
 			GetOwningActorFromActorInfo(),
@@ -35,5 +39,4 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
 }
