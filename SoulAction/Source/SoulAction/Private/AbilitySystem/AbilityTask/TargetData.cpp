@@ -4,6 +4,7 @@
 #include "AbilitySystem/AbilityTask/TargetData.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemComponent.h"
 
 UTargetData* UTargetData::CreateTargetData(UGameplayAbility* OwningAbility)
 {
@@ -11,7 +12,7 @@ UTargetData* UTargetData::CreateTargetData(UGameplayAbility* OwningAbility)
 	return MyObj;
 }
 
-void UTargetData::Activate()
+void UTargetData::GetTraceHitResult(FHitResult& TraceHitResult)
 {
 	ACharacter* Character = Cast<ACharacter>(Ability->GetCurrentActorInfo()->AvatarActor.Get());
 
@@ -31,7 +32,6 @@ void UTargetData::Activate()
 		CrosshairWorldPosition,
 		CrosshairWorldDirection
 	);
-	FHitResult TraceHitResult;
 	if (bScreenToWorld)
 	{
 		FVector Start = CrosshairWorldPosition;
@@ -53,7 +53,47 @@ void UTargetData::Activate()
 		{
 			TraceHitResult.ImpactPoint = End;
 		}
-
-		ValidData.Broadcast(TraceHitResult.ImpactPoint);
 	}
 }
+
+
+void UTargetData::Activate()
+{
+	const bool bIsLocallyControlled = Ability->GetCurrentActorInfo()->IsLocallyControlled();
+	if (bIsLocallyControlled)
+	{
+		SendTargetData();
+	}
+	else
+	{
+		// TODO : 서버에 존재
+	}
+	
+}
+
+void UTargetData::SendTargetData()
+{
+
+	FScopedPredictionWindow ScopedProeiction(AbilitySystemComponent.Get());
+
+	FHitResult TraceHitResult;
+	GetTraceHitResult(TraceHitResult);
+
+	FGameplayAbilityTargetDataHandle DataHandle;
+	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
+	Data->HitResult = TraceHitResult;
+	DataHandle.Add(Data);
+
+	AbilitySystemComponent->ServerSetReplicatedTargetData(
+		GetAbilitySpecHandle(),
+		GetActivationPredictionKey(),
+		DataHandle,
+		FGameplayTag(),
+		AbilitySystemComponent->ScopedPredictionKey
+	);
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
+}
+

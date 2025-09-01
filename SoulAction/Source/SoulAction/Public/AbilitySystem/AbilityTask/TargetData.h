@@ -10,7 +10,7 @@
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataSignature, const FVector&, Data);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataSignature, const FGameplayAbilityTargetDataHandle&, DataHandle);
 
 UCLASS()
 class SOULACTION_API UTargetData : public UAbilityTask
@@ -25,5 +25,15 @@ public:
 	FTargetDataSignature ValidData;
 
 private:
+
+	/*
+	* Projectile을 발사하는 능력을 사용할때 발사체가 발사될 방향을 정하기 위해서 LineTrace를 사용해서
+	* 화면의 중앙을 선택한다.
+	*/
+	void GetTraceHitResult(FHitResult& TraceHitResult);
+
 	virtual void Activate() override;
+	void SendTargetData();
+
+
 };
