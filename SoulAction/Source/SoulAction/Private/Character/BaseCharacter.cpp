@@ -5,7 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "Weapon/BaseWeapon.h"
-#include "Engine/SkeletalMeshSocket.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -13,6 +13,8 @@ ABaseCharacter::ABaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const

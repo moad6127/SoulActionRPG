@@ -12,7 +12,7 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 }
 
-void USoulProjectileSpell::SpawnProjectile()
+void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -23,10 +23,15 @@ void USoulProjectileSpell::SpawnProjectile()
 	if (CombatInterface)
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
-
+		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		/*필요하면 나중에 제거*/
+		//Rotation.Pitch = 0.f;
+		/*필요하면 나중에 제거*/
 		FTransform SpawnTransform;
+
 		SpawnTransform.SetLocation(SocketLocation);
-		//TODO : Rotation 추가하기
+		SpawnTransform.SetRotation(Rotation.Quaternion());
+
 
 		ASoulProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASoulProjectile>(
 			ProjectileClass,
