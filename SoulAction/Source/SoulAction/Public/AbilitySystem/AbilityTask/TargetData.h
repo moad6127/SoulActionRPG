@@ -35,5 +35,5 @@ private:
 	virtual void Activate() override;
 	void SendTargetData();
 
-
+	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag);
 };
