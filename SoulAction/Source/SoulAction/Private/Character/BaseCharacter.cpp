@@ -6,6 +6,7 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "Weapon/BaseWeapon.h"
 #include "Components/CapsuleComponent.h"
+#include "SoulAction/SoulAction.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -14,7 +15,9 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
-	
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
