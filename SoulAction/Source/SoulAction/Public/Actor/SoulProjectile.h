@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "SoulProjectile.generated.h"
 
 class USphereComponent;
@@ -18,6 +19,10 @@ public:
 	ASoulProjectile();
 
 	UProjectileMovementComponent* GetProjectileComp() { return ProjectileMovement; }
+
+
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 
 protected:
 	virtual void BeginPlay() override;

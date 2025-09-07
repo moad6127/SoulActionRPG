@@ -10,6 +10,7 @@
  * 
  */
 class ASoulProjectile;
+class UGameplayEffect;
 UCLASS()
 class SOULACTION_API USoulProjectileSpell : public USoulGameplayAbility
 {
@@ -25,5 +26,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ASoulProjectile> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
 };
