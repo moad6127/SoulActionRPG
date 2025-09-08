@@ -9,6 +9,7 @@
 #include "Input/SoulEnhancedInputComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
+#include "Character/SoulCharacter.h"
 
 void ASoulController::BeginPlay()
 {
@@ -28,6 +29,7 @@ void ASoulController::SetupInputComponent()
 	SoulInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Move);
 	SoulInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulController::Input_Look);
 	SoulInputComponent->BindAction(AttributeMenu, ETriggerEvent::Completed, this, &ASoulController::ShowAttributeMenu);
+	SoulInputComponent->BindAction(TargetLockAction, ETriggerEvent::Completed, this, &ASoulController::SetTargetLock);
 
 	SoulInputComponent->BindAbilityAction(InputConfig, this, &ASoulController::AbilityInputTagPressed, &ASoulController::AbilityInputTagReleased, &ASoulController::AbilityInputTagHeld);
 
@@ -93,6 +95,14 @@ void ASoulController::ShowAttributeMenu()
 	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
 	{
 		SoulHUD->ShowMenu();
+	}
+}
+
+void ASoulController::SetTargetLock()
+{
+	if (ASoulCharacter* SoulCharacter = Cast<ASoulCharacter>(GetPawn()))
+	{
+		SoulCharacter->ToggleTargetLock();
 	}
 }
 

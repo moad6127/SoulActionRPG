@@ -27,6 +27,13 @@ public:
 	/* CombatInterface*/
 	virtual int32 GetPlayerLevel() override;
 	/* CombatInterface*/
+
+	/*타겟 락온 관련 함수들*/
+	void ToggleTargetLock();
+	void FindLockOnTarget();
+	void UpdateLockOnCamera(float DeltaTime);
+	AActor* GetTargetActor() { return TargetActor; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,4 +46,14 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
 
+	UPROPERTY(EditAnywhere, Category = "Targeting")
+	float LockOnMaxRange = 2000.f;
+
+	UPROPERTY(EditAnywhere, Category = "Targeting")
+	float LockOnSphereRadius = 200.f;
+
+	bool bTargetLockOn = false;
+
+	UPROPERTY()
+	TObjectPtr<AActor> TargetActor;
 };

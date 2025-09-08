@@ -3,7 +3,8 @@
 
 #include "AbilitySystem/AbilityTask/TargetData.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/Character.h"
+//#include "GameFramework/Character.h"
+#include "Character/SoulCharacter.h"
 #include "AbilitySystemComponent.h"
 
 UTargetData* UTargetData::CreateTargetData(UGameplayAbility* OwningAbility)
@@ -14,7 +15,7 @@ UTargetData* UTargetData::CreateTargetData(UGameplayAbility* OwningAbility)
 
 void UTargetData::GetTraceHitResult(FHitResult& TraceHitResult)
 {
-	ACharacter* Character = Cast<ACharacter>(Ability->GetCurrentActorInfo()->AvatarActor.Get());
+	ASoulCharacter* SoulCharacter = Cast<ASoulCharacter>(Ability->GetCurrentActorInfo()->AvatarActor.Get());
 
 	FVector2D ViewportSize;
 	if (GEngine && GEngine->GameViewport)
@@ -36,24 +37,36 @@ void UTargetData::GetTraceHitResult(FHitResult& TraceHitResult)
 	{
 		FVector Start = CrosshairWorldPosition;
 
-		if (Character)
+		if (SoulCharacter)
 		{
-			float DistanceToCharacter = (Character->GetActorLocation() - Start).Size();
+			float DistanceToCharacter = (SoulCharacter->GetActorLocation() - Start).Size();
 			Start += CrosshairWorldDirection * (DistanceToCharacter + 100.f);
 		}
-
 		FVector End = Start + CrosshairWorldDirection * 80000.f;
+
+		//만약 target이 존재하면 targetActor를 End로 잡기
+		if (SoulCharacter->GetTargetActor())
+		{
+			End = SoulCharacter->GetTargetActor()->GetActorLocation();
+		}
+
 
 		GetWorld()->LineTraceSingleByChannel(
 			TraceHitResult,
 			Start,
 			End,
 			ECollisionChannel::ECC_Visibility);
+
+
+
 		if (!TraceHitResult.bBlockingHit)
 		{
 			TraceHitResult.ImpactPoint = End;
 		}
+
 	}
+
+
 }
 
 
@@ -87,6 +100,7 @@ void UTargetData::SendTargetData()
 
 	FHitResult TraceHitResult;
 	GetTraceHitResult(TraceHitResult);
+
 
 	FGameplayAbilityTargetDataHandle DataHandle;
 	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();

@@ -30,6 +30,8 @@ protected:
 
 private:
 
+	bool bTargetLock = false;
+
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> SoulIMC;
 
@@ -41,6 +43,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> AttributeMenu;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> TargetLockAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<USoulInputConfig> InputConfig;
@@ -58,5 +63,6 @@ private:
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
 	void ShowAttributeMenu();
+	void SetTargetLock();
 
 };

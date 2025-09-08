@@ -9,6 +9,11 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "UI/HUD/SoulHUD.h"
 #include "SoulGameplayTags.h"
+#include "Interaction/EnemyInterface.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "DrawDebugHelpers.h"
+
 
 ASoulCharacter::ASoulCharacter()
 {
@@ -32,16 +37,157 @@ ASoulCharacter::ASoulCharacter()
 	ViewCamera->SetupAttachment(SpringArm);
 }
 
+void ASoulCharacter::ToggleTargetLock()
+{
+	bTargetLockOn = !bTargetLockOn;
+	if (bTargetLockOn)
+	{
+		FindLockOnTarget();
+		if (TargetActor == nullptr)
+		{
+			bTargetLockOn = false;
+		}
+	}
+	else
+	{
+		TargetActor = nullptr;
+	}
+}
+
+void ASoulCharacter::FindLockOnTarget()
+{
+    APlayerController* PC = Cast<APlayerController>(GetController());
+    if (!PC) return;
+
+	int32 ViewX = 0, ViewY = 0;
+	PC->GetViewportSize(ViewX, ViewY);
+
+	FVector2D CrosshairLocation(ViewX / 2.f, ViewY / 2.f);
+	FVector CrosshairWorldPosition;
+	FVector CrosshairWorldDirection;
+
+	bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(
+		PC,
+		CrosshairLocation,
+		CrosshairWorldPosition,
+		CrosshairWorldDirection
+	);
+
+
+    FVector Start = CrosshairWorldPosition;
+    FVector End = CrosshairWorldPosition + CrosshairWorldDirection * LockOnMaxRange;
+
+    TArray<FHitResult> Hits;
+    FCollisionQueryParams Params;
+    Params.AddIgnoredActor(this); // 자기 자신 무시
+
+    FCollisionShape Sphere = FCollisionShape::MakeSphere(LockOnSphereRadius);
+
+	FVector TraceCenter = (Start + End) * 0.5f;
+	FVector TraceDir = (End - Start).GetSafeNormal();
+	float HalfHeight = (End - Start).Size() * 0.5f;
+	DrawDebugCapsule(
+		GetWorld(),
+		TraceCenter,
+		HalfHeight,
+		LockOnSphereRadius,
+		FRotationMatrix::MakeFromZ(TraceDir).ToQuat(),
+		FColor::Green,
+		false,
+		5.0f
+	);
+
+
+    bool bHit = GetWorld()->SweepMultiByChannel(Hits, Start, End, FQuat::Identity, ECC_Pawn, Sphere, Params);
+
+    if (!bHit || Hits.Num() == 0)
+    {
+        return;
+    }
+
+    AActor* BestActor = nullptr;
+    float BestScreenDist = FLT_MAX;
+
+    for (const FHitResult& Hit : Hits)
+    {
+        AActor* HitActor = Hit.GetActor();
+        if (!HitActor) continue;
+        if (HitActor == this) continue;
+
+        if (!HitActor->Implements<UEnemyInterface>()) continue;
+
+        FVector ToActor = HitActor->GetActorLocation() - CrosshairWorldPosition;
+        float Dot = FVector::DotProduct(CrosshairWorldDirection.GetSafeNormal(), ToActor.GetSafeNormal());
+
+        if (Dot < 0.2f) continue; // 0.2 ~ 0.9 사이로 조절 가능
+
+        FHitResult LoSHit;
+        FCollisionQueryParams LoSParams;
+        LoSParams.AddIgnoredActor(this);
+
+        bool bBlocked = GetWorld()->LineTraceSingleByChannel(LoSHit, CrosshairWorldPosition, HitActor->GetActorLocation(), ECC_Visibility, LoSParams);
+        if (bBlocked && LoSHit.GetActor() != HitActor)
+        {
+            continue;
+        }
+
+        FVector2D ScreenPos;
+        bool bProjected = PC->ProjectWorldLocationToScreen(HitActor->GetActorLocation(), ScreenPos);
+        if (!bProjected) continue;
+
+        float ScreenDist = FVector2D::Distance(ScreenPos, FVector2D(ViewX * 0.5f, ViewY * 0.5f));
+
+        if (ScreenDist < BestScreenDist)
+        {
+            BestScreenDist = ScreenDist;
+            BestActor = HitActor;
+        }
+    }
+
+    TargetActor = BestActor;
+}
+
+void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
+{
+	if (!bTargetLockOn || !TargetActor)
+	{
+		return;
+	}
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (!PC)
+	{
+		return;
+	}
+	FVector TargetLocation = TargetActor->GetActorLocation();
+	FVector MyLocation = GetActorLocation();
+
+	FVector Direction = (TargetLocation - MyLocation);
+	Direction.Z = 0; // 평면 회전만 (YAW 회전)
+
+	if (Direction.IsNearlyZero()) return;
+
+	FRotator LookAtRotation = Direction.Rotation();
+
+	//TODO : 캐릭터도 타겟을 바라보도록 회전시키기
+
+	FRotator CurrentCtrlRot = PC->GetControlRotation();
+	float CameraInterpSpeed = 5.f;
+	FRotator NewCtrlRot = FMath::RInterpTo(CurrentCtrlRot, LookAtRotation, DeltaTime, CameraInterpSpeed);
+	PC->SetControlRotation(NewCtrlRot);
+}
+
 void ASoulCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ASoulCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	if (bTargetLockOn)
+	{
+		UpdateLockOnCamera(DeltaTime);
+	}
 }
 
 void ASoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
