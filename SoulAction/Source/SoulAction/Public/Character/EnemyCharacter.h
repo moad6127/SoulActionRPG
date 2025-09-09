@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Character/BaseCharacter.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
 /**
  * 
  */
+class UWidgetComponent;
 UCLASS()
 class SOULACTION_API AEnemyCharacter : public ABaseCharacter, public IEnemyInterface
 {
@@ -21,6 +23,12 @@ public:
 	/* CombatInterface*/
 	virtual int32 GetPlayerLevel() override;
 	/* CombatInterface*/
+
+	UPROPERTY(BlueprintAssignable)
+	FOnVitalChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnVitalChangedSignature OnMaxHealthChanged;
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
@@ -28,5 +36,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defautls")
 	int32 EnenyLevel = 1;
 
-
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBarWidget;
+	
 };
