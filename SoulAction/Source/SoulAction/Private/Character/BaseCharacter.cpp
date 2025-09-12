@@ -65,7 +65,7 @@ void ABaseCharacter::InitStartWeapon(const FGameplayTag& WeaponTag)
 	}
 }
 
-void ABaseCharacter::AddCharacterAbilities()
+void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties)
 {
 	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority())
@@ -73,7 +73,7 @@ void ABaseCharacter::AddCharacterAbilities()
 		return;
 	}
 
-	SoulASC->AddCharacterAbilities(StartupAbilities);
+	SoulASC->AddCharacterAbilities(Abiilties);
 }
 
 FVector ABaseCharacter::GetCombatSocketLocation()

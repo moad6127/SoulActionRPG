@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "GameplayTagContainer.h"
 #include "CharacterClassInfo.generated.h"
 
 /**
@@ -27,6 +28,8 @@ struct FCharacterClassDefaultInfo
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
 	TSubclassOf<UGameplayEffect> PrimaryAttributes;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
+	FGameplayTag WeaponTag;
 };
 
 UCLASS()

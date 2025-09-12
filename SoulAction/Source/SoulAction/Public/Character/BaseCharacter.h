@@ -32,7 +32,7 @@ protected:
 	void InitializeDefaultAttributes() const;
 	void InitStartWeapon(const FGameplayTag& WeaponTag);
 
-	void AddCharacterAbilities();
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties);
 
 	virtual FVector GetCombatSocketLocation() override;
 	virtual void Equip(class ABaseWeapon* Weapon) override;

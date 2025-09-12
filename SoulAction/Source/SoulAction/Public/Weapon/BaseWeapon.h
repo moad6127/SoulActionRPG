@@ -41,4 +41,6 @@ protected:
 	// 이 무기가 제공하는 Ability (추후 GAS 연결)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TArray<TSubclassOf<UGameplayAbility>> GrantedAbilities;
+
+
 };

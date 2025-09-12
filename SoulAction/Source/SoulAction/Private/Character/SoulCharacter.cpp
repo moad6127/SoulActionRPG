@@ -11,6 +11,7 @@
 #include "SoulGameplayTags.h"
 #include "Interaction/EnemyInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Weapon/BaseWeapon.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -208,7 +209,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 	AttributeSet = SoulPlayerState->GetAttributeSet();
 
 	InitializeDefaultAttributes();
-	InitStartWeapon(SoulGameplayTags::WeaponTag_Staff);
+	InitStartWeapon(SoulGameplayTags::WeaponTag_Player_Staff);
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
 		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(SoulPlayerController->GetHUD()))
@@ -225,7 +226,7 @@ void ASoulCharacter::PossessedBy(AController* NewController)
 
 	//서버용 Ability Actor 초기화 하기
 	InitAbilityActorInfo();
-	AddCharacterAbilities();
+	AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
 }
 
 void ASoulCharacter::OnRep_PlayerState()
