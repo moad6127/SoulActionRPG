@@ -29,7 +29,7 @@ protected:
 	virtual void InitAbilityActorInfo();
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayeffectClass, float Level) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 	void InitStartWeapon(const FGameplayTag& WeaponTag);
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties);

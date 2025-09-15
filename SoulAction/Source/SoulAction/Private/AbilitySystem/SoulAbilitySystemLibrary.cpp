@@ -6,6 +6,9 @@
 #include "UI/HUD/SoulHUD.h"
 #include "Controller/SoulPlayerState.h"
 #include "UI/WidgetController/SoulWidgetController.h"
+#include "Game/SoulGameModeBase.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystem/SoulAbilitySystemComponent.h"
 
 UOverlayWidgetController* USoulAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -41,4 +44,34 @@ UAttributeMenuWidgetController* USoulAbilitySystemLibrary::GetAttributeMeuWidget
 	}
 
 	return nullptr;
+}
+
+void USoulAbilitySystemLibrary::InitializeDefautlAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC)
+{
+	ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (SoulGameMode == nullptr)
+	{
+		return;
+	}
+
+	AActor* AvatarActor = ASC->GetAvatarActor();
+
+	FCharacterClassDefaultInfo ClassDefautlInfo = SoulGameMode->CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	
+	FGameplayEffectContextHandle PrimayAttrbuteContextHandle = ASC->MakeEffectContext();
+	PrimayAttrbuteContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle PrimaryAttributeSpecHandle = ASC->MakeOutgoingSpec(ClassDefautlInfo.PrimaryAttributes, Level, PrimayAttrbuteContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*PrimaryAttributeSpecHandle.Data.Get());
+
+	FGameplayEffectContextHandle SecondaryAttrbuteContextHandle = ASC->MakeEffectContext();
+	SecondaryAttrbuteContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle SecondaryAttributeSpecHandle = ASC->MakeOutgoingSpec(SoulGameMode->CharacterClassInfo->SecondaryAttributes, Level, SecondaryAttrbuteContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*SecondaryAttributeSpecHandle.Data.Get());
+
+	FGameplayEffectContextHandle VitalAttrbuteContextHandle = ASC->MakeEffectContext();
+	VitalAttrbuteContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle VitalyAttributeSpecHandle = ASC->MakeOutgoingSpec(SoulGameMode->CharacterClassInfo->VitalAttributes, Level, VitalAttrbuteContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*VitalyAttributeSpecHandle.Data.Get());
+
+	Cast<USoulAbilitySystemComponent>(ASC)->EquiWeaponByTag(ClassDefautlInfo.WeaponTag);
 }

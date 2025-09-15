@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "SoulAbilitySystemLibrary.generated.h"
 
 /**
  * 
  */
 class UOverlayWidgetController;
-
+class UAbilitySystemComponent;
 UCLASS()
 class SOULACTION_API USoulAbilitySystemLibrary : public UBlueprintFunctionLibrary
 {
@@ -22,4 +23,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
 	static UAttributeMenuWidgetController* GetAttributeMeuWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "SoulAbilitySystemLibrary|CharacterClassInfo")
+	static void InitializeDefautlAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level,UAbilitySystemComponent* ASC);
 };

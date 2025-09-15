@@ -6,6 +6,7 @@
 #include "AbilitySystem/SoulAttributeSet.h"
 #include "Components/WidgetComponent.h"
 #include "UI/Widget/SoulUserWidget.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -23,7 +24,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 int32 AEnemyCharacter::GetPlayerLevel()
 {
-	return EnenyLevel;
+	return EnemyLevel;
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -60,4 +61,9 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AEnemyCharacter::InitializeDefaultAttributes() const
+{
+	USoulAbilitySystemLibrary::InitializeDefautlAttributes(this, CharcterClass, EnemyLevel, GetAbilitySystemComponent());
 }
