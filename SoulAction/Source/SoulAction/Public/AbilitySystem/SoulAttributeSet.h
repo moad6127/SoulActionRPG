@@ -135,6 +135,13 @@ public:
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(USoulAttributeSet, Stamina);
 
+	/*
+	* Meta Attributes
+	*/
+
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(USoulAttributeSet, IncomingDamage);
 
 
 	UFUNCTION()
