@@ -51,4 +51,6 @@ namespace SoulGameplayTags
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Staff);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Spear);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 }
