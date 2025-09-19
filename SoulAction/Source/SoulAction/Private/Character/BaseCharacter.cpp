@@ -27,6 +27,11 @@ UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
+}
+
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {

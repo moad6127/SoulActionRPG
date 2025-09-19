@@ -19,7 +19,7 @@ class SOULACTION_API AEnemyCharacter : public ABaseCharacter, public IEnemyInter
 	GENERATED_BODY()
 public:
 	AEnemyCharacter();
-
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	/* CombatInterface*/
 	virtual int32 GetPlayerLevel() override;
@@ -30,10 +30,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnVitalChangedSignature OnMaxHealthChanged;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defautls")
 	int32 EnemyLevel = 1;
@@ -43,5 +45,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBarWidget;
-	
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReact = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 250.f;
 };

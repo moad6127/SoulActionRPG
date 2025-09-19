@@ -53,4 +53,6 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Spear);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
 }

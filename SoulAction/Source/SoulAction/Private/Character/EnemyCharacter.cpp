@@ -7,6 +7,8 @@
 #include "Components/WidgetComponent.h"
 #include "UI/Widget/SoulUserWidget.h"
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
+#include "SoulGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -22,6 +24,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 }
 
+
 int32 AEnemyCharacter::GetPlayerLevel()
 {
 	return EnemyLevel;
@@ -30,6 +33,7 @@ int32 AEnemyCharacter::GetPlayerLevel()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	InitAbilityActorInfo();
 
@@ -50,9 +54,20 @@ void AEnemyCharacter::BeginPlay()
 			{
 				OnMaxHealthChanged.Broadcast(Data.NewValue);
 			});
+
+		AbilitySystemComponent->RegisterGameplayTagEvent(SoulGameplayTags::Effects_HitReact,EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AEnemyCharacter::HitReactTagChanged
+		);
+
 		OnHealthChanged.Broadcast(SoulAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(SoulAS->GetMaxHealth());
 	}
+}
+void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReact = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReact ? 0.f : BaseWalkSpeed;
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
