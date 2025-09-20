@@ -75,3 +75,19 @@ void USoulAbilitySystemLibrary::InitializeDefautlAttributes(const UObject* World
 
 	Cast<USoulAbilitySystemComponent>(ASC)->EquiWeaponByTag(ClassDefautlInfo.WeaponTag);
 }
+
+void USoulAbilitySystemLibrary::GiveStartupAbities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+{
+	ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (SoulGameMode == nullptr)
+	{
+		return;
+	}
+
+	UCharacterClassInfo* CharacterClassInfo = SoulGameMode->CharacterClassInfo;
+	for (auto AbilityClass : CharacterClassInfo->CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		ASC->GiveAbility(AbilitySpec);
+	}
+}

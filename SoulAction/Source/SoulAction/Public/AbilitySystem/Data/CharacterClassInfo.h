@@ -11,7 +11,7 @@
  * 
  */
 class UGameplayEffect;
-
+class UGameplayAbility;
 UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
@@ -46,6 +46,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defautls")
 	TSubclassOf<UGameplayEffect> VitalAttributes;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defautls")
+	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 

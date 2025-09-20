@@ -36,6 +36,7 @@ void AEnemyCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	InitAbilityActorInfo();
+	USoulAbilitySystemLibrary::GiveStartupAbities(this, GetAbilitySystemComponent());
 
 	if (USoulUserWidget* SoulUserWidget = Cast<USoulUserWidget>(HealthBarWidget->GetUserWidgetObject()))
 	{
