@@ -49,6 +49,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Dissolve();
 }
 
 // Called when the game starts or when spawned
@@ -124,6 +125,17 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 		}
 		EquippedWeapon = WeaponToEquip;
 		EquippedWeapon->Equip(this);
+	}
+}
+
+void ABaseCharacter::Dissolve()
+{
+	if (IsValid(DissolveMaterialInst))
+	{
+		UMaterialInstanceDynamic* DynamicInst = UMaterialInstanceDynamic::Create(DissolveMaterialInst, this);
+		GetMesh()->SetMaterial(0, DynamicInst);
+
+		StartDissolveTimeline(DynamicInst);
 	}
 }
 
