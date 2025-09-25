@@ -22,6 +22,7 @@ USoulAttributeSet::USoulAttributeSet()
 	/*Secondary*/
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_Armor, GetArmorAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_ArmorPertration, GetArmorPertrationAttribute);
+	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_Block, GetBlockAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
 	TagsToAttributes.Add(SoulGameplayTags::Attributes_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
@@ -44,6 +45,7 @@ void USoulAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	//Secondary
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, ArmorPertration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, Block, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USoulAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
@@ -185,6 +187,11 @@ void USoulAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) cons
 void USoulAttributeSet::OnRep_ArmorPertration(const FGameplayAttributeData& OldArmorPertration) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, ArmorPertration, OldArmorPertration);
+}
+
+void USoulAttributeSet::OnRep_Block(const FGameplayAttributeData& OldBlock) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USoulAttributeSet, Block, OldBlock);
 }
 
 void USoulAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const

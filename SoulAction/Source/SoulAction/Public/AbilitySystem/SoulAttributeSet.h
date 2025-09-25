@@ -98,6 +98,10 @@ public:
 	FGameplayAttributeData ArmorPertration;
 	ATTRIBUTE_ACCESSORS(USoulAttributeSet, ArmorPertration);
 
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Block, Category = "Secondary Attributes")
+	FGameplayAttributeData Block;
+	ATTRIBUTE_ACCESSORS(USoulAttributeSet, Block);
+
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitChance, Category = "Secondary Attributes")
 	FGameplayAttributeData CriticalHitChance;
 	ATTRIBUTE_ACCESSORS(USoulAttributeSet, CriticalHitChance);
@@ -170,6 +174,9 @@ public:
 
 	UFUNCTION()
 	void OnRep_ArmorPertration(const FGameplayAttributeData& OldArmorPertration) const;
+
+	UFUNCTION()
+	void OnRep_Block(const FGameplayAttributeData& OldBlock) const;
 
 	UFUNCTION()
 	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const;
