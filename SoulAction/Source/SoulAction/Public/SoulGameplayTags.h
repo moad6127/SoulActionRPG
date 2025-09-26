@@ -37,7 +37,7 @@ namespace SoulGameplayTags
 
 	/*Secondary*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_Armor);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ArmorPertration);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ArmorPenetration);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_Block);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitChance);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitDamage);

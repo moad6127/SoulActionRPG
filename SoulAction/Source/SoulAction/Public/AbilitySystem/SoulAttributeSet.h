@@ -94,9 +94,9 @@ public:
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(USoulAttributeSet, Armor);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmorPertration, Category = "Secondary Attributes")
-	FGameplayAttributeData ArmorPertration;
-	ATTRIBUTE_ACCESSORS(USoulAttributeSet, ArmorPertration);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmorPenetration, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(USoulAttributeSet, ArmorPenetration);
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Block, Category = "Secondary Attributes")
 	FGameplayAttributeData Block;
@@ -173,7 +173,7 @@ public:
 	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
 
 	UFUNCTION()
-	void OnRep_ArmorPertration(const FGameplayAttributeData& OldArmorPertration) const;
+	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
 
 	UFUNCTION()
 	void OnRep_Block(const FGameplayAttributeData& OldBlock) const;

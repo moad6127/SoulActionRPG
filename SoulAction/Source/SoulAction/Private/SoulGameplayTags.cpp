@@ -20,7 +20,7 @@ namespace SoulGameplayTags
 
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_Armor, "Attributes.Secondary.Armor", "Reduces dagame taken, improves block chance");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_ArmorPertration, "Attributes.Secondary.ArmorPertration", "ArmorPertration");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_ArmorPenetration, "Attributes.Secondary.ArmorPenetration", "ArmorPenetration");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_Block, "Attributes.Secondary.Block", "BlockChance");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_CriticalHitChance, "Attributes.Secondary.CriticalHitChance", "CriticalHitChance");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Secondary_CriticalHitDamage, "Attributes.Secondary.CriticalHitDamage", "Increase Criticla Hit Damage");
