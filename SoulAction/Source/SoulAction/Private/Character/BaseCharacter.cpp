@@ -39,6 +39,7 @@ void ABaseCharacter::Die()
 		EquippedWeapon->Unequip(this);
 	}
 	MulticastHandleDeath();
+	bDead = true;
 }
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()

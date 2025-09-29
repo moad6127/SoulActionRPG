@@ -9,6 +9,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "SoulGameplayTags.h"
 #include "Interaction/CombatInterface.h"
+#include "Controller/SoulController.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
@@ -100,6 +101,17 @@ void USoulAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
+void USoulAttributeSet::ShowFloatingText(const FEffectProperties& Props, float DamgeAmount) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (ASoulController* PC = Cast<ASoulController>(Props.SourceController))
+		{
+			PC->ShowDamageNumber(DamgeAmount, Props.TargetCharacter);
+		}
+	}
+}
+
 void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -140,6 +152,7 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				TagContainer.AddTag(SoulGameplayTags::Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+			ShowFloatingText(Props, LocalIncomingDamage);
 		}
 	}
 }

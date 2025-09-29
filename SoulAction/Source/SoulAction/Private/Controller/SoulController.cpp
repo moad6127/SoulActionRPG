@@ -10,6 +10,20 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "Character/SoulCharacter.h"
+#include "UI/Widget/DamageTextComponent.h"
+
+
+void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && DamagetextComponentClass)
+	{
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamagetextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageText->SetDamageText(DamageAmount);
+	}
+}
 
 void ASoulController::BeginPlay()
 {

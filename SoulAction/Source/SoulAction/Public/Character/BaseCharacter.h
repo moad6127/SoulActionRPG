@@ -27,6 +27,7 @@ public:
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
+	bool GetDeath() { return bDead; }
 
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
@@ -77,4 +78,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
+	bool bDead = false;
 };

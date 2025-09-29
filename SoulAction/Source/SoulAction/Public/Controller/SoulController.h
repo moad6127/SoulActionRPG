@@ -16,6 +16,7 @@ class UInputMappingContext;
 class UInputAction;
 class USoulInputConfig;
 class USoulAbilitySystemComponent;
+class UDamageTextComponent;
 
 UCLASS()
 class SOULACTION_API ASoulController : public APlayerController
@@ -23,6 +24,9 @@ class SOULACTION_API ASoulController : public APlayerController
 	GENERATED_BODY()
 	
 public:
+
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
 
 protected:
 	virtual void BeginPlay() override;
@@ -52,6 +56,9 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<USoulAbilitySystemComponent> SoulAbilitySystemComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamagetextComponentClass;
 
 	USoulAbilitySystemComponent* GetASC();
 
