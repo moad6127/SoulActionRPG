@@ -78,16 +78,21 @@ void USoulAbilitySystemLibrary::InitializeDefautlAttributes(const UObject* World
 
 void USoulAbilitySystemLibrary::GiveStartupAbities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
 {
-	ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
-	if (SoulGameMode == nullptr)
-	{
-		return;
-	}
-
-	UCharacterClassInfo* CharacterClassInfo = SoulGameMode->CharacterClassInfo;
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
 	for (auto AbilityClass : CharacterClassInfo->CommonAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		ASC->GiveAbility(AbilitySpec);
 	}
+}
+
+UCharacterClassInfo* USoulAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
+{
+	ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (SoulGameMode == nullptr)
+	{
+		return nullptr;
+	}
+
+	return SoulGameMode->CharacterClassInfo;
 }
