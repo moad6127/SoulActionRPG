@@ -15,6 +15,8 @@ class UGameplayAbility;
 class ABaseWeapon;
 struct FGameplayTag;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDied);
+
 UCLASS(Abstract)
 class SOULACTION_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -27,10 +29,12 @@ public:
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
-	bool GetDeath() { return bDead; }
 
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCharacterDied OnDied;
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
@@ -78,6 +82,4 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
-	
-	bool bDead = false;
 };

@@ -39,7 +39,7 @@ void ABaseCharacter::Die()
 		EquippedWeapon->Unequip(this);
 	}
 	MulticastHandleDeath();
-	bDead = true;
+
 }
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
@@ -51,6 +51,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Dissolve();
+	OnDied.Broadcast();
 }
 
 // Called when the game starts or when spawned

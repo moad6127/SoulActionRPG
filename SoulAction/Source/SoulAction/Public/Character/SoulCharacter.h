@@ -32,7 +32,11 @@ public:
 	void ToggleTargetLock();
 	void FindLockOnTarget();
 	void UpdateLockOnCamera(float DeltaTime);
-	AActor* GetTargetActor() { return TargetActor; }
+
+	UFUNCTION()
+	void OnTargetDied();
+
+	ABaseCharacter* GetTargetActor() { return TargetActor; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -55,5 +59,5 @@ private:
 	bool bTargetLockOn = false;
 
 	UPROPERTY()
-	TObjectPtr<AActor> TargetActor;
+	TObjectPtr<ABaseCharacter> TargetActor;
 };

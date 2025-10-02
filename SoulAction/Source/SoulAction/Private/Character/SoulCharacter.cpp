@@ -9,7 +9,7 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "UI/HUD/SoulHUD.h"
 #include "SoulGameplayTags.h"
-#include "Interaction/EnemyInterface.h"
+#include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/BaseWeapon.h"
 
@@ -43,14 +43,26 @@ void ASoulCharacter::ToggleTargetLock()
 	bTargetLockOn = !bTargetLockOn;
 	if (bTargetLockOn)
 	{
+		if (TargetActor)
+		{
+			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
+		}
 		FindLockOnTarget();
 		if (TargetActor == nullptr)
 		{
 			bTargetLockOn = false;
 		}
+		else
+		{
+			TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
+		}
 	}
 	else
 	{
+		if (TargetActor)
+		{
+			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
+		}
 		TargetActor = nullptr;
 	}
 }
@@ -115,7 +127,7 @@ void ASoulCharacter::FindLockOnTarget()
         if (!HitActor) continue;
         if (HitActor == this) continue;
 
-        if (!HitActor->Implements<UEnemyInterface>()) continue;
+        if (!HitActor->Implements<UCombatInterface>()) continue;
 
         FVector ToActor = HitActor->GetActorLocation() - CrosshairWorldPosition;
         float Dot = FVector::DotProduct(CrosshairWorldDirection.GetSafeNormal(), ToActor.GetSafeNormal());
@@ -145,7 +157,7 @@ void ASoulCharacter::FindLockOnTarget()
         }
     }
 
-    TargetActor = BestActor;
+	TargetActor = Cast<ABaseCharacter>(BestActor);
 }
 
 void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
@@ -175,6 +187,12 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 	float CameraInterpSpeed = 5.f;
 	FRotator NewCtrlRot = FMath::RInterpTo(CurrentCtrlRot, LookAtRotation, DeltaTime, CameraInterpSpeed);
 	PC->SetControlRotation(NewCtrlRot);
+}
+
+void ASoulCharacter::OnTargetDied()
+{
+	TargetActor = nullptr;
+	bTargetLockOn = false;
 }
 
 void ASoulCharacter::BeginPlay()
