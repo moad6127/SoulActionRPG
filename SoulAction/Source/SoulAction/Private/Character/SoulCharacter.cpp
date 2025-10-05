@@ -245,6 +245,8 @@ void ASoulCharacter::PossessedBy(AController* NewController)
 	//서버용 Ability Actor 초기화 하기
 	InitAbilityActorInfo();
 	AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
+	AddCharacterAbilities(StartupAbilities);
+
 }
 
 void ASoulCharacter::OnRep_PlayerState()
