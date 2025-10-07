@@ -9,6 +9,7 @@
 #include "Game/SoulGameModeBase.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
+#include "SoulAbilityTypes.h"
 
 UOverlayWidgetController* USoulAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -95,4 +96,22 @@ UCharacterClassInfo* USoulAbilitySystemLibrary::GetCharacterClassInfo(const UObj
 	}
 
 	return SoulGameMode->CharacterClassInfo;
+}
+
+bool USoulAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->IsBlockedHit();
+	}
+	return false;
+}
+
+bool USoulAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->IsCriticalHit();
+	}
+	return false;
 }

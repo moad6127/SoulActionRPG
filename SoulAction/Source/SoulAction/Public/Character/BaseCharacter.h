@@ -30,6 +30,9 @@ public:
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 
+	virtual void StartDash_Implementation() override;
+	virtual void EndDash_Implementation() override;
+
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 

@@ -8,6 +8,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
+#include "SoulAbilityTypes.h"
 
 struct SoulDamageStatics
 {
@@ -79,6 +80,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	* Block되면 데미지 반절로
 	*/
 	const bool bBlock = FMath::RandRange(1, 100) < TargetBlock;
+
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+	FGameplayEffectContext* Context = EffectContextHandle.Get();
+	FSoulGameplayEffectContext* SoulContext = static_cast<FSoulGameplayEffectContext*>(Context);
+	SoulContext->SetIsBlockedHit(bBlock);
+
 	Damage = bBlock ? Damage / 2.f : Damage;
 
 	const UCharacterClassInfo* CharacterClassInfo = USoulAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);

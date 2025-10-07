@@ -33,6 +33,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void StartDash();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void EndDash();
 
 	virtual void Die() = 0;
 };

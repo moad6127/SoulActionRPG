@@ -42,6 +42,15 @@ void ABaseCharacter::Die()
 
 }
 
+void ABaseCharacter::StartDash_Implementation()
+{
+}
+
+void ABaseCharacter::EndDash_Implementation()
+{
+}
+
+
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
 	GetMesh()->SetSimulatePhysics(true);

@@ -32,4 +32,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "SoulAbilitySystemLibrary|CharacterClassInfo")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|GameplayEffects")
+	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|GameplayEffects")
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
 };
