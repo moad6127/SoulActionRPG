@@ -10,6 +10,7 @@
 #include "SoulGameplayTags.h"
 #include "Interaction/CombatInterface.h"
 #include "Controller/SoulController.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
@@ -101,7 +102,7 @@ void USoulAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
-void USoulAttributeSet::ShowFloatingText(const FEffectProperties& Props, float DamgeAmount) const
+void USoulAttributeSet::ShowFloatingText(const FEffectProperties& Props, float DamgeAmount, bool bBlockedHit, bool bCriticalHit) const
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
@@ -152,7 +153,10 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				TagContainer.AddTag(SoulGameplayTags::Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
-			ShowFloatingText(Props, LocalIncomingDamage);
+
+			const bool bBlock = USoulAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+			const bool bCriticalHit = USoulAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+			ShowFloatingText(Props, LocalIncomingDamage, bBlock, bCriticalHit);
 		}
 	}
 }

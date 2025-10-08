@@ -82,9 +82,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bBlock = FMath::RandRange(1, 100) < TargetBlock;
 
 	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
-	FGameplayEffectContext* Context = EffectContextHandle.Get();
-	FSoulGameplayEffectContext* SoulContext = static_cast<FSoulGameplayEffectContext*>(Context);
-	SoulContext->SetIsBlockedHit(bBlock);
+	USoulAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlock);
 
 	Damage = bBlock ? Damage / 2.f : Damage;
 
@@ -121,6 +119,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	SourceCriticalHitDamage = FMath::Max<float>(0, SourceCriticalHitDamage);
 
 	const bool bCriticalHit = FMath::RandRange(0, 100) < SourceCriticalHitChance;
+	USoulAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bCriticalHit);
 
 	Damage = bCriticalHit ? (2.f + SourceCriticalHitDamage * 0.01f) * Damage : Damage;
 

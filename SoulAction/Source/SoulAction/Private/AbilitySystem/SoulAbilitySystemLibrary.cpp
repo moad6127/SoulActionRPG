@@ -115,3 +115,20 @@ bool USoulAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle
 	}
 	return false;
 }
+
+void USoulAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit)
+{
+	if (FSoulGameplayEffectContext* SoulEffectContext = static_cast<FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		SoulEffectContext->SetIsBlockedHit(bInIsBlockedHit);
+	}
+}
+
+void USoulAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCriticalHit)
+{
+	if (FSoulGameplayEffectContext* SoulEffectContext = static_cast<FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		SoulEffectContext->SetIsCriticalHit(bInIsCriticalHit);
+	}
+}
+
