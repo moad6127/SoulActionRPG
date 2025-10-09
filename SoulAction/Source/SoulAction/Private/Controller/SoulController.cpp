@@ -13,7 +13,7 @@
 #include "UI/Widget/DamageTextComponent.h"
 
 
-void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
 {
 	if (IsValid(TargetCharacter) && DamagetextComponentClass)
 	{
@@ -21,7 +21,7 @@ void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, AChara
 		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		DamageText->SetDamageText(DamageAmount);
+		DamageText->SetDamageText(DamageAmount,bBlockedHit,bCriticalHit);
 	}
 }
 

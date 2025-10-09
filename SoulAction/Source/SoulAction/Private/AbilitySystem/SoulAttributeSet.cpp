@@ -108,7 +108,7 @@ void USoulAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	{
 		if (ASoulController* PC = Cast<ASoulController>(Props.SourceController))
 		{
-			PC->ShowDamageNumber(DamgeAmount, Props.TargetCharacter);
+			PC->ShowDamageNumber(DamgeAmount, Props.TargetCharacter,bBlockedHit,bCriticalHit);
 		}
 	}
 }
