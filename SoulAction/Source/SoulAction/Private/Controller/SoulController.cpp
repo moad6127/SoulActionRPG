@@ -15,7 +15,7 @@
 
 void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
 {
-	if (IsValid(TargetCharacter) && DamagetextComponentClass)
+	if (IsValid(TargetCharacter) && DamagetextComponentClass && IsLocalController())
 	{
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamagetextComponentClass);
 		DamageText->RegisterComponent();

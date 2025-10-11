@@ -42,8 +42,11 @@ void AEnemyCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	InitAbilityActorInfo();
-	USoulAbilitySystemLibrary::GiveStartupAbities(this, GetAbilitySystemComponent());
+	if (HasAuthority())
+	{
+		USoulAbilitySystemLibrary::GiveStartupAbities(this, GetAbilitySystemComponent());
 
+	}
 	if (USoulUserWidget* SoulUserWidget = Cast<USoulUserWidget>(HealthBarWidget->GetUserWidgetObject()))
 	{
 		SoulUserWidget->SetWidgetController(this);
@@ -82,7 +85,10 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
-	InitializeDefaultAttributes();
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
 }
 
 void AEnemyCharacter::InitializeDefaultAttributes() const
