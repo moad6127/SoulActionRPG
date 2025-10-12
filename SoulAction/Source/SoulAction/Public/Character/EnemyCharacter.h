@@ -13,6 +13,9 @@
  * 
  */
 class UWidgetComponent;
+class UBehaviorTree;
+class ASoulAIController;
+
 UCLASS()
 class SOULACTION_API AEnemyCharacter : public ABaseCharacter, public IEnemyInterface
 {
@@ -20,6 +23,7 @@ class SOULACTION_API AEnemyCharacter : public ABaseCharacter, public IEnemyInter
 public:
 	AEnemyCharacter();
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	virtual void PossessedBy(AController* NewController) override;
 
 	/* CombatInterface*/
 	virtual int32 GetPlayerLevel() override;
@@ -55,4 +59,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.f;
+
+	UPROPERTY(EditAnywhere, Category ="AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<ASoulAIController> SoulAIController;
 };

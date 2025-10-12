@@ -9,6 +9,9 @@
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
 #include "SoulGameplayTags.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AI/SoulAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -78,6 +81,18 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 {
 	bHitReact = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReact ? 0.f : BaseWalkSpeed;
+}
+
+void AEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if (!HasAuthority())
+	{
+		return;
+	}
+	SoulAIController = Cast<ASoulAIController>(NewController);
+	SoulAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	SoulAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
