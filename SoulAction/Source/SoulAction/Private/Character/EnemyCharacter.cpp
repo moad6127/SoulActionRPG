@@ -12,6 +12,7 @@
 #include "AI/SoulAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "SoulAction/SoulAction.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -76,6 +77,8 @@ void AEnemyCharacter::BeginPlay()
 		OnHealthChanged.Broadcast(SoulAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(SoulAS->GetMaxHealth());
 	}
+
+	Tags.Emplace(ACTOR_TAG_ENEMY);
 }
 void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {

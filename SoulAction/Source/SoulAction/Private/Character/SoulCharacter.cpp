@@ -12,8 +12,10 @@
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/BaseWeapon.h"
+#include "SoulAction/SoulAction.h"
 
 #include "DrawDebugHelpers.h"
+
 
 
 ASoulCharacter::ASoulCharacter()
@@ -198,6 +200,8 @@ void ASoulCharacter::OnTargetDied()
 void ASoulCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Tags.Emplace(ACTOR_TAG_PLAYER);
 }
 
 void ASoulCharacter::Tick(float DeltaTime)
