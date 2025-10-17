@@ -89,6 +89,7 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 {
 	bHitReact = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReact ? 0.f : BaseWalkSpeed;
+	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReact);
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)
@@ -101,6 +102,10 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	SoulAIController = Cast<ASoulAIController>(NewController);
 	SoulAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	SoulAIController->RunBehaviorTree(BehaviorTree);
+	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
+	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
+
+
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
@@ -116,5 +121,5 @@ void AEnemyCharacter::InitAbilityActorInfo()
 
 void AEnemyCharacter::InitializeDefaultAttributes() const
 {
-	USoulAbilitySystemLibrary::InitializeDefautlAttributes(this, CharcterClass, EnemyLevel, GetAbilitySystemComponent());
+	USoulAbilitySystemLibrary::InitializeDefautlAttributes(this, CharacterClass, EnemyLevel, GetAbilitySystemComponent());
 }
