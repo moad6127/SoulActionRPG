@@ -51,7 +51,9 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Shift);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Staff);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Bow);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Spear);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Slingshot);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 

@@ -34,7 +34,10 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Shift, "InputTag.Shift", "InputTag Shift");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Player_Staff, "WeaponTag.Player.Staff", "WeaponTag Staff");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Player_Bow, "WeaponTag.Player.Bow", "WeaponTag Bow");
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Spear, "WeaponTag.Enemy.Spear", "WeaponTag Spear");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Slingshot, "WeaponTag.Enemy.Slingshot", "WeaponTag Slingshot");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
 
