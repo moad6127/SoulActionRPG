@@ -66,8 +66,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	/*
 	* SetByCaller로 Damage 가져오기
 	*/
-	float Damage = Spec.GetSetByCallerMagnitude(SoulGameplayTags::Damage);
-
+	float Damage = 0.f;
+	for (FGameplayTag DamageTypeTag : SoulGameplayTags::DamageTypes)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag);
+		Damage += DamageTypeValue;
+	}
 	/*
 	* Block관련 
 	*/

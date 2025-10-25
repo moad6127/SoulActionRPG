@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/SoulGameplayAbility.h"
+#include "AbilitySystem/Abilities/SoulDamageGameplayAbility.h"
 #include "SoulProjectileSpell.generated.h"
 
 /**
@@ -12,7 +12,7 @@
 class ASoulProjectile;
 class UGameplayEffect;
 UCLASS()
-class SOULACTION_API USoulProjectileSpell : public USoulGameplayAbility
+class SOULACTION_API USoulProjectileSpell : public USoulDamageGameplayAbility
 {
 	GENERATED_BODY()
 	
@@ -26,7 +26,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ASoulProjectile> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
+
 
 };

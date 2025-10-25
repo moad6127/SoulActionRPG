@@ -40,7 +40,13 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Slingshot, "WeaponTag.Enemy.Slingshot", "WeaponTag Slingshot");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Fire, "Damage.Fire", "Fire Damage Type");
 
+	TArray<FGameplayTag> DamageTypes = 
+	{
+		Damage_Fire
+	};
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effects_HitReact, "Effects.HitReact", "HitReact");
 }
+
