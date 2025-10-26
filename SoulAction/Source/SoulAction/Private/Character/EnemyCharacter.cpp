@@ -53,7 +53,7 @@ void AEnemyCharacter::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		USoulAbilitySystemLibrary::GiveStartupAbities(this, GetAbilitySystemComponent());
+		USoulAbilitySystemLibrary::GiveStartupAbities(this, GetAbilitySystemComponent(),CharacterClass);
 
 	}
 	if (USoulUserWidget* SoulUserWidget = Cast<USoulUserWidget>(HealthBarWidget->GetUserWidgetObject()))

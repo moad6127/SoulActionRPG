@@ -30,6 +30,9 @@ struct FCharacterClassDefaultInfo
 
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
 	FGameplayTag WeaponTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
 
 UCLASS()

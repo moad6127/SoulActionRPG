@@ -58,6 +58,8 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
 
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
+
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
 
 	extern TArray<FGameplayTag> DamageTypes;
