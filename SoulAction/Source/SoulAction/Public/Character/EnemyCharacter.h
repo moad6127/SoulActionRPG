@@ -30,11 +30,18 @@ public:
 	virtual void Die() override;
 	/* CombatInterface*/
 
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget);
+	virtual AActor* GetCombatTarget_Implementation() const;
+
+
 	UPROPERTY(BlueprintAssignable)
 	FOnVitalChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnVitalChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 protected:
 	virtual void BeginPlay() override;

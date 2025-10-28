@@ -45,6 +45,16 @@ void AEnemyCharacter::Die()
 	Super::Die();
 }
 
+void AEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AEnemyCharacter::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
