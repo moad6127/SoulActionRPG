@@ -15,8 +15,4 @@ void ICombatInterface::Equip(ABaseWeapon* Weapon)
 }
 
 
-FVector ICombatInterface::GetCombatSocketLocation()
-{
-	return FVector();
-}
 

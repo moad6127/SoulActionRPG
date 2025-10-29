@@ -26,7 +26,8 @@ public:
 	virtual int32 GetPlayerLevel();
 	virtual void Equip(class ABaseWeapon* Weapon);
 
-	virtual FVector GetCombatSocketLocation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector GetCombatSocketLocation();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);

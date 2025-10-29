@@ -48,7 +48,7 @@ protected:
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties);
 
-	virtual FVector GetCombatSocketLocation() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 	virtual void Equip(class ABaseWeapon* Weapon) override;
 
 	void EquipWeapon(ABaseWeapon* WeaponToEquip);

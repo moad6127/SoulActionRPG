@@ -22,10 +22,10 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	{
 		return;
 	}
-	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
-	if (CombatInterface)
+	if (GetAvatarActorFromActorInfo()->Implements<UCombatInterface>())
 	{
-		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+		const FVector SocketLocation =ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
+		//const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 		/*필요하면 나중에 제거*/
 		//Rotation.Pitch = 0.f;

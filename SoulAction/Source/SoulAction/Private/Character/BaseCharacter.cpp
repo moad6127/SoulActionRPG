@@ -112,7 +112,7 @@ void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbi
 	SoulASC->AddCharacterAbilities(Abiilties);
 }
 
-FVector ABaseCharacter::GetCombatSocketLocation()
+FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
 {
 	if (!EquippedWeapon)
 	{
