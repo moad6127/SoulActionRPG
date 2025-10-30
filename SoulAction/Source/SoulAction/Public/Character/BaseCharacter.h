@@ -33,6 +33,9 @@ public:
 	virtual void StartDash_Implementation() override;
 	virtual void EndDash_Implementation() override;
 
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 
@@ -81,6 +84,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	bool bDead = false;
 private:
 
 

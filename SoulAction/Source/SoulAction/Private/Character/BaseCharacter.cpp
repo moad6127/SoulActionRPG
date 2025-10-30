@@ -50,6 +50,16 @@ void ABaseCharacter::EndDash_Implementation()
 {
 }
 
+bool ABaseCharacter::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* ABaseCharacter::GetAvatar_Implementation() 
+{
+	return this;
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
@@ -61,6 +71,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Dissolve();
 	OnDied.Broadcast();
+	bDead = true;
 }
 
 // Called when the game starts or when spawned
