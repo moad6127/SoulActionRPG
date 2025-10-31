@@ -7,29 +7,35 @@
 ABaseWeapon::ABaseWeapon()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true;
+	SetReplicateMovement(true);
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	RootComponent = WeaponMesh;
 }
 
 void ABaseWeapon::Equip(ABaseCharacter* Character)
-{
-	if (Character && WeaponMesh)
+{	
+	if (Character)
 	{
-		FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
-		WeaponMesh->AttachToComponent(Character->GetMesh(), AttachRules, AttachWeaponSocketName);
+		SetOwner(Character);
 	}
 }
 
 void ABaseWeapon::Unequip(ABaseCharacter* Character)
 {
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	Destroy();
+	SetLifeSpan(3.f);
 }
 
 FVector ABaseWeapon::GetTipSocketLocation() const
 {
 	return WeaponMesh->GetSocketLocation(WeaponTipSocketName);
+}
+
+FName ABaseWeapon::GetAttachWeaponSocketName() const
+{
+	return AttachWeaponSocketName;
 }
 
 

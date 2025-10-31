@@ -99,7 +99,10 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 {
 	bHitReact = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReact ? 0.f : BaseWalkSpeed;
-	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReact);
+	if (SoulAIController && SoulAIController->GetBlackboardComponent())
+	{
+		SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReact);
+	}
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)

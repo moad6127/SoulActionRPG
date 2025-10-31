@@ -13,6 +13,11 @@ UCLASS()
 class SOULACTION_API USoulDamageGameplayAbility : public USoulGameplayAbility
 {
 	GENERATED_BODY()
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(AActor* TargetActor);
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

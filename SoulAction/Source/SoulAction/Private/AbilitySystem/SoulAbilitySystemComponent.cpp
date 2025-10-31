@@ -61,6 +61,10 @@ void USoulAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 
 void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
 {
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
 	WeaponDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/Blueprint/AbilitySystem/Data/DT_WeaponDataTable"));
 	if (!WeaponDataTable)
 	{

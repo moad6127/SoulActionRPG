@@ -41,10 +41,12 @@ namespace SoulGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Fire, "Damage.Fire", "Fire Damage Type");
-
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Physical, "Damage.Physical", "Physical Damage Type");
+	
 	TArray<FGameplayTag> DamageTypes = 
 	{
-		Damage_Fire
+		Damage_Fire,
+		Damage_Physical
 	};
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Attack, "Abilities.Attack", "Attack Ability Tag");
 

@@ -27,6 +27,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 
@@ -57,6 +59,11 @@ protected:
 	void EquipWeapon(ABaseWeapon* WeaponToEquip);
 
 	void Dissolve();
+	
+	UFUNCTION()
+	void OnRep_EquippedWeapon();
+
+	void AttachEquippedWeapon();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicIns);
@@ -67,7 +74,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<ABaseWeapon> EquippedWeapon;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")

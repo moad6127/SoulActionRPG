@@ -27,6 +27,13 @@ UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+
+}
+
 UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;
@@ -134,11 +141,15 @@ FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
 
 void ABaseCharacter::Equip(ABaseWeapon* Weapon)
 {
-	EquipWeapon(Weapon);
+	if (HasAuthority())
+	{
+		EquipWeapon(Weapon);
+	}
 }
 
 void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 {
+
 	if (WeaponToEquip)
 	{
 		if (EquippedWeapon)
@@ -147,6 +158,8 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 		}
 		EquippedWeapon = WeaponToEquip;
 		EquippedWeapon->Equip(this);
+
+		AttachEquippedWeapon();
 	}
 }
 
@@ -158,6 +171,25 @@ void ABaseCharacter::Dissolve()
 		GetMesh()->SetMaterial(0, DynamicInst);
 
 		StartDissolveTimeline(DynamicInst);
+	}
+}
+
+void ABaseCharacter::OnRep_EquippedWeapon()
+{
+	if (EquippedWeapon)
+	{
+		AttachEquippedWeapon();
+	}
+}
+
+void ABaseCharacter::AttachEquippedWeapon()
+{
+	if (EquippedWeapon)
+	{
+		FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, true);
+		EquippedWeapon->AttachToComponent(GetMesh(),
+			AttachRules,
+			EquippedWeapon->GetAttachWeaponSocketName());
 	}
 }
 

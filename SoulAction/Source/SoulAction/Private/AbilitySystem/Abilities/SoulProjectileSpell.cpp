@@ -57,7 +57,6 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		
 		
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
-		
 		for (auto& Pair : DamageTypes)
 		{
 			const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());

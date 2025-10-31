@@ -24,6 +24,7 @@ public:
 	FGameplayTag GetWeaponType() const { return WeaponType; }
 	const TArray<TSubclassOf<UGameplayAbility>>& GetGrantedAbilities() const { return GrantedAbilities; }
 	FVector GetTipSocketLocation() const;
+	FName GetAttachWeaponSocketName() const;
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
