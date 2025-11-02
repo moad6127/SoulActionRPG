@@ -37,12 +37,16 @@ public:
 
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontage_Implementation() override;
 
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 
 	UPROPERTY(BlueprintAssignable)
 	FOnCharacterDied OnDied;
+
+	UPROPERTY(EditAnywhere, Category ="Combat")
+	TArray<FTaggedMontage> AttackMontage;
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();

@@ -67,6 +67,11 @@ AActor* ABaseCharacter::GetAvatar_Implementation()
 	return this;
 }
 
+TArray<FTaggedMontage> ABaseCharacter::GetAttackMontage_Implementation()
+{
+	return AttackMontage;
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
