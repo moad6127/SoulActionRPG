@@ -7,6 +7,7 @@
 #include "Weapon/BaseWeapon.h"
 #include "Components/CapsuleComponent.h"
 #include "SoulAction/SoulAction.h"
+#include "SoulGameplayTags.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -135,13 +136,24 @@ void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbi
 	SoulASC->AddCharacterAbilities(Abiilties);
 }
 
-FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
+FVector ABaseCharacter::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	if (!EquippedWeapon)
+	if (MontageTag.MatchesTagExact(SoulGameplayTags::Montage_Attack_Weapon) && IsValid(EquippedWeapon))
 	{
-		return FVector();
+		return EquippedWeapon->GetTipSocketLocation();
 	}
-	return EquippedWeapon->GetTipSocketLocation();
+
+	if (MontageTag.MatchesTagExact(SoulGameplayTags::Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+
+	if (MontageTag.MatchesTagExact(SoulGameplayTags::Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+
+	return FVector();
 }
 
 void ABaseCharacter::Equip(ABaseWeapon* Weapon)

@@ -57,7 +57,7 @@ protected:
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties);
 
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual void Equip(class ABaseWeapon* Weapon) override;
 
 	void EquipWeapon(ABaseWeapon* WeaponToEquip);
@@ -80,6 +80,12 @@ protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<ABaseWeapon> EquippedWeapon;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName LeftHandSocketName;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName RightHandSocketName;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
