@@ -14,5 +14,10 @@ void ICombatInterface::Equip(ABaseWeapon* Weapon)
 {
 }
 
+bool ICombatInterface::bInitWeaponGet() const
+{
+	return false;
+}
+
 
 

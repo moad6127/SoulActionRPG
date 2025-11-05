@@ -73,9 +73,13 @@ void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
 	FName RowName = WeaponTag.GetTagName();
 	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
 	{
-		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
 		if (ICombatInterface* Combat =Cast<ICombatInterface>(GetAvatarActor()))
 		{
+			if (!Combat->bInitWeaponGet())
+			{
+				return;
+			}
+			ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
 			Combat->Equip(SpawnedWeapon);
 		}
 	}

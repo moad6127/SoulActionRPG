@@ -38,6 +38,7 @@ class SOULACTION_API ICombatInterface
 public:
 	virtual int32 GetPlayerLevel();
 	virtual void Equip(class ABaseWeapon* Weapon);
+	virtual bool bInitWeaponGet() const ;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);

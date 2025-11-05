@@ -31,6 +31,7 @@ public:
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
+	virtual bool bInitWeaponGet() const override;
 
 	virtual void StartDash_Implementation() override;
 	virtual void EndDash_Implementation() override;
@@ -104,7 +105,8 @@ protected:
 
 	bool bDead = false;
 private:
-
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	bool bInitWeapon = true;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;

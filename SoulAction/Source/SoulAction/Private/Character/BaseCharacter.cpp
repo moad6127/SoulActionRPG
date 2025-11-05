@@ -50,6 +50,11 @@ void ABaseCharacter::Die()
 
 }
 
+bool ABaseCharacter::bInitWeaponGet() const
+{
+	return bInitWeapon;
+}
+
 void ABaseCharacter::StartDash_Implementation()
 {
 }
