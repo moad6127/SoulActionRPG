@@ -168,3 +168,16 @@ void USoulAbilitySystemLibrary::GetLivePlayerWithRadius(const UObject* WorldCont
 		}
 	}
 }
+
+bool USoulAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+{
+	const bool bBothArePlayer = FirstActor->ActorHasTag("Player") && SecondActor->ActorHasTag("Player");
+	const bool bBothAreEnemy = FirstActor->ActorHasTag("Enemy") && SecondActor->ActorHasTag("Enemy");
+	const bool Friend = bBothArePlayer || bBothAreEnemy;
+	return !Friend;
+
+	//const bool FirstActorIsPlayer = FirstActor->ActorHasTag(FName("Player"));
+	//const bool SecondActorIsPlayer = SecondActor->ActorHasTag(FName("Player"));
+
+	//return FirstActorIsPlayer != SecondActorIsPlayer;
+}

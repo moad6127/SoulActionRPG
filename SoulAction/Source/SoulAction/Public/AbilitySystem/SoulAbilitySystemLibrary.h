@@ -48,4 +48,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SoulAbilitySystemLibrary|GameplayEffects")
 	static void GetLivePlayerWithRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors,const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
 
+	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "SoulAbilitySystemLibrary|GameplayEffects")
+	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 };
