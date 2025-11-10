@@ -10,6 +10,7 @@
 #include "SoulAction/SoulAction.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
 
 
 ASoulProjectile::ASoulProjectile()
@@ -66,6 +67,10 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 		return;
 	}
 	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
+	if (!USoulAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
 	{
 		return;
 	}
