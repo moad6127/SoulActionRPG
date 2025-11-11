@@ -25,6 +25,7 @@ public:
 	const TArray<TSubclassOf<UGameplayAbility>>& GetGrantedAbilities() const { return GrantedAbilities; }
 	FVector GetTipSocketLocation() const;
 	FName GetAttachWeaponSocketName() const;
+	USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")

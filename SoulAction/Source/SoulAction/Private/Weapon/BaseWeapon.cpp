@@ -6,7 +6,7 @@
 
 ABaseWeapon::ABaseWeapon()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 	SetReplicateMovement(true);
 

@@ -212,6 +212,13 @@ void ABaseCharacter::AttachEquippedWeapon()
 		EquippedWeapon->AttachToComponent(GetMesh(),
 			AttachRules,
 			EquippedWeapon->GetAttachWeaponSocketName());
+		if (USkeletalMeshComponent* WeaponMesh = EquippedWeapon->GetWeaponMesh())
+		{
+			if (UAnimInstance* AnimInstance = WeaponMesh->GetAnimInstance())
+			{
+				AnimInstance->InitializeAnimation();
+			}
+		}
 	}
 }
 
