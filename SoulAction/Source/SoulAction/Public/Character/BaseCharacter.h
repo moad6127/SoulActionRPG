@@ -79,7 +79,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<ABaseWeapon> EquippedWeapon;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
