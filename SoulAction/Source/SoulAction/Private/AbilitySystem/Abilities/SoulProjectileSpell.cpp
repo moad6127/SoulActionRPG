@@ -56,8 +56,6 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		HitResult.Location = ProjectileTargetLocation;
 		EffectContextHandle.AddHitResult(HitResult);
 		
-		
-		
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 		for (auto& Pair : DamageTypes)
 		{
@@ -65,8 +63,6 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
 		}
 		
-
-
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 
 		Projectile->FinishSpawning(SpawnTransform);

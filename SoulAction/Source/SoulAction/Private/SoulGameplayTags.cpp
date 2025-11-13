@@ -38,7 +38,9 @@ namespace SoulGameplayTags
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Spear, "WeaponTag.Enemy.Spear", "WeaponTag Spear");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Slingshot, "WeaponTag.Enemy.Slingshot", "WeaponTag Slingshot");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_ShamanStaff, "WeaponTag.Enemy.ShamanStaff", "WeaponTag ShamanStaff");
 
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Fire, "Damage.Fire", "Fire Damage Type");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Physical, "Damage.Physical", "Physical Damage Type");

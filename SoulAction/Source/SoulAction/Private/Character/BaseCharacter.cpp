@@ -182,6 +182,7 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 		EquippedWeapon->Equip(this);
 
 		AttachEquippedWeapon();
+		UE_LOG(LogTemp, Warning, TEXT("EquippedWeapon: %s"), *EquippedWeapon->GetName());
 	}
 }
 
