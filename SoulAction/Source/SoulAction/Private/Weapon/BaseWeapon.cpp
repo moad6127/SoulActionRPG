@@ -34,7 +34,7 @@ void ABaseWeapon::Unequip(ABaseCharacter* Character)
 		WeaponMesh->SetEnableGravity(true);
 	}
 	SetLifeSpan(3.f);
-	UE_LOG(LogTemp, Warning, TEXT("UnEquipWeapon: %s"), *this->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("UnEquipWeapon: %s"), *this->GetName());
 }
 
 FVector ABaseWeapon::GetTipSocketLocation() const
