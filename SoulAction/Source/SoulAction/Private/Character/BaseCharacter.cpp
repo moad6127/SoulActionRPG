@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "SoulAction/SoulAction.h"
 #include "SoulGameplayTags.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -32,7 +33,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-
+	DOREPLIFETIME(ABaseCharacter, EquippedWeapon);
 }
 
 UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()

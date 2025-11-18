@@ -66,7 +66,7 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 	{
 		return;
 	}
-	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
+	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
 	{
 		return;
 	}
