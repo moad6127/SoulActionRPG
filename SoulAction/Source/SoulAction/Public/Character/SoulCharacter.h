@@ -32,7 +32,8 @@ public:
 	void ToggleTargetLock();
 	void FindLockOnTarget();
 	void UpdateLockOnCamera(float DeltaTime);
-
+	UFUNCTION(BlueprintCallable)
+	bool Targeting() const { return bTargetLockOn; };
 	UFUNCTION()
 	void OnTargetDied();
 

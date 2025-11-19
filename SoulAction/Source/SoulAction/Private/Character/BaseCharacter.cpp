@@ -19,6 +19,9 @@ ABaseCharacter::ABaseCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 
+	LockOnPosision = CreateDefaultSubobject<USceneComponent>(TEXT("LockOnPosision"));
+	LockOnPosision->SetupAttachment(GetRootComponent());
+
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
@@ -34,6 +37,12 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABaseCharacter, EquippedWeapon);
+}
+
+FVector ABaseCharacter::GetLockOnPosisionLocation() const
+{
+	
+	return LockOnPosision->GetComponentLocation();
 }
 
 UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()

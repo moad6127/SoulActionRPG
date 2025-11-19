@@ -29,6 +29,8 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	FVector GetLockOnPosisionLocation() const;
+
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 	virtual bool bInitWeaponGet() const override;
@@ -72,6 +74,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicIns);
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> LockOnPosision;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

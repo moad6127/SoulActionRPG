@@ -57,6 +57,7 @@ void ASoulCharacter::ToggleTargetLock()
 		else
 		{
 			TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
+			GetCharacterMovement()->bOrientRotationToMovement = false;
 		}
 	}
 	else
@@ -66,6 +67,7 @@ void ASoulCharacter::ToggleTargetLock()
 			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
 		}
 		TargetActor = nullptr;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
 }
 
@@ -173,11 +175,11 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 	{
 		return;
 	}
-	FVector TargetLocation = TargetActor->GetActorLocation();
-	FVector MyLocation = GetActorLocation();
+	FVector TargetLocation = TargetActor->GetLockOnPosisionLocation();
+	FVector MyLocation = ViewCamera->GetComponentLocation();
 
 	FVector Direction = (TargetLocation - MyLocation);
-	Direction.Z = 0; // 평면 회전만 (YAW 회전)
+	//Direction.Z = 0; // 평면 회전만 (YAW 회전)
 
 	if (Direction.IsNearlyZero()) return;
 
