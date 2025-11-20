@@ -88,6 +88,11 @@ TArray<FTaggedMontage> ABaseCharacter::GetAttackMontage_Implementation()
 	return AttackMontage;
 }
 
+UNiagaraSystem* ABaseCharacter::GetBloodEffect_Implementation()
+{
+	return BloodEffect;
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
