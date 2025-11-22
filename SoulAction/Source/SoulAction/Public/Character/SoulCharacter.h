@@ -18,6 +18,7 @@ class SOULACTION_API ASoulCharacter : public ABaseCharacter
 public:
 	ASoulCharacter();
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -57,6 +58,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Targeting")
 	float LockOnSphereRadius = 200.f;
 
+	UPROPERTY(Replicated)
 	bool bTargetLockOn = false;
 
 	UPROPERTY()

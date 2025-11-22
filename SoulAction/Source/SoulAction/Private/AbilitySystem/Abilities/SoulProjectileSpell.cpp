@@ -26,7 +26,7 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	{
 		const FVector SocketLocation =ICombatInterface::Execute_GetCombatSocketLocation(
 			GetAvatarActorFromActorInfo(),
-			SoulGameplayTags::Montage_Attack_Weapon);
+			SoulGameplayTags::CombatSocket_Weapon);
 		//const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 		/*필요하면 나중에 제거*/

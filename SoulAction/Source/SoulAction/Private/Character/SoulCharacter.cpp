@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/BaseWeapon.h"
 #include "SoulAction/SoulAction.h"
+#include "Net/UnrealNetwork.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -39,6 +40,14 @@ ASoulCharacter::ASoulCharacter()
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
 }
+
+void ASoulCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASoulCharacter, bTargetLockOn);
+}
+
 
 void ASoulCharacter::ToggleTargetLock()
 {
@@ -214,6 +223,7 @@ void ASoulCharacter::Tick(float DeltaTime)
 		UpdateLockOnCamera(DeltaTime);
 	}
 }
+
 
 void ASoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
