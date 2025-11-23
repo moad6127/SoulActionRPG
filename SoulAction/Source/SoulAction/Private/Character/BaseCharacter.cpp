@@ -9,6 +9,7 @@
 #include "SoulAction/SoulAction.h"
 #include "SoulGameplayTags.h"
 #include "Net/UnrealNetwork.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -108,6 +109,8 @@ FTaggedMontage ABaseCharacter::GetTaggedMontageByTag_Implementation(const FGamep
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
+
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);

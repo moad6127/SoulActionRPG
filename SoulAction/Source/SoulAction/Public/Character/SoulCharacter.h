@@ -31,6 +31,10 @@ public:
 
 	/*타겟 락온 관련 함수들*/
 	void ToggleTargetLock();
+
+	UFUNCTION(Server, Reliable)
+	void ServerToggleTargetLock(ABaseCharacter* RequestedTarget);
+
 	void FindLockOnTarget();
 	void UpdateLockOnCamera(float DeltaTime);
 	UFUNCTION(BlueprintCallable)
@@ -46,6 +50,12 @@ protected:
 private:
 	virtual void InitAbilityActorInfo() override;
 
+	UFUNCTION()
+	void OnRep_bTargeting();
+
+	UFUNCTION()
+	void OnRep_TargetActor();
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
 
@@ -58,9 +68,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Targeting")
 	float LockOnSphereRadius = 200.f;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_bTargeting)
 	bool bTargetLockOn = false;
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_TargetActor)
 	TObjectPtr<ABaseCharacter> TargetActor;
 };

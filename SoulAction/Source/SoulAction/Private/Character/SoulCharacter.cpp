@@ -46,12 +46,58 @@ void ASoulCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASoulCharacter, bTargetLockOn);
+	DOREPLIFETIME(ASoulCharacter, TargetActor);
+
 }
 
 
 void ASoulCharacter::ToggleTargetLock()
 {
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
 	bTargetLockOn = !bTargetLockOn;
+
+	if (bTargetLockOn)
+	{
+		FindLockOnTarget();
+		ServerToggleTargetLock(TargetActor);
+	}
+	else
+	{
+		ServerToggleTargetLock(nullptr);
+	}
+}
+
+void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* RequestedTarget)
+{
+	if (RequestedTarget && RequestedTarget->IsAlive())
+	{
+		if (TargetActor)
+		{
+			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
+		}
+		TargetActor = RequestedTarget;
+		bTargetLockOn = true;
+
+		TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	}
+	else
+	{
+		if (TargetActor)
+		{
+			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
+		}
+		TargetActor = nullptr;
+		bTargetLockOn = false;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+
+
+	/*
 	if (bTargetLockOn)
 	{
 		if (TargetActor)
@@ -78,6 +124,8 @@ void ASoulCharacter::ToggleTargetLock()
 		TargetActor = nullptr;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
+	*/
+
 }
 
 void ASoulCharacter::FindLockOnTarget()
@@ -87,7 +135,7 @@ void ASoulCharacter::FindLockOnTarget()
 
 	int32 ViewX = 0, ViewY = 0;
 	PC->GetViewportSize(ViewX, ViewY);
-
+	
 	FVector2D CrosshairLocation(ViewX / 2.f, ViewY / 2.f);
 	FVector CrosshairWorldPosition;
 	FVector CrosshairWorldDirection;
@@ -103,15 +151,15 @@ void ASoulCharacter::FindLockOnTarget()
     FVector Start = CrosshairWorldPosition;
     FVector End = CrosshairWorldPosition + CrosshairWorldDirection * LockOnMaxRange;
 
-    TArray<FHitResult> Hits;
-    FCollisionQueryParams Params;
-    Params.AddIgnoredActor(this); // 자기 자신 무시
 
-    FCollisionShape Sphere = FCollisionShape::MakeSphere(LockOnSphereRadius);
 
+
+	//TODO : 나중에 DrawDebug지우기
+	/*Draw Debug Capsule*/
 	FVector TraceCenter = (Start + End) * 0.5f;
 	FVector TraceDir = (End - Start).GetSafeNormal();
 	float HalfHeight = (End - Start).Size() * 0.5f;
+
 	DrawDebugCapsule(
 		GetWorld(),
 		TraceCenter,
@@ -122,8 +170,13 @@ void ASoulCharacter::FindLockOnTarget()
 		false,
 		5.0f
 	);
+	/*Draw Debug Capsule*/
 
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(LockOnSphereRadius);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this); // 자기 자신 무시
 
+	TArray<FHitResult> Hits;
     bool bHit = GetWorld()->SweepMultiByChannel(Hits, Start, End, FQuat::Identity, ECC_Pawn, Sphere, Params);
 
     if (!bHit || Hits.Num() == 0)
@@ -143,10 +196,12 @@ void ASoulCharacter::FindLockOnTarget()
         if (!HitActor->Implements<UCombatInterface>()) continue;
 
         FVector ToActor = HitActor->GetActorLocation() - CrosshairWorldPosition;
+
+		//시야 방향체크
         float Dot = FVector::DotProduct(CrosshairWorldDirection.GetSafeNormal(), ToActor.GetSafeNormal());
-
         if (Dot < 0.2f) continue; // 0.2 ~ 0.9 사이로 조절 가능
-
+		
+		//장애물 체크
         FHitResult LoSHit;
         FCollisionQueryParams LoSParams;
         LoSParams.AddIgnoredActor(this);
@@ -157,6 +212,7 @@ void ASoulCharacter::FindLockOnTarget()
             continue;
         }
 
+		//중앙과의 거리를 체크한후 가장가까운 Actor선택하도록 만들기
         FVector2D ScreenPos;
         bool bProjected = PC->ProjectWorldLocationToScreen(HitActor->GetActorLocation(), ScreenPos);
         if (!bProjected) continue;
@@ -175,6 +231,11 @@ void ASoulCharacter::FindLockOnTarget()
 
 void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 {
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
+
 	if (!bTargetLockOn || !TargetActor)
 	{
 		return;
@@ -208,6 +269,23 @@ void ASoulCharacter::OnTargetDied()
 	bTargetLockOn = false;
 }
 
+void ASoulCharacter::OnRep_bTargeting()
+{
+	if (bTargetLockOn)
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
+	else
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+}
+
+void ASoulCharacter::OnRep_TargetActor()
+{
+
+}
+
 void ASoulCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -218,10 +296,15 @@ void ASoulCharacter::BeginPlay()
 void ASoulCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (bTargetLockOn)
+
+	if (IsLocallyControlled())
 	{
-		UpdateLockOnCamera(DeltaTime);
+		if (TargetActor)
+		{
+			UpdateLockOnCamera(DeltaTime);
+		}
 	}
+
 }
 
 
@@ -253,6 +336,8 @@ void ASoulCharacter::InitAbilityActorInfo()
 	}
 
 }
+
+
 
 void ASoulCharacter::PossessedBy(AController* NewController)
 {
