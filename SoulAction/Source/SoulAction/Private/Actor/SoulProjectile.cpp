@@ -56,7 +56,9 @@ void ASoulProjectile::Destroyed()
 		{
 			LoopingSoundComponent->Stop();
 		}
+		bHit = true;
 	}
+
 	Super::Destroyed();
 }
 
@@ -82,6 +84,7 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 		{
 			LoopingSoundComponent->Stop();
 		}
+		bHit = true;
 	}
 
 

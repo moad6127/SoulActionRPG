@@ -53,6 +53,8 @@ private:
 	UFUNCTION()
 	void OnRep_bTargeting();
 
+	void TargetLockOnMovementSetting();
+
 	UFUNCTION()
 	void OnRep_TargetActor();
 

@@ -63,11 +63,18 @@ void ASoulCharacter::ToggleTargetLock()
 	{
 		FindLockOnTarget();
 		ServerToggleTargetLock(TargetActor);
+		if (TargetActor == nullptr)
+		{
+			bTargetLockOn = false;
+		}
 	}
 	else
 	{
 		ServerToggleTargetLock(nullptr);
 	}
+
+	TargetLockOnMovementSetting();
+
 }
 
 void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* RequestedTarget)
@@ -83,6 +90,7 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 
 		TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
 		GetCharacterMovement()->bOrientRotationToMovement = false;
+		bUseControllerRotationYaw = false;
 
 	}
 	else
@@ -255,12 +263,17 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 
 	FRotator LookAtRotation = Direction.Rotation();
 
-	//TODO : 캐릭터도 타겟을 바라보도록 회전시키기
-
+	//카메라 회전
 	FRotator CurrentCtrlRot = PC->GetControlRotation();
 	float CameraInterpSpeed = 5.f;
 	FRotator NewCtrlRot = FMath::RInterpTo(CurrentCtrlRot, LookAtRotation, DeltaTime, CameraInterpSpeed);
 	PC->SetControlRotation(NewCtrlRot);
+
+	//캐릭터 회전
+	FRotator TargetYawRotation(0.f, LookAtRotation.Yaw, 0.f);
+	float CharacterInterpSpeed = 8.f;
+	FRotator NewActorRoation = FMath::RInterpTo(GetActorRotation(), TargetYawRotation, DeltaTime, CharacterInterpSpeed);
+	SetActorRotation(NewActorRoation);
 }
 
 void ASoulCharacter::OnTargetDied()
@@ -271,9 +284,25 @@ void ASoulCharacter::OnTargetDied()
 
 void ASoulCharacter::OnRep_bTargeting()
 {
-	if (bTargetLockOn)
+	TargetLockOnMovementSetting();
+}
+
+void ASoulCharacter::OnRep_TargetActor()
+{
+	TargetLockOnMovementSetting();
+}
+
+void ASoulCharacter::TargetLockOnMovementSetting()
+{
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
+
+	if (bTargetLockOn && TargetActor)
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
+		bUseControllerRotationYaw = false;
 	}
 	else
 	{
@@ -281,10 +310,6 @@ void ASoulCharacter::OnRep_bTargeting()
 	}
 }
 
-void ASoulCharacter::OnRep_TargetActor()
-{
-
-}
 
 void ASoulCharacter::BeginPlay()
 {
@@ -302,6 +327,7 @@ void ASoulCharacter::Tick(float DeltaTime)
 		if (TargetActor)
 		{
 			UpdateLockOnCamera(DeltaTime);
+			//UE_LOG(LogTemp, Warning, TEXT("TargetObjectName : %s"), *TargetActor->GetName())
 		}
 	}
 
