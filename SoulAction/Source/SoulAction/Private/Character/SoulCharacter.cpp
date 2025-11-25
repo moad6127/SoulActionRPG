@@ -39,6 +39,11 @@ ASoulCharacter::ASoulCharacter()
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	
 }
 
 void ASoulCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -90,7 +95,7 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 
 		TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
 		GetCharacterMovement()->bOrientRotationToMovement = false;
-		bUseControllerRotationYaw = false;
+
 
 	}
 	else
@@ -103,7 +108,6 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 		bTargetLockOn = false;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
-
 
 	/*
 	if (bTargetLockOn)
@@ -280,6 +284,7 @@ void ASoulCharacter::OnTargetDied()
 {
 	TargetActor = nullptr;
 	bTargetLockOn = false;
+	TargetLockOnMovementSetting();
 }
 
 void ASoulCharacter::OnRep_bTargeting()
@@ -302,12 +307,14 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 	if (bTargetLockOn && TargetActor)
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
-		bUseControllerRotationYaw = false;
+		bUseControllerRotationYaw = true;
 	}
 	else
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true;
+		bUseControllerRotationYaw = false;
 	}
+
 }
 
 
