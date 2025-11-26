@@ -64,6 +64,7 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_LeftHand);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Tail);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_1);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_2);
