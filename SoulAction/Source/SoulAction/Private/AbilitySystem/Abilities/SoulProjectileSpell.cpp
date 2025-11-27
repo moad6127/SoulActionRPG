@@ -15,7 +15,7 @@ void USoulProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 }
 
-void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
+void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -26,7 +26,7 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	{
 		const FVector SocketLocation =ICombatInterface::Execute_GetCombatSocketLocation(
 			GetAvatarActorFromActorInfo(),
-			SoulGameplayTags::CombatSocket_Weapon);
+			SocketTag);
 		//const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 		/*필요하면 나중에 제거*/
