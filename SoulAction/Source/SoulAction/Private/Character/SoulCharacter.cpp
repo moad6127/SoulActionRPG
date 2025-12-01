@@ -303,6 +303,11 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 	{
 		return;
 	}
+	ASoulController* SoulPlayerController = Cast<ASoulController>(GetController());
+	if (!SoulPlayerController)
+	{
+		return;
+	}
 
 	if (bTargetLockOn && TargetActor)
 	{
@@ -314,7 +319,7 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		bUseControllerRotationYaw = false;
 	}
-
+	SoulPlayerController->OnLockOnChanged.Broadcast(TargetActor);
 }
 
 

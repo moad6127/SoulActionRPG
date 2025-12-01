@@ -10,6 +10,7 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLockOnChanged, AActor*, NewTarget);
 
 struct FInputActionValue;
 class UInputMappingContext;
@@ -27,6 +28,10 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnLockOnChanged OnLockOnChanged;
+
 
 protected:
 	virtual void BeginPlay() override;
