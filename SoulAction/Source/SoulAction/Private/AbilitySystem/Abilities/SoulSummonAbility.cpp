@@ -31,3 +31,10 @@ TArray<FVector> USoulSummonAbility::GetSpawnLocation()
 
 	return SpawnLocation;
 }
+
+TSubclassOf<APawn> USoulSummonAbility::GetRandoMinionClass()
+{
+	const int32 Selection = FMath::RandRange(0, MinionClasses.Num() - 1);
+
+	return MinionClasses[Selection];
+}
