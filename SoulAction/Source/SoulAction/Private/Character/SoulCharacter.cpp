@@ -95,7 +95,7 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 
 		TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
 		GetCharacterMovement()->bOrientRotationToMovement = false;
-
+		bUseControllerRotationYaw = true;
 
 	}
 	else
@@ -107,6 +107,7 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 		TargetActor = nullptr;
 		bTargetLockOn = false;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
+		bUseControllerRotationYaw = false;
 	}
 
 	/*
@@ -275,7 +276,7 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 
 	//캐릭터 회전
 	FRotator TargetYawRotation(0.f, LookAtRotation.Yaw, 0.f);
-	float CharacterInterpSpeed = 8.f;
+	float CharacterInterpSpeed = 20.f;
 	FRotator NewActorRoation = FMath::RInterpTo(GetActorRotation(), TargetYawRotation, DeltaTime, CharacterInterpSpeed);
 	SetActorRotation(NewActorRoation);
 }
@@ -303,11 +304,6 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 	{
 		return;
 	}
-	ASoulController* SoulPlayerController = Cast<ASoulController>(GetController());
-	if (!SoulPlayerController)
-	{
-		return;
-	}
 
 	if (bTargetLockOn && TargetActor)
 	{
@@ -319,7 +315,10 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		bUseControllerRotationYaw = false;
 	}
-	SoulPlayerController->OnLockOnChanged.Broadcast(TargetActor);
+	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
+	{
+		SoulPlayerController->OnLockOnChanged.Broadcast(TargetActor);
+	}
 }
 
 

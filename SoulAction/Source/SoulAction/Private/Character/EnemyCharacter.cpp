@@ -57,6 +57,24 @@ AActor* AEnemyCharacter::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
+float AEnemyCharacter::GetMaxHealth()
+{
+	if (const USoulAttributeSet* SoulAS = CastChecked<USoulAttributeSet>(AttributeSet))
+	{
+		return SoulAS->GetMaxHealth();
+	}
+	return 0.0f;
+}
+
+float AEnemyCharacter::GetHealth()
+{
+	if (const USoulAttributeSet* SoulAS = CastChecked<USoulAttributeSet>(AttributeSet))
+	{
+		return SoulAS->GetHealth();
+	}
+	return 0.0f;
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();

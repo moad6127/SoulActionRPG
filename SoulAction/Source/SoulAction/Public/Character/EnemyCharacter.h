@@ -33,6 +33,11 @@ public:
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget);
 	virtual AActor* GetCombatTarget_Implementation() const;
 
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealth();
 
 	UPROPERTY(BlueprintAssignable)
 	FOnVitalChangedSignature OnHealthChanged;
