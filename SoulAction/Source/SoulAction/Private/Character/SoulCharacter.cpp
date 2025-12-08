@@ -270,13 +270,11 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 
 	//카메라 회전
 	FRotator CurrentCtrlRot = PC->GetControlRotation();
-	float CameraInterpSpeed = 5.f;
 	FRotator NewCtrlRot = FMath::RInterpTo(CurrentCtrlRot, LookAtRotation, DeltaTime, CameraInterpSpeed);
 	PC->SetControlRotation(NewCtrlRot);
 
 	//캐릭터 회전
 	FRotator TargetYawRotation(0.f, LookAtRotation.Yaw, 0.f);
-	float CharacterInterpSpeed = 20.f;
 	FRotator NewActorRoation = FMath::RInterpTo(GetActorRotation(), TargetYawRotation, DeltaTime, CharacterInterpSpeed);
 	SetActorRotation(NewActorRoation);
 }
@@ -335,10 +333,10 @@ void ASoulCharacter::Tick(float DeltaTime)
 
 	if (IsLocallyControlled())
 	{
-		if (TargetActor)
+		if (TargetActor && !GetAbilitySystemComponent()->HasMatchingGameplayTag(SoulGameplayTags::Abilities_Rolling))
 		{
 			UpdateLockOnCamera(DeltaTime);
-			//UE_LOG(LogTemp, Warning, TEXT("TargetObjectName : %s"), *TargetActor->GetName())
+			UE_LOG(LogTemp, Warning, TEXT("Time : %lf"),GetWorld()->GetTimeSeconds());
 		}
 	}
 

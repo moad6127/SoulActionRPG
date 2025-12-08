@@ -73,6 +73,12 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_bTargeting)
 	bool bTargetLockOn = false;
 
+	UPROPERTY(EditAnywhere, Category = "Targeting")
+	float CameraInterpSpeed = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "Targeting")
+	float CharacterInterpSpeed = 10.f;
+
 	UPROPERTY(ReplicatedUsing = OnRep_TargetActor)
 	TObjectPtr<ABaseCharacter> TargetActor;
 };

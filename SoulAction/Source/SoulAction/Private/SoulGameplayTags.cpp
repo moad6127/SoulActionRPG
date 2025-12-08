@@ -63,6 +63,7 @@ namespace SoulGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Attack, "Abilities.Attack", "Attack Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Summon, "Abilities.Summon", "Summon Ability Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Rolling, "Abilities.Rolling", "Rolling Ability Tag");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effects_HitReact, "Effects.HitReact", "HitReact");
 }

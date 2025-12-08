@@ -116,6 +116,16 @@ void ABaseCharacter::IncrementMinionCount_Implementation(int32 Amount)
 	MinionCount += Amount;
 }
 
+FVector ABaseCharacter::GetMovementDirection_Implementation()
+{
+	FVector InputDir = GetLastMovementInputVector();
+	if (!InputDir.IsNearlyZero())
+	{
+		return InputDir.GetSafeNormal();
+	}
+	return GetActorForwardVector();
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
