@@ -10,7 +10,7 @@
 
 struct FOnAttributeChangeData;
 class USoulUserWidget;
-
+class UAbilityInfo;
 USTRUCT(BlueprintType)
 struct FUIWidgtRow : public FTableRowBase
 {
@@ -63,6 +63,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
