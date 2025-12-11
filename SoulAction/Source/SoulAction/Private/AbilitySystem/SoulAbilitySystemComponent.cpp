@@ -23,6 +23,8 @@ void USoulAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 			GiveAbility(AbilitySpec);
 		}
 	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void USoulAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)

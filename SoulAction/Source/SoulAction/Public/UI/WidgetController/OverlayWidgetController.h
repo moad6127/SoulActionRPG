@@ -11,6 +11,8 @@
 struct FOnAttributeChangeData;
 class USoulUserWidget;
 class UAbilityInfo;
+class USoulAbilitySystemComponent;
+
 USTRUCT(BlueprintType)
 struct FUIWidgtRow : public FTableRowBase
 {
@@ -70,6 +72,8 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
+
+	void OnInitalizeStartupAbilities(USoulAbilitySystemComponent* SoulAbilitySystemComp);
 
 	template<typename T>
 	T* GetDataTableRowByType(UDataTable* DataTable, const FGameplayTag& Tag);
