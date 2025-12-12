@@ -25,6 +25,7 @@ struct FWeaponDataRow : public FTableRowBase
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */);
 DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, USoulAbilitySystemComponent*);
+DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 
 UCLASS()
 class SOULACTION_API USoulAbilitySystemComponent : public UAbilitySystemComponent
@@ -44,6 +45,10 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 
 	void EquiWeaponByTag(const FGameplayTag& WeaponTag);
+	void ForEachAbility(const FForEachAbility& Delegate);
+
+	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 protected:
 
 	UFUNCTION(Client, Reliable)

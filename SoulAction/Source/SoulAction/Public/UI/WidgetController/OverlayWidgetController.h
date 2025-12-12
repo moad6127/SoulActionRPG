@@ -12,6 +12,7 @@ struct FOnAttributeChangeData;
 class USoulUserWidget;
 class UAbilityInfo;
 class USoulAbilitySystemComponent;
+struct FSoulAbilityInfo;
 
 USTRUCT(BlueprintType)
 struct FUIWidgtRow : public FTableRowBase
@@ -34,7 +35,7 @@ struct FUIWidgtRow : public FTableRowBase
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgtRow, Row);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FSoulAbilityInfo&, Info);
 
 UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API UOverlayWidgetController : public USoulWidgetController
@@ -60,6 +61,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FAbilityInfoSignature AbilityInfoDelegate;
 
 protected:
 

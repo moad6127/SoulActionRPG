@@ -4,6 +4,7 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AbilitySystem/SoulAttributeSet.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -84,4 +85,13 @@ void UOverlayWidgetController::OnInitalizeStartupAbilities(USoulAbilitySystemCom
 		return;
 	}
 
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this] (const FGameplayAbilitySpec& AbilitySpec)
+		{
+			FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(USoulAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
+			Info.InputTag = USoulAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			AbilityInfoDelegate.Broadcast(Info);
+		});
+
+	SoulAbilitySystemComp->ForEachAbility(BroadcastDelegate);
 }
