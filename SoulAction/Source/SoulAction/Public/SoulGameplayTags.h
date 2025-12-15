@@ -46,37 +46,46 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxHealth);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxStamina);
 
+	/*InputTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LMB);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_RMB);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Shift);
 
+	/*WeaponTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Staff);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Bow);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Spear);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Slingshot);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_ShamanStaff);
 
+	/*Damage Tag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
 
-
+	/*SocketTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_LeftHand);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Tail);
 
+	/*Attack MontageTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_1);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_2);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_3);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_4);
 
+	/*Ability Tag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Summon);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Rolling);
+
+	/*CooldownTag*/
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Fire_FireBolt);
+
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
 
