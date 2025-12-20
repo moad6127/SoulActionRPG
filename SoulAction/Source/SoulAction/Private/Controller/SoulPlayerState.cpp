@@ -23,7 +23,7 @@ void ASoulPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASoulPlayerState, Level);
-
+	DOREPLIFETIME(ASoulPlayerState, XP);
 }
 
 UAbilitySystemComponent* ASoulPlayerState::GetAbilitySystemComponent() const
@@ -31,7 +31,36 @@ UAbilitySystemComponent* ASoulPlayerState::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+void ASoulPlayerState::AddToLevel(int32 InLevel)
+{
+	Level += InLevel;
+	OnLevelChangedDelegate.Broadcast(Level);
+}
+
+void ASoulPlayerState::SetLevel(int32 InLevel)
+{
+	Level = InLevel;
+	OnLevelChangedDelegate.Broadcast(Level);
+}
+
+void ASoulPlayerState::AddToXP(int32 InXP)
+{
+	XP += InXP;
+	OnXPChangedDelegate.Broadcast(XP);
+}
+
+void ASoulPlayerState::SetXP(int32 InXP)
+{
+	XP = InXP;
+	OnXPChangedDelegate.Broadcast(XP);
+}
+
 void ASoulPlayerState::OnRep_Level(int32 OldLevel)
 {
+	OnLevelChangedDelegate.Broadcast(Level);
+}
 
+void ASoulPlayerState::OnRep_XP(int32 OldXP)
+{
+	OnXPChangedDelegate.Broadcast(XP);
 }
