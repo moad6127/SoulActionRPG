@@ -65,6 +65,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FAbilityInfoSignature AbilityInfoDelegate;
 
+	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	FOnVitalChangedSignature OnXPPercentChangedDelegate;
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
@@ -78,6 +81,8 @@ protected:
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
 
 	void OnInitalizeStartupAbilities(USoulAbilitySystemComponent* SoulAbilitySystemComp);
+
+	void OnXPChanged(int32 NewXP) const;
 
 	template<typename T>
 	T* GetDataTableRowByType(UDataTable* DataTable, const FGameplayTag& Tag);

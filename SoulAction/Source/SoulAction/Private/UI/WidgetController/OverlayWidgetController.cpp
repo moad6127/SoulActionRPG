@@ -5,6 +5,8 @@
 #include "AbilitySystem/SoulAttributeSet.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Controller/SoulPlayerState.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -18,8 +20,10 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
+	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
+	SoulPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
 
+	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
 	/*Labmda를 사용해서 Bind하기*/
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data) 
@@ -27,9 +31,11 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			OnHealthChanged.Broadcast(Data.NewValue);
 		}
 	);
+
 	/*
 	* AddUObject를 사용해서 bind하기
 	*/
+
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::StaminaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxStaminaChanged);
@@ -94,4 +100,26 @@ void UOverlayWidgetController::OnInitalizeStartupAbilities(USoulAbilitySystemCom
 		});
 
 	SoulAbilitySystemComp->ForEachAbility(BroadcastDelegate);
+}
+
+void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
+{
+	const ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
+	const ULevelUpInfo* LevelupInfo = SoulPlayerState->LevelUpInfo;
+
+	checkf(LevelupInfo, TEXT("LevelupInfo Error"));
+	int32 Level = LevelupInfo->FindLevelForXP(NewXP);
+	int32 MaxLevel = LevelupInfo->LevelUpInfomation.Num();
+
+	if (Level <= MaxLevel && Level > 0)
+	{
+		const int32 LevelUpRequirement = LevelupInfo->LevelUpInfomation[Level].LevelUpRequirement;
+		const int32 PrevLevelUpRequirement = LevelupInfo->LevelUpInfomation[Level - 1].LevelUpRequirement;
+
+		const int32 DeltaLevelRequirement = LevelUpRequirement - PrevLevelUpRequirement;
+		const int32 XPForThisLevel = NewXP - PrevLevelUpRequirement;
+
+		const float XPBarPercent = static_cast<float>(XPForThisLevel / DeltaLevelRequirement);
+		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
+	}
 }

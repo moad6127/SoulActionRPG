@@ -33,5 +33,5 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FSoulLevelUpInfo> LevelUpInfomation;
 
-	int32 FindLevelForXP(int32 XP);
+	int32 FindLevelForXP(int32 XP) const;
 };
