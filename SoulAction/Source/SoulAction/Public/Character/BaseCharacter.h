@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "BaseCharacter.generated.h"
 
 class UAbilitySystemComponent;
@@ -48,7 +49,7 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual FVector GetMovementDirection_Implementation() override;
-
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 
@@ -102,6 +103,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName TailSocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defautls")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 #include "CharacterClassInfo.generated.h"
 
 /**
@@ -12,6 +13,7 @@
  */
 class UGameplayEffect;
 class UGameplayAbility;
+
 UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
@@ -33,6 +35,9 @@ struct FCharacterClassDefaultInfo
 
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defautls")
+	FScalableFloat XPReward = FScalableFloat();
 };
 
 UCLASS()

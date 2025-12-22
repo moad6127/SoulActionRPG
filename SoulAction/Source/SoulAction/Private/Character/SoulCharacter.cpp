@@ -44,6 +44,7 @@ ASoulCharacter::ASoulCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 	
+	CharacterClass = ECharacterClass::Elementalist;
 }
 
 void ASoulCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -126,6 +126,11 @@ FVector ABaseCharacter::GetMovementDirection_Implementation()
 	return GetActorForwardVector();
 }
 
+ECharacterClass ABaseCharacter::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
