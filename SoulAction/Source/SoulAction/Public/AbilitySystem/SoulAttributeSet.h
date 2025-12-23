@@ -148,6 +148,10 @@ public:
 	ATTRIBUTE_ACCESSORS(USoulAttributeSet, IncomingDamage);
 
 
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(USoulAttributeSet, IncomingXP);
+
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
 
