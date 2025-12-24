@@ -185,7 +185,7 @@ void ABaseCharacter::InitStartWeapon(const FGameplayTag& WeaponTag)
 	}
 }
 
-void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties)
+void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities)
 {
 	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority())
@@ -193,7 +193,17 @@ void ABaseCharacter::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbi
 		return;
 	}
 
-	SoulASC->AddCharacterAbilities(Abiilties);
+	SoulASC->AddCharacterAbilities(Abilities);
+}
+
+void ABaseCharacter::AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities)
+{
+	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
+	if (!HasAuthority())
+	{
+		return;
+	}
+	SoulASC->AddCharacterPassiveAbilities(Abilities);
 }
 
 FVector ABaseCharacter::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)

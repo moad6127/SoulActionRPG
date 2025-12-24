@@ -66,7 +66,8 @@ protected:
 	virtual void InitializeDefaultAttributes() const;
 	void InitStartWeapon(const FGameplayTag& WeaponTag);
 
-	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abiilties);
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
+	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
 
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual void Equip(class ABaseWeapon* Weapon) override;
@@ -121,6 +122,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditAnywhere, Category = "Ability")
+	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 
 	bool bDead = false;
 

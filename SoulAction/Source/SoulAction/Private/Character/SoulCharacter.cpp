@@ -383,6 +383,7 @@ void ASoulCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfo();
 	AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
 	AddCharacterAbilities(StartupAbilities);
+	AddCharacterPassiveAbilities(StartupPassiveAbilities);
 
 }
 
