@@ -118,6 +118,7 @@ void USoulAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	}
 }
 
+
 void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -150,6 +151,7 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				{
 					CombatInterface->Die();
 				}
+				SendXPEvent(Props);
 			}
 			else
 			{
@@ -167,7 +169,22 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.f);
-		UE_LOG(LogTemp, Log, TEXT("Incoming XP : %f"), LocalIncomingXP);
+	}
+}
+
+void USoulAttributeSet::SendXPEvent(const FEffectProperties& Props)
+{
+	if (ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		const int32 TargetLevel = TargetCombatInterface->GetPlayerLevel();
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 XPReward = USoulAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+		
+		FGameplayEventData Payload;
+		Payload.EventTag = SoulGameplayTags::Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, SoulGameplayTags::Attributes_Meta_IncomingXP, Payload);
 	}
 }
 

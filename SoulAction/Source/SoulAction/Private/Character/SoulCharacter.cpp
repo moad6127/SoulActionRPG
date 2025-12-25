@@ -337,7 +337,6 @@ void ASoulCharacter::Tick(float DeltaTime)
 		if (TargetActor && !GetAbilitySystemComponent()->HasMatchingGameplayTag(SoulGameplayTags::Abilities_Rolling))
 		{
 			UpdateLockOnCamera(DeltaTime);
-			UE_LOG(LogTemp, Warning, TEXT("Time : %lf"),GetWorld()->GetTimeSeconds());
 		}
 	}
 
