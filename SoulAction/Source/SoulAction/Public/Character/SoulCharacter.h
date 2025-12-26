@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
+#include "Interaction/PlayerInterface.h"
 #include "SoulCharacter.generated.h"
 
 
@@ -11,7 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class SOULACTION_API ASoulCharacter : public ABaseCharacter
+class SOULACTION_API ASoulCharacter : public ABaseCharacter, public IPlayerInterface
 {
 	GENERATED_BODY()
 
@@ -24,6 +25,9 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
+	/* PlayerInterface*/
+
+	virtual void AddToXP_Implementation(int32 InXP) override;
 
 	/* CombatInterface*/
 	virtual int32 GetPlayerLevel() override;

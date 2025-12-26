@@ -394,9 +394,17 @@ void ASoulCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-int32 ASoulCharacter::GetPlayerLevel()
+void ASoulCharacter::AddToXP_Implementation(int32 InXP)
 {
 	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+
+	SoulPlayerState->AddToXP(InXP);
+}
+
+int32 ASoulCharacter::GetPlayerLevel()
+{
+	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
 	check(SoulPlayerState);
 	return SoulPlayerState->GetPlayerLevel();
 }

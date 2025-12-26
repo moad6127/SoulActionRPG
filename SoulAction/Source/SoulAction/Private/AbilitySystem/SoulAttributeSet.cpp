@@ -11,6 +11,7 @@
 #include "Interaction/CombatInterface.h"
 #include "Controller/SoulController.h"
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
+#include "Interaction/PlayerInterface.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
@@ -169,6 +170,12 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.f);
+
+		//TODO : 레벨업 해야하는지 알기(나중에 엘든링 스타일로 바꾸기)
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+		}
 	}
 }
 
