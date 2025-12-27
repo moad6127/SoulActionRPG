@@ -28,9 +28,10 @@ public:
 	/* PlayerInterface*/
 
 	virtual void AddToXP_Implementation(int32 InXP) override;
+	virtual void LevelUp_Implementation() override;
 
 	/* CombatInterface*/
-	virtual int32 GetPlayerLevel() override;
+	virtual int32 GetPlayerLevel_Implementation() override;
 	/* CombatInterface*/
 
 	/*타겟 락온 관련 함수들*/

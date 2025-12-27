@@ -181,9 +181,9 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 void USoulAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
-	if (ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
 	{
-		const int32 TargetLevel = TargetCombatInterface->GetPlayerLevel();
+		const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter);
 		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
 		const int32 XPReward = USoulAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
 		

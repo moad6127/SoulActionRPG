@@ -97,7 +97,6 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 		TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 		bUseControllerRotationYaw = true;
-
 	}
 	else
 	{
@@ -110,36 +109,6 @@ void ASoulCharacter::ServerToggleTargetLock_Implementation(ABaseCharacter* Reque
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		bUseControllerRotationYaw = false;
 	}
-
-	/*
-	if (bTargetLockOn)
-	{
-		if (TargetActor)
-		{
-			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
-		}
-		FindLockOnTarget();
-		if (TargetActor == nullptr)
-		{
-			bTargetLockOn = false;
-		}
-		else
-		{
-			TargetActor->OnDied.AddDynamic(this, &ASoulCharacter::OnTargetDied);
-			GetCharacterMovement()->bOrientRotationToMovement = false;
-		}
-	}
-	else
-	{
-		if (TargetActor)
-		{
-			TargetActor->OnDied.RemoveDynamic(this, &ASoulCharacter::OnTargetDied);
-		}
-		TargetActor = nullptr;
-		GetCharacterMovement()->bOrientRotationToMovement = true;
-	}
-	*/
-
 }
 
 void ASoulCharacter::FindLockOnTarget()
@@ -282,8 +251,12 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 
 void ASoulCharacter::OnTargetDied()
 {
-	TargetActor = nullptr;
-	bTargetLockOn = false;
+	if (HasAuthority())
+	{
+		TargetActor = nullptr;
+		bTargetLockOn = false;
+	}
+
 	TargetLockOnMovementSetting();
 }
 
@@ -299,11 +272,6 @@ void ASoulCharacter::OnRep_TargetActor()
 
 void ASoulCharacter::TargetLockOnMovementSetting()
 {
-	if (!IsLocallyControlled())
-	{
-		return;
-	}
-
 	if (bTargetLockOn && TargetActor)
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -314,6 +282,12 @@ void ASoulCharacter::TargetLockOnMovementSetting()
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		bUseControllerRotationYaw = false;
 	}
+
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
+
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
 		SoulPlayerController->OnLockOnChanged.Broadcast(TargetActor);
@@ -402,7 +376,12 @@ void ASoulCharacter::AddToXP_Implementation(int32 InXP)
 	SoulPlayerState->AddToXP(InXP);
 }
 
-int32 ASoulCharacter::GetPlayerLevel()
+void ASoulCharacter::LevelUp_Implementation()
+{
+
+}
+
+int32 ASoulCharacter::GetPlayerLevel_Implementation()
 {
 	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
 	check(SoulPlayerState);
