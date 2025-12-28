@@ -14,6 +14,7 @@
 #include "Weapon/BaseWeapon.h"
 #include "SoulAction/SoulAction.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -379,6 +380,53 @@ void ASoulCharacter::AddToXP_Implementation(int32 InXP)
 void ASoulCharacter::LevelUp_Implementation()
 {
 
+}
+
+int32 ASoulCharacter::GetXP_Implementation() const
+{
+	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->GetXP();
+}
+
+int32 ASoulCharacter::FindLevelForXP_Implementation(int32 InXP) const
+{
+	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->LevelUpInfo->FindLevelForXP(InXP);
+}
+
+int32 ASoulCharacter::GetAttributePointsReward_Implementation(int32 Level) const
+{
+	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->LevelUpInfo->LevelUpInfomation[Level].AttributePointAward;
+}
+
+int32 ASoulCharacter::GetSpellPointsReward_Implementation(int32 Level) const
+{
+	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->LevelUpInfo->LevelUpInfomation[Level].SpellPointAward;
+}
+
+void ASoulCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
+{
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	SoulPlayerState->AddToLevel(InPlayerLevel);
+}
+
+void ASoulCharacter::AddToAttributePoints_Implementation(int32 InAttributePoins)
+{
+	//TODO 
+	// PlayerState에 AttributePoint추가하기
+}
+
+void ASoulCharacter::AddToSpellPoints_Implementation(int32 InSpellPoins)
+{
+	//TODO
+	// PlayerState에 SpellPoint추가하기
 }
 
 int32 ASoulCharacter::GetPlayerLevel_Implementation()
