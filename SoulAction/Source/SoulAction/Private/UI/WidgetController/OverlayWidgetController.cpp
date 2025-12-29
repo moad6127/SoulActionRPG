@@ -22,6 +22,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
 	SoulPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	SoulPlayerState->OnLevelChangedDelegate.AddLambda(
+		[this](int32 NewLevel) 
+		{
+			OnPlayerLevelChangeDelegate.Broadcast(NewLevel);
+		}
+	);
 
 	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
 	/*Labmda를 사용해서 Bind하기*/
