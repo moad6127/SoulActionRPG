@@ -15,6 +15,7 @@
 #include "SoulAction/SoulAction.h"
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "NiagaraComponent.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -23,6 +24,10 @@
 ASoulCharacter::ASoulCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	LevelUpNiagaraComp = CreateDefaultSubobject<UNiagaraComponent>("LevelUpNiagaraComp");
+	LevelUpNiagaraComp->SetupAttachment(GetRootComponent());
+	LevelUpNiagaraComp->bAutoActivate = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 600.f, 0.f);
@@ -233,6 +238,15 @@ void ASoulCharacter::UpdateLockOnCamera(float DeltaTime)
 	FVector MyLocation = ViewCamera->GetComponentLocation();
 
 	FVector Direction = (TargetLocation - MyLocation);
+
+	//가까울때 회전 못하도록 막기
+
+	FVector ToTarget = TargetActor->GetActorLocation() - GetActorLocation();
+	if (ToTarget.SizeSquared() < FMath::Square(100.f))
+	{
+		return;
+	}
+
 	//Direction.Z = 0; // 평면 회전만 (YAW 회전)
 
 	if (Direction.IsNearlyZero()) return;
@@ -324,6 +338,8 @@ void ASoulCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+
+
 void ASoulCharacter::InitAbilityActorInfo()
 {
 
@@ -379,7 +395,19 @@ void ASoulCharacter::AddToXP_Implementation(int32 InXP)
 
 void ASoulCharacter::LevelUp_Implementation()
 {
+	MulticastLevelUpParticles();
+}
+void ASoulCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if (IsValid(LevelUpNiagaraComp))
+	{
+		const FVector CameraLocation = ViewCamera->GetComponentLocation();
+		const FVector NiagaraCompLocation = LevelUpNiagaraComp->GetComponentLocation();
+		const FRotator ToCameraLotation = (CameraLocation - NiagaraCompLocation).Rotation();
 
+		LevelUpNiagaraComp->SetWorldRotation(ToCameraLotation);
+		LevelUpNiagaraComp->Activate(true);
+	}
 }
 
 int32 ASoulCharacter::GetXP_Implementation() const

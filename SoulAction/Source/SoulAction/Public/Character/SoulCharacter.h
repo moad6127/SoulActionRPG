@@ -10,6 +10,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class SOULACTION_API ASoulCharacter : public ABaseCharacter, public IPlayerInterface
@@ -61,7 +62,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly )
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComp;
+
 private:
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
+
 	virtual void InitAbilityActorInfo() override;
 
 	UFUNCTION()
