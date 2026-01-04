@@ -6,6 +6,7 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "SoulGameplayTags.h"
+#include "Controller/SoulPlayerState.h"
 
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -23,6 +24,14 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			}
 		);
 	}
+
+	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
+	SoulPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+		[this](int32 Points) 
+		{
+			AttributePointsChangedDelegate.Broadcast(Points);
+		}
+	);
 }
 
 
