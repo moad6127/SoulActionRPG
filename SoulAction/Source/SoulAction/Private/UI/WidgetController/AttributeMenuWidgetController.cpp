@@ -46,6 +46,9 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
+
+	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
+	AttributePointsChangedDelegate.Broadcast(SoulPlayerState->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::EquipWeapon(const FGameplayTag& WeaponTag)

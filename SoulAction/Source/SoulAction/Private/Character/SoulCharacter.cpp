@@ -447,14 +447,16 @@ void ASoulCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 
 void ASoulCharacter::AddToAttributePoints_Implementation(int32 InAttributePoins)
 {
-	//TODO 
-	// PlayerState에 AttributePoint추가하기
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	SoulPlayerState->AddToAttributePoints(InAttributePoins);
 }
 
 void ASoulCharacter::AddToSpellPoints_Implementation(int32 InSpellPoins)
 {
-	//TODO
-	// PlayerState에 SpellPoint추가하기
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	SoulPlayerState->AddToSpellPoints(InSpellPoins);
 }
 
 int32 ASoulCharacter::GetPlayerLevel_Implementation()
