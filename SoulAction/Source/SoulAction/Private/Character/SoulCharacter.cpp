@@ -459,6 +459,20 @@ void ASoulCharacter::AddToSpellPoints_Implementation(int32 InSpellPoins)
 	SoulPlayerState->AddToSpellPoints(InSpellPoins);
 }
 
+int32 ASoulCharacter::GetAttributePoints_Implementation() const
+{
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->GetAttributePoints();
+}
+
+int32 ASoulCharacter::GetSpellPoints_Implementation() const
+{
+	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
+	check(SoulPlayerState);
+	return SoulPlayerState->GetSpellPoints();
+}
+
 int32 ASoulCharacter::GetPlayerLevel_Implementation()
 {
 	const ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();

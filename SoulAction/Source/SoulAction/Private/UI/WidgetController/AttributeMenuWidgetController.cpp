@@ -60,6 +60,12 @@ void UAttributeMenuWidgetController::EquipWeapon(const FGameplayTag& WeaponTag)
 	}
 }
 
+void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
+	ASC->UpgradeAttribute(AttributeTag);
+}
+
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute)
 {
 	FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(AttributeTag);
