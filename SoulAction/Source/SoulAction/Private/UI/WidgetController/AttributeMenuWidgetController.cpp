@@ -32,6 +32,12 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			AttributePointsChangedDelegate.Broadcast(Points);
 		}
 	);
+	SoulPlayerState->OnXPChangedDelegate.AddLambda(
+		[this](int32 InXP) 
+		{
+			XPPointsChangeDelegate.Broadcast(InXP);
+		}
+	);
 }
 
 
@@ -49,6 +55,7 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
 	AttributePointsChangedDelegate.Broadcast(SoulPlayerState->GetAttributePoints());
+	XPPointsChangeDelegate.Broadcast(SoulPlayerState->GetXP());
 }
 
 void UAttributeMenuWidgetController::EquipWeapon(const FGameplayTag& WeaponTag)

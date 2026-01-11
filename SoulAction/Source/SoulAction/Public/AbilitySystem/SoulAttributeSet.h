@@ -202,6 +202,8 @@ private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	void ShowFloatingText(const FEffectProperties& Props, float DamgeAmount,bool bBlockedHit, bool bCriticalHit) const;
 	void SendXPEvent(const FEffectProperties& Props);
+	void IncomingXPWithLevelUp(const FEffectProperties& Props);
+	void IncomingXPOther(const FEffectProperties& Props);
 
 	bool bTopOfHealth = false;
 	bool bTopOfStamina = false;
