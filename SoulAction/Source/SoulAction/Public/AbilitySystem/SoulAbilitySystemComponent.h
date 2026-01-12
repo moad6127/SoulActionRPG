@@ -53,6 +53,7 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);
 protected:
 
 	virtual void OnRep_ActivateAbilities() override;
@@ -62,6 +63,9 @@ protected:
 	
 	UFUNCTION(Server, Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
+
+	UFUNCTION(Server, Reliable)
+	void ServerUpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	UDataTable* WeaponDataTable;

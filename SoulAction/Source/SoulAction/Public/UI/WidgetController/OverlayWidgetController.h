@@ -68,8 +68,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
 	FOnVitalChangedSignature OnXPPercentChangedDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Level")
-	FOnPlayerStatChangedSignature OnPlayerLevelChangeDelegate;
+
 
 protected:
 

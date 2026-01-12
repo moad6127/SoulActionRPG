@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag);
+
 protected:
 
 	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute);

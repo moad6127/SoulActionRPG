@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Level")
+	FOnPlayerStatChangedSignature OnPlayerLevelChangeDelegate;
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")

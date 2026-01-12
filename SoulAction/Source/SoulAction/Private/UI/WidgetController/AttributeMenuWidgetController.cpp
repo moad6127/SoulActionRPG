@@ -73,6 +73,21 @@ void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& Attrib
 	ASC->UpgradeAttribute(AttributeTag);
 }
 
+void UAttributeMenuWidgetController::UpgradeAttributeUseXP(const FGameplayTag& AttributeTag)
+{
+	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
+	FGameplayAttribute Attribute = AS->TagsToAttributes[AttributeTag]();
+	float Value = Attribute.GetNumericValue(AttributeSet);
+
+	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
+	int32 NeedXP = Value * 100;
+	if (SoulPlayerState->GetXP() > NeedXP)
+	{
+		USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
+		ASC->UpgradeAttributeUseXP(AttributeTag, NeedXP);
+	}
+}
+
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute)
 {
 	FSoulAttributeInfo Info = AttributeInfomation->FindAttributeInfoForTag(AttributeTag);

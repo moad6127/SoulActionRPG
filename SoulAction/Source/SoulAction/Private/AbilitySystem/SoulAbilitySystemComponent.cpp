@@ -149,6 +149,11 @@ void USoulAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& Attribute
 	}
 }
 
+void USoulAbilitySystemComponent::UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP)
+{
+	ServerUpgradeAttributeUseXP(AttributeTag,InXP);
+}
+
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();
@@ -159,6 +164,8 @@ void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 		AbilitiesGivenDelegate.Broadcast(this);
 	}
 }
+
+
 
 void USoulAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
 {
@@ -171,6 +178,21 @@ void USoulAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
 	{
 		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
+}
+
+void USoulAbilitySystemComponent::ServerUpgradeAttributeUseXP_Implementation(const FGameplayTag& AttributeTag, int32 InXP)
+{
+	FGameplayEventData Payload;
+	Payload.EventTag = AttributeTag;
+	Payload.EventMagnitude = 1.f;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetAvatarActor(), AttributeTag, Payload);
+	if (GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_AddToXP(GetAvatarActor(), -1 * InXP);
+		IPlayerInterface::Execute_LevelUp(GetAvatarActor());
+		IPlayerInterface::Execute_AddToPlayerLevel(GetAvatarActor(), 1);
 	}
 }
 
