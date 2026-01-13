@@ -81,7 +81,7 @@ void UAttributeMenuWidgetController::UpgradeAttributeUseXP(const FGameplayTag& A
 
 	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
 	int32 NeedXP = Value * 100;
-	if (SoulPlayerState->GetXP() > NeedXP)
+	if (SoulPlayerState->GetXP() >= NeedXP)
 	{
 		USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
 		ASC->UpgradeAttributeUseXP(AttributeTag, NeedXP);
