@@ -14,7 +14,7 @@ class UOverlayWidgetController;
 struct FWidgetControllerParams;
 class UAbilitySystemComponent;
 class UAttributeSet;
-class UAttributeMenuWidgetController;
+class UMenuWidgetController;
 
 UCLASS()
 class SOULACTION_API ASoulHUD : public AHUD
@@ -23,7 +23,7 @@ class SOULACTION_API ASoulHUD : public AHUD
 public:
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
-	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
+	UMenuWidgetController* GetMenuWidgetController(const FWidgetControllerParams& WCParams);
 
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 	void ShowMenu();
@@ -53,11 +53,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 
+
 	UPROPERTY()
-	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+	TObjectPtr<UMenuWidgetController> MenuWidgetController;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+	TSubclassOf<UMenuWidgetController>MenuWidgetControllerClass;
+
 
 	bool bVisibleMenu;
 };

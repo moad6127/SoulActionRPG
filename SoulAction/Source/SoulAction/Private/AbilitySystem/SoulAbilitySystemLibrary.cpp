@@ -5,7 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/HUD/SoulHUD.h"
 #include "Controller/SoulPlayerState.h"
-#include "UI/WidgetController/SoulWidgetController.h"
+#include "UI/WidgetController/MenuWidgetController.h"
 #include "Game/SoulGameModeBase.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
@@ -42,7 +42,7 @@ UAttributeMenuWidgetController* USoulAbilitySystemLibrary::GetAttributeMeuWidget
 			UAttributeSet* AS = PS->GetAttributeSet();
 
 			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return SoulHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+			return SoulHUD->GetMenuWidgetController(WidgetControllerParams)->GetAttributeWidgetController();
 		}
 	}
 

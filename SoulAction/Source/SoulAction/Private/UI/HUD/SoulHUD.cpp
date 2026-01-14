@@ -5,6 +5,9 @@
 #include "UI/Widget/SoulUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/SoulWidgetController.h"
+
+#include "UI/WidgetController/MenuWidgetController.h"
 
 UOverlayWidgetController* ASoulHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -17,22 +20,23 @@ UOverlayWidgetController* ASoulHUD::GetOverlayWidgetController(const FWidgetCont
 	return OverlayWidgetController;
 }
 
-UAttributeMenuWidgetController* ASoulHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+UMenuWidgetController* ASoulHUD::GetMenuWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if (AttributeMenuWidgetController == nullptr)
+	if (MenuWidgetController == nullptr)
 	{
-		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
-		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
-		AttributeMenuWidgetController->BindCallbacksToDependencies();
+		MenuWidgetController = NewObject<UMenuWidgetController>(this, MenuWidgetControllerClass);
+		MenuWidgetController->SetWidgetControllerParams(WCParams);
+		MenuWidgetController->BindCallbacksToDependencies();
 	}
-	return AttributeMenuWidgetController;
+	return MenuWidgetController;
 }
 
 void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
 	checkf(OverlayWidgetClass, TEXT("OverlayWidgetClass uninit, Fill BP_HUD"));
 	checkf(OverlayWidgetControllerClass, TEXT("OverlayWidgetControllerClass uninit, Fill BP_HUD"));
-	checkf(MenuClass, TEXT("AttributeMenuClass uninit, Fill BP_HUD"));
+	checkf(MenuClass, TEXT("MenuClass uninit, Fill BP_HUD"));
+	checkf(MenuWidgetControllerClass, TEXT("MenuWidgetControllerClass uninit, FILL BP_HUD"));
 
 	const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
 	
@@ -51,9 +55,11 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	Menu = CreateWidget<USoulUserWidget>(GetWorld(),MenuClass);
 	if (Menu)
 	{
-		if (GetAttributeMenuWidgetController(WidgetControllerParams))
+		if (GetMenuWidgetController(WidgetControllerParams))
 		{
-			Menu->SetWidgetController(AttributeMenuWidgetController);
+			MenuWidgetController->InitSubWidgetController(WidgetControllerParams);
+			Menu->SetWidgetController(MenuWidgetController);
+
 			Menu->AddToViewport();
 			Menu->SetVisibility(ESlateVisibility::Hidden);
 			bVisibleMenu = false;
