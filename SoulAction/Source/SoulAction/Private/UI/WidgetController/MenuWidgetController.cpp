@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/MenuWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/WeaponMenuWidgetController.h"
 
 void UMenuWidgetController::BroadcastInitialValues()
 {
@@ -15,19 +16,45 @@ void UMenuWidgetController::BindCallbacksToDependencies()
 void UMenuWidgetController::InitSubWidgetController(const FWidgetControllerParams& WCParams)
 {
 	InitAttributeMenuWidgetController(WCParams);
+	InitWeaponMenuWidgetController(WCParams);
 }
 
 void UMenuWidgetController::InitAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if (AttributeMenuWidgetController == nullptr)
+	if (AttributeMenuWidgetControllerClass == nullptr)
 	{
-		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
-		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
-		AttributeMenuWidgetController->BindCallbacksToDependencies();
+		return;
 	}
+	AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+	AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+	AttributeMenuWidgetController->BindCallbacksToDependencies();
+}
+
+void UMenuWidgetController::InitWeaponMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (WeaponMenuControllerClass == nullptr)
+	{
+		return;
+	}
+	WeaponMenuController = NewObject<UWeaponMenuWidgetController>(this, WeaponMenuControllerClass);
+	WeaponMenuController->SetWidgetControllerParams(WCParams);
+	WeaponMenuController->BindCallbacksToDependencies();
 }
 
 UAttributeMenuWidgetController* UMenuWidgetController::GetAttributeWidgetController() const
 {
-	return AttributeMenuWidgetController;
+	if (AttributeMenuWidgetController)
+	{
+		return AttributeMenuWidgetController;
+	}
+	return nullptr;
+}
+
+UWeaponMenuWidgetController* UMenuWidgetController::GetWeaponMenuWidgetController() const
+{
+	if (WeaponMenuController)
+	{
+		return WeaponMenuController;
+	}
+	return nullptr;
 }

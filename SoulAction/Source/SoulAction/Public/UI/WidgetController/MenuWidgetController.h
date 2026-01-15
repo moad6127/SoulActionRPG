@@ -10,6 +10,8 @@
  * 
  */
 class UAttributeMenuWidgetController;
+class UWeaponMenuWidgetController;
+
 
 UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API UMenuWidgetController : public USoulWidgetController
@@ -24,12 +26,22 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UAttributeMenuWidgetController* GetAttributeWidgetController() const;
+
+	UFUNCTION(BlueprintCallable)
+	UWeaponMenuWidgetController* GetWeaponMenuWidgetController() const;
 private:
 	void InitAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
+	void InitWeaponMenuWidgetController(const FWidgetControllerParams& WCParams);
 
 	UPROPERTY()
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+
+	UPROPERTY()
+	TObjectPtr<UWeaponMenuWidgetController> WeaponMenuController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWeaponMenuWidgetController> WeaponMenuControllerClass;
 };

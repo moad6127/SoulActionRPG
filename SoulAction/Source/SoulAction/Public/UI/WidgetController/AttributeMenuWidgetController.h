@@ -27,9 +27,6 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
-	UFUNCTION(BlueprintCallable)
-	void EquipWeapon(const FGameplayTag& WeaponTag);
-
 	UPROPERTY(BlueprintAssignable, Category ="GAS|Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
 

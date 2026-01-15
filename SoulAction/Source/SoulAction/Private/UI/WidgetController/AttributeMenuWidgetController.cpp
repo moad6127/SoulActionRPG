@@ -58,14 +58,6 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	XPPointsChangeDelegate.Broadcast(SoulPlayerState->GetXP());
 }
 
-void UAttributeMenuWidgetController::EquipWeapon(const FGameplayTag& WeaponTag)
-{
-	USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
-	if (ASC)
-	{
-		ASC->EquiWeaponByTag(WeaponTag);
-	}
-}
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
