@@ -27,12 +27,13 @@ public:
 
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 	void ShowMenu();
+	void HideMenu();
+	void DisplayMenu();
 
 protected:
 	virtual void BeginPlay() override;
 
-	void HideMenu();
-	void DisplayMenu();
+
 
 private:
 	UPROPERTY()
@@ -60,6 +61,4 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UMenuWidgetController>MenuWidgetControllerClass;
 
-
-	bool bVisibleMenu;
 };

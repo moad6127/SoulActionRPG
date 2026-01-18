@@ -106,9 +106,32 @@ void ASoulController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 void ASoulController::ShowAttributeMenu()
 {
+
+	if (bOpenMenu)
+	{
+		HideMenu();
+	}
+	else
+	{
+		OpenMenu();
+	}
+	bOpenMenu = !bOpenMenu;
+
+}
+
+void ASoulController::OpenMenu()
+{
 	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
 	{
-		SoulHUD->ShowMenu();
+		SoulHUD->DisplayMenu();
+	}
+}
+
+void ASoulController::HideMenu()
+{
+	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
+	{
+		SoulHUD->HideMenu();
 	}
 }
 

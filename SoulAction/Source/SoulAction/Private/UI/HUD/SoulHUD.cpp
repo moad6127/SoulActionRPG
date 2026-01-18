@@ -62,7 +62,6 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 			Menu->AddToViewport();
 			Menu->SetVisibility(ESlateVisibility::Hidden);
-			bVisibleMenu = false;
 		}
 	}
 	
@@ -70,15 +69,9 @@ void ASoulHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 void ASoulHUD::ShowMenu()
 {
-	if (bVisibleMenu)
-	{
-		HideMenu();
-	}
-	else
-	{
-		DisplayMenu();
-	}
+
 }
+
 
 void ASoulHUD::BeginPlay()
 {
@@ -89,7 +82,6 @@ void ASoulHUD::HideMenu()
 {
 	if (Menu)
 	{
-		bVisibleMenu = false;
 		Menu->SetVisibility(ESlateVisibility::Hidden);
 		const FInputModeGameOnly InputMode;
 		GetOwningPlayerController()->SetInputMode(InputMode);
@@ -101,7 +93,6 @@ void ASoulHUD::DisplayMenu()
 {
 	if (Menu)
 	{
-		bVisibleMenu = true;
 		Menu->SetVisibility(ESlateVisibility::Visible);
 		const FInputModeGameAndUI InputMode;
 
