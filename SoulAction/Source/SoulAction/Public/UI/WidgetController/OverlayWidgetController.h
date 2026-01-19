@@ -35,7 +35,6 @@ struct FUIWidgtRow : public FTableRowBase
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnVitalChangedSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgtRow, Row);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FSoulAbilityInfo&, Info);
 
 UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API UOverlayWidgetController : public USoulWidgetController
@@ -62,8 +61,6 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FAbilityInfoSignature AbilityInfoDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
 	FOnVitalChangedSignature OnXPPercentChangedDelegate;
@@ -75,16 +72,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
-	TObjectPtr<UAbilityInfo> AbilityInfo;
+
 
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
 
-	void OnInitalizeStartupAbilities(USoulAbilitySystemComponent* SoulAbilitySystemComp);
-
-	void OnXPChanged(int32 NewXP) const;
+	void OnXPChanged(int32 NewXP);
 
 	template<typename T>
 	T* GetDataTableRowByType(UDataTable* DataTable, const FGameplayTag& Tag);

@@ -11,9 +11,16 @@
  */
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignature, int32, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FSoulAbilityInfo&, Info);
+
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class ASoulController;
+class ASoulPlayerState;
+class USoulAbilitySystemComponent;
+class USoulAttributeSet;
+class UAbilityInfo;
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
@@ -52,6 +59,14 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Level")
 	FOnPlayerStatChangedSignature OnPlayerLevelChangeDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FAbilityInfoSignature AbilityInfoDelegate;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	void BroadcastAbilityInfo();
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
@@ -65,4 +80,21 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<ASoulController> SoulPlayerController;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<ASoulPlayerState> SoulPlayerState;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<USoulAbilitySystemComponent> SoulAbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<USoulAttributeSet> SoulAttributeSet;
+
+	ASoulController* GetSoulPC();
+	ASoulPlayerState* GetSoulPS();
+	USoulAbilitySystemComponent* GetSoulASC();
+	USoulAttributeSet* GetSoulAS();
 };

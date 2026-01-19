@@ -4,6 +4,7 @@
 #include "UI/WidgetController/MenuWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/WeaponMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 void UMenuWidgetController::BroadcastInitialValues()
 {
@@ -39,6 +40,18 @@ void UMenuWidgetController::InitWeaponMenuWidgetController(const FWidgetControll
 	WeaponMenuController = NewObject<UWeaponMenuWidgetController>(this, WeaponMenuControllerClass);
 	WeaponMenuController->SetWidgetControllerParams(WCParams);
 	WeaponMenuController->BindCallbacksToDependencies();
+}
+
+void UMenuWidgetController::InitSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (SpellMenuWidgetControllerClass == nullptr)
+	{
+		return;
+	}
+	SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+	SpellMenuWidgetController->SetWidgetControllerParams(WCParams);
+	SpellMenuWidgetController->BindCallbacksToDependencies();
+
 }
 
 UAttributeMenuWidgetController* UMenuWidgetController::GetAttributeWidgetController() const

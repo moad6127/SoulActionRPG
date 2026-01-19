@@ -24,7 +24,7 @@ struct FWeaponDataRow : public FTableRowBase
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */);
-DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, USoulAbilitySystemComponent*);
+DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 
 UCLASS()

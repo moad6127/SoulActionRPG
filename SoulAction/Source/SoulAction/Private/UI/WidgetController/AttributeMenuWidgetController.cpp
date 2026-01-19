@@ -11,11 +11,10 @@
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
 
 	check(AttributeInfomation);
 
-	for (auto& Pair : AS->TagsToAttributes)
+	for (auto& Pair : GetSoulAS()->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
 			[this, Pair](const FOnAttributeChangeData& Data)
@@ -25,14 +24,13 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		);
 	}
 
-	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
-	SoulPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+	GetSoulPS()->OnAttributePointsChangedDelegate.AddLambda(
 		[this](int32 Points) 
 		{
 			AttributePointsChangedDelegate.Broadcast(Points);
 		}
 	);
-	SoulPlayerState->OnXPChangedDelegate.AddLambda(
+	GetSoulPS()->OnXPChangedDelegate.AddLambda(
 		[this](int32 InXP) 
 		{
 			XPPointsChangeDelegate.Broadcast(InXP);
@@ -44,39 +42,33 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
 
 	check(AttributeInfomation);
 
-	for (auto& Pair : AS->TagsToAttributes)
+	for (auto& Pair : GetSoulAS()->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
 
-	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
-	AttributePointsChangedDelegate.Broadcast(SoulPlayerState->GetAttributePoints());
-	XPPointsChangeDelegate.Broadcast(SoulPlayerState->GetXP());
+	AttributePointsChangedDelegate.Broadcast(GetSoulPS()->GetAttributePoints());
+	XPPointsChangeDelegate.Broadcast(GetSoulPS()->GetXP());
 }
 
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
-	USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
-	ASC->UpgradeAttribute(AttributeTag);
+	GetSoulASC()->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::UpgradeAttributeUseXP(const FGameplayTag& AttributeTag)
 {
-	USoulAttributeSet* AS = CastChecked<USoulAttributeSet>(AttributeSet);
-	FGameplayAttribute Attribute = AS->TagsToAttributes[AttributeTag]();
+	FGameplayAttribute Attribute = GetSoulAS()->TagsToAttributes[AttributeTag]();
 	float Value = Attribute.GetNumericValue(AttributeSet);
 
-	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
 	int32 NeedXP = Value * 100;
-	if (SoulPlayerState->GetXP() >= NeedXP)
+	if (GetSoulPS()->GetXP() >= NeedXP)
 	{
-		USoulAbilitySystemComponent* ASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
-		ASC->UpgradeAttributeUseXP(AttributeTag, NeedXP);
+		GetSoulASC()->UpgradeAttributeUseXP(AttributeTag, NeedXP);
 	}
 }
 

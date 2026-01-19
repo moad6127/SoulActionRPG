@@ -10,28 +10,26 @@
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
 	
-	OnHealthChanged.Broadcast(SAS->GetHealth());
-	OnMaxHealthChanged.Broadcast(SAS->GetMaxHealth());
-	OnStaminaChanged.Broadcast(SAS->GetStamina());
-	OnMaxStaminaChanged.Broadcast(SAS->GetMaxStamina());
+	OnHealthChanged.Broadcast(GetSoulAS()->GetHealth());
+	OnMaxHealthChanged.Broadcast(GetSoulAS()->GetMaxHealth());
+	OnStaminaChanged.Broadcast(GetSoulAS()->GetStamina());
+	OnMaxStaminaChanged.Broadcast(GetSoulAS()->GetMaxStamina());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
-	SoulPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
-	SoulPlayerState->OnLevelChangedDelegate.AddLambda(
+
+	GetSoulPS()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	GetSoulPS()->OnLevelChangedDelegate.AddLambda(
 		[this](int32 NewLevel) 
 		{
 			OnPlayerLevelChangeDelegate.Broadcast(NewLevel);
 		}
 	);
 
-	const USoulAttributeSet* SAS = CastChecked<USoulAttributeSet>(AttributeSet);
 	/*Labmda를 사용해서 Bind하기*/
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetHealthAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSoulAS()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data) 
 		{
 			OnHealthChanged.Broadcast(Data.NewValue);
@@ -42,22 +40,22 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	* AddUObject를 사용해서 bind하기
 	*/
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::StaminaChanged);
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(SAS->GetMaxStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxStaminaChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSoulAS()->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSoulAS()->GetStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::StaminaChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetSoulAS()->GetMaxStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxStaminaChanged);
 
-	if (USoulAbilitySystemComponent* SoulASC = Cast<USoulAbilitySystemComponent>(AbilitySystemComponent))
+	if (GetSoulASC())
 	{
-		if (SoulASC->bStartupAbilitiesGiven)
+		if (GetSoulASC()->bStartupAbilitiesGiven)
 		{
-			OnInitalizeStartupAbilities(SoulASC);
+			BroadcastAbilityInfo();
 		}
 		else
 		{
-			SoulASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitalizeStartupAbilities);
+			GetSoulASC()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadcastAbilityInfo);
 		}
 
-		SoulASC->EffectAssetTags.AddLambda(
+		GetSoulASC()->EffectAssetTags.AddLambda(
 			[this](const FGameplayTagContainer& AssetTags)
 			{
 				for (const FGameplayTag& Tag : AssetTags)
@@ -90,29 +88,11 @@ void UOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& D
 	OnMaxStaminaChanged.Broadcast(Data.NewValue);
 }
 
-void UOverlayWidgetController::OnInitalizeStartupAbilities(USoulAbilitySystemComponent* SoulAbilitySystemComp)
+
+void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 {
-	if (!SoulAbilitySystemComp->bStartupAbilitiesGiven)
-	{
-		return;
-	}
-
-	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda([this] (const FGameplayAbilitySpec& AbilitySpec)
-		{
-			FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(USoulAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
-			Info.InputTag = USoulAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
-			AbilityInfoDelegate.Broadcast(Info);
-		});
-
-	SoulAbilitySystemComp->ForEachAbility(BroadcastDelegate);
-}
-
-void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
-{
-	const ASoulPlayerState* SoulPlayerState = CastChecked<ASoulPlayerState>(PlayerState);
-	const ULevelUpInfo* LevelupInfo = SoulPlayerState->LevelUpInfo;
-
+	ULevelUpInfo* LevelupInfo = GetSoulPS()->LevelUpInfo;
+	
 	checkf(LevelupInfo, TEXT("LevelupInfo Error"));
 	int32 Level = LevelupInfo->FindLevelForXP(NewXP);
 	int32 MaxLevel = LevelupInfo->LevelUpInfomation.Num();
