@@ -47,6 +47,11 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 
 	void EquiWeaponByTag(const FGameplayTag& WeaponTag);
+	void EquipWeaponBody(const FGameplayTag& WeaponTag);
+
+	UFUNCTION(Server, Reliable)
+	void ServerEqiupWeaponByTag(const FGameplayTag& WeaponTag);
+
 	void ForEachAbility(const FForEachAbility& Delegate);
 
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);

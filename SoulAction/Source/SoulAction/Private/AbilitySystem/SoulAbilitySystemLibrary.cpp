@@ -13,39 +13,57 @@
 #include "Interaction/CombatInterface.h"
 #include "Engine/OverlapResult.h"
 
-UOverlayWidgetController* USoulAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+bool USoulAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, ASoulHUD*& OutSoulHUD)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
 	{
-		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(PC->GetHUD()))
+		OutSoulHUD = Cast<ASoulHUD>(PC->GetHUD());
+		if (OutSoulHUD)
 		{
 			ASoulPlayerState* PS = PC->GetPlayerState<ASoulPlayerState>();
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS = PS->GetAttributeSet();
-			
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return SoulHUD->GetOverlayWidgetController(WidgetControllerParams);
+
+			OutWCParams.AttributeSet = AS;
+			OutWCParams.AbilitySystemComponent = ASC;
+			OutWCParams.PlayerController = PC;
+			OutWCParams.PlayerState = PS;
+			return true;
 		}
 	}
+	return false;
+}
 
+UOverlayWidgetController* USoulAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ASoulHUD* SoulHUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, SoulHUD))
+	{
+		return SoulHUD->GetOverlayWidgetController(WCParams);
+	}
 	return nullptr;
 }
 
 UAttributeMenuWidgetController* USoulAbilitySystemLibrary::GetAttributeMeuWidgetController(const UObject* WorldContextObject)
 {
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	FWidgetControllerParams WCParams;
+	ASoulHUD* SoulHUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, SoulHUD))
 	{
-		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(PC->GetHUD()))
-		{
-			ASoulPlayerState* PS = PC->GetPlayerState<ASoulPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return SoulHUD->GetMenuWidgetController(WidgetControllerParams)->GetAttributeWidgetController();
-		}
+		return SoulHUD->GetMenuWidgetController(WCParams)->GetAttributeWidgetController();
 	}
+	return nullptr;
+}
 
+USpellMenuWidgetController* USoulAbilitySystemLibrary::GetSpellMeuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ASoulHUD* SoulHUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, SoulHUD))
+	{
+		return SoulHUD->GetMenuWidgetController(WCParams)->GetSpellMenuWidgetController();
+	}
 	return nullptr;
 }
 

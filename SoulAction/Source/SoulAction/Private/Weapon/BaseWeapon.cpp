@@ -26,11 +26,19 @@ void ABaseWeapon::Equip(ABaseCharacter* Character)
 
 void ABaseWeapon::Unequip(ABaseCharacter* Character)
 {
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	SetOwner(nullptr);
+
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	if (WeaponMesh)
 	{
 		WeaponMesh->SetSimulatePhysics(true);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		WeaponMesh->SetCollisionObjectType(ECC_PhysicsBody);
 		WeaponMesh->SetEnableGravity(true);
 	}
 	SetLifeSpan(3.f);

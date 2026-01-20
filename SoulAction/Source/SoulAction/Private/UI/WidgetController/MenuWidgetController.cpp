@@ -18,6 +18,7 @@ void UMenuWidgetController::InitSubWidgetController(const FWidgetControllerParam
 {
 	InitAttributeMenuWidgetController(WCParams);
 	InitWeaponMenuWidgetController(WCParams);
+	InitSpellMenuWidgetController(WCParams);
 }
 
 void UMenuWidgetController::InitAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
@@ -68,6 +69,15 @@ UWeaponMenuWidgetController* UMenuWidgetController::GetWeaponMenuWidgetControlle
 	if (WeaponMenuController)
 	{
 		return WeaponMenuController;
+	}
+	return nullptr;
+}
+
+USpellMenuWidgetController* UMenuWidgetController::GetSpellMenuWidgetController() const
+{
+	if (SpellMenuWidgetController)
+	{
+		return SpellMenuWidgetController;
 	}
 	return nullptr;
 }

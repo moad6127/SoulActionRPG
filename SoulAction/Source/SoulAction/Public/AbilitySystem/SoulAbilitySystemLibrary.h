@@ -12,6 +12,10 @@
  */
 class UOverlayWidgetController;
 class UAbilitySystemComponent;
+class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
+struct FWidgetControllerParams;
+
 UCLASS()
 class SOULACTION_API USoulAbilitySystemLibrary : public UBlueprintFunctionLibrary
 {
@@ -19,10 +23,16 @@ class SOULACTION_API USoulAbilitySystemLibrary : public UBlueprintFunctionLibrar
 public:
 
 	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
+	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, ASoulHUD*& OutSoulHUD);
+
+	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
 	static UAttributeMenuWidgetController* GetAttributeMeuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category = "SoulAbilitySystemLibrary|WidgetController")
+	static USpellMenuWidgetController* GetSpellMeuWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "SoulAbilitySystemLibrary|CharacterClassInfo")
 	static void InitializeDefautlAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level,UAbilitySystemComponent* ASC);

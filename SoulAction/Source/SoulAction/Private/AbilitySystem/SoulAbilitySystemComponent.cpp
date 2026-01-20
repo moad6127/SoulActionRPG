@@ -74,6 +74,20 @@ void USoulAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 
 void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
 {
+	if (!GetOwner()->HasAuthority())
+	{
+		ServerEqiupWeaponByTag(WeaponTag);
+	}
+	EquipWeaponBody(WeaponTag);
+}
+
+void USoulAbilitySystemComponent::ServerEqiupWeaponByTag_Implementation(const FGameplayTag& WeaponTag)
+{
+	EquipWeaponBody(WeaponTag);
+}
+
+void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
+{
 	if (!GetOwner() || !GetOwner()->HasAuthority())
 	{
 		return;
@@ -86,7 +100,7 @@ void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
 	FName RowName = WeaponTag.GetTagName();
 	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
 	{
-		if (ICombatInterface* Combat =Cast<ICombatInterface>(GetAvatarActor()))
+		if (ICombatInterface* Combat = Cast<ICombatInterface>(GetAvatarActor()))
 		{
 			if (!Combat->bInitWeaponGet())
 			{
