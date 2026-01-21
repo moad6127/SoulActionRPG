@@ -353,6 +353,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 
 	InitializeDefaultAttributes();
 	InitStartWeapon(SoulGameplayTags::WeaponTag_Player_Staff);
+
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
 		if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(SoulPlayerController->GetHUD()))
