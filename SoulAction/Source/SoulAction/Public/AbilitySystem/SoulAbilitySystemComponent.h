@@ -46,6 +46,7 @@ public:
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 
+	void InitEquipWeapon(const FGameplayTag& WeaponTag);
 	void EquiWeaponByTag(const FGameplayTag& WeaponTag);
 	void EquipWeaponBody(const FGameplayTag& WeaponTag);
 
@@ -56,6 +57,7 @@ public:
 
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);

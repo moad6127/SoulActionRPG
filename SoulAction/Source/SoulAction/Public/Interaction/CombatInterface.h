@@ -45,8 +45,11 @@ class SOULACTION_API ICombatInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual void Equip(class ABaseWeapon* Weapon);
-	virtual bool bInitWeaponGet() const ;
+	UFUNCTION(BlueprintNativeEvent)
+	void Equip(class ABaseWeapon* Weapon);
+
+	UFUNCTION(BlueprintNativeEvent)
+	bool bInitWeaponGet() const ;
 
 	UFUNCTION(BlueprintNativeEvent)
 	int32 GetPlayerLevel();

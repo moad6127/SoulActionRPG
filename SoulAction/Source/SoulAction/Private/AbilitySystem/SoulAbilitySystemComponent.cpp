@@ -22,6 +22,7 @@ void USoulAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 		if (const USoulGameplayAbility* SoulAbility = Cast<USoulGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulAbility->StartupInputTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Equipped);
 			GiveAbility(AbilitySpec);
 		}
 	}
@@ -72,13 +73,46 @@ void USoulAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 	}
 }
 
+void USoulAbilitySystemComponent::InitEquipWeapon(const FGameplayTag& WeaponTag)
+{
+	if (!GetAvatarActor()->Implements<UCombatInterface>())
+	{
+		return;
+	}
+	if (!ICombatInterface::Execute_bInitWeaponGet(GetAvatarActor()))
+	{
+		return;
+	}
+
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	WeaponDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/Blueprint/AbilitySystem/Data/DT_WeaponDataTable"));
+	if (!WeaponDataTable)
+	{
+		return;
+	}
+	
+	FName RowName = WeaponTag.GetTagName();
+	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
+	{
+		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
+		ICombatInterface::Execute_Equip(GetAvatarActor(), SpawnedWeapon);
+	}
+}
+
 void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)
 {
 	if (!GetOwner()->HasAuthority())
 	{
 		ServerEqiupWeaponByTag(WeaponTag);
 	}
-	EquipWeaponBody(WeaponTag);
+	else
+	{
+		EquipWeaponBody(WeaponTag);
+	}
 }
 
 void USoulAbilitySystemComponent::ServerEqiupWeaponByTag_Implementation(const FGameplayTag& WeaponTag)
@@ -88,6 +122,11 @@ void USoulAbilitySystemComponent::ServerEqiupWeaponByTag_Implementation(const FG
 
 void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 {
+	if (!GetAvatarActor()->Implements<UCombatInterface>())
+	{
+		return;
+	}
+
 	if (!GetOwner() || !GetOwner()->HasAuthority())
 	{
 		return;
@@ -97,18 +136,12 @@ void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 	{
 		return;
 	}
+
 	FName RowName = WeaponTag.GetTagName();
 	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
 	{
-		if (ICombatInterface* Combat = Cast<ICombatInterface>(GetAvatarActor()))
-		{
-			if (!Combat->bInitWeaponGet())
-			{
-				return;
-			}
-			ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
-			Combat->Equip(SpawnedWeapon);
-		}
+		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
+		ICombatInterface::Execute_Equip(GetAvatarActor(), SpawnedWeapon);
 	}
 }
 
@@ -147,6 +180,18 @@ FGameplayTag USoulAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
 		{
 			return Tag;
+		}
+	}
+	return FGameplayTag();
+}
+
+FGameplayTag USoulAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (FGameplayTag StatusTag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (StatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Status"))))
+		{
+			return StatusTag;
 		}
 	}
 	return FGameplayTag();

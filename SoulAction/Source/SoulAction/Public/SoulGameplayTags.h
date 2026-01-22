@@ -82,6 +82,17 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Summon);
 
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_HitReact);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Locked);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Eligible);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Unlocked);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Equipped);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Offensive);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Passive);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_None);
+
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Rolling);

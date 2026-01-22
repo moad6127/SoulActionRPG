@@ -36,7 +36,7 @@ public:
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
-	virtual bool bInitWeaponGet() const override;
+	virtual bool bInitWeaponGet_Implementation() const override;
 
 	virtual void StartDash_Implementation() override;
 	virtual void EndDash_Implementation() override;
@@ -70,7 +70,7 @@ protected:
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
 
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
-	virtual void Equip(class ABaseWeapon* Weapon) override;
+	virtual void Equip_Implementation(class ABaseWeapon* Weapon) override;
 
 	void EquipWeapon(ABaseWeapon* WeaponToEquip);
 

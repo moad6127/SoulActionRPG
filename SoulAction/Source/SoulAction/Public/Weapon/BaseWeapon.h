@@ -26,6 +26,8 @@ public:
 	FVector GetTipSocketLocation() const;
 	FName GetAttachWeaponSocketName() const;
 	USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -44,5 +46,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TArray<TSubclassOf<UGameplayAbility>> GrantedAbilities;
 
+private:
 
+	UPROPERTY(ReplicatedUsing = OnRep_Dropped)
+	bool bIsDropped = false;
+
+	UFUNCTION()
+	void OnRep_Dropped();
 };

@@ -61,7 +61,7 @@ void ABaseCharacter::Die()
 
 }
 
-bool ABaseCharacter::bInitWeaponGet() const
+bool ABaseCharacter::bInitWeaponGet_Implementation() const
 {
 	return bInitWeapon;
 }
@@ -181,7 +181,8 @@ void ABaseCharacter::InitStartWeapon(const FGameplayTag& WeaponTag)
 	USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent);
 	if (SoulASC)
 	{
-		SoulASC->EquiWeaponByTag(WeaponTag);
+		SoulASC->InitEquipWeapon(WeaponTag);
+		bInitWeapon = false;
 	}
 }
 
@@ -231,7 +232,7 @@ FVector ABaseCharacter::GetCombatSocketLocation_Implementation(const FGameplayTa
 	return FVector();
 }
 
-void ABaseCharacter::Equip(ABaseWeapon* Weapon)
+void ABaseCharacter::Equip_Implementation(ABaseWeapon* Weapon)
 {
 	if (HasAuthority())
 	{

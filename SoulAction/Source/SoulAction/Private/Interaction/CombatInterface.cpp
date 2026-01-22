@@ -5,14 +5,4 @@
 
 // Add default functionality here for any ICombatInterface functions that are not pure virtual.
 
-void ICombatInterface::Equip(ABaseWeapon* Weapon)
-{
-}
-
-bool ICombatInterface::bInitWeaponGet() const
-{
-	return false;
-}
-
-
 
