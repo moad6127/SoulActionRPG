@@ -42,6 +42,7 @@ void USoulWidgetController::BroadcastAbilityInfo()
 
 			FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
 			Info.InputTag = USoulAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			Info.StatusTag = USoulAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		});
 
