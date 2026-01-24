@@ -94,6 +94,7 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_None);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Lightning_Electrocute);
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Rolling);
 

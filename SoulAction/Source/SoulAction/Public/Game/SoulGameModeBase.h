@@ -6,11 +6,13 @@
 #include "GameFramework/GameModeBase.h"
 #include "SoulGameModeBase.generated.h"
 
+
 /**
  * 
  */
 
 class UCharacterClassInfo;
+class UAbilityInfo;
 UCLASS()
 class SOULACTION_API ASoulGameModeBase : public AGameModeBase
 {
@@ -20,4 +22,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AbilityInfo")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 };

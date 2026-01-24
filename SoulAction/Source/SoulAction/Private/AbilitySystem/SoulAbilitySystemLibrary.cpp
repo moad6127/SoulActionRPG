@@ -124,13 +124,24 @@ void USoulAbilitySystemLibrary::GiveStartupAbities(const UObject* WorldContextOb
 
 UCharacterClassInfo* USoulAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
-	ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	const ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (SoulGameMode == nullptr)
 	{
 		return nullptr;
 	}
 
 	return SoulGameMode->CharacterClassInfo;
+}
+
+UAbilityInfo* USoulAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const ASoulGameModeBase* SoulGameMode = Cast<ASoulGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (SoulGameMode == nullptr)
+	{
+		return nullptr;
+	}
+
+	return SoulGameMode->AbilityInfo;
 }
 
 bool USoulAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
