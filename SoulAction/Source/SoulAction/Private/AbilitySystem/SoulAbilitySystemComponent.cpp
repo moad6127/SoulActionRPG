@@ -8,6 +8,8 @@
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void USoulAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -197,6 +199,23 @@ FGameplayTag USoulAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbili
 	return FGameplayTag();
 }
 
+FGameplayAbilitySpec* USoulAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	FScopedAbilityListLock ActivaeScopeLock(*this);
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		{
+			if (Tag.MatchesTag(AbilityTag))
+			{
+				return &AbilitySpec;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 void USoulAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
@@ -211,6 +230,29 @@ void USoulAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& Attribute
 void USoulAbilitySystemComponent::UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP)
 {
 	ServerUpgradeAttributeUseXP(AttributeTag,InXP);
+}
+
+void USoulAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
+{
+	UAbilityInfo* AbilityInfo = USoulAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	for (const FSoulAbilityInfo& Info : AbilityInfo->AbilityInformation)
+	{
+		if (!Info.AbilityTag.IsValid())
+		{
+			continue;
+		}
+		if (Level < Info.LevelRequirement)
+		{
+			continue;
+		}
+		if (GetSpecFromAbilityTag(Info.AbilityTag) == nullptr)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Info.Ability, 1);
+			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Eligible);
+			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+		}
+	}
 }
 
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()

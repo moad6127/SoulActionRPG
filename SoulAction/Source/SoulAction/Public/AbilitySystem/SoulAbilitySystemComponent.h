@@ -59,8 +59,12 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
+	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
+
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);
+
+	void UpdateAbilityStatus(int32 Level);
 protected:
 
 	virtual void OnRep_ActivateAbilities() override;
