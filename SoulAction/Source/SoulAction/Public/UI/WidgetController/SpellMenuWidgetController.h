@@ -18,4 +18,10 @@ public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerStatChangedSignature SpellPointChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Menu")
+	FOnPlayerStatChangedSignature XPPointsChangeDelegate;
+
 };

@@ -444,6 +444,12 @@ void ASoulCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 	ASoulPlayerState* SoulPlayerState = GetPlayerState<ASoulPlayerState>();
 	check(SoulPlayerState);
 	SoulPlayerState->AddToLevel(InPlayerLevel);
+
+	if (USoulAbilitySystemComponent* ASC = Cast<USoulAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		ASC->UpdateAbilityStatus(SoulPlayerState->GetPlayerLevel());
+	}
+
 }
 
 void ASoulCharacter::AddToAttributePoints_Implementation(int32 InAttributePoins)

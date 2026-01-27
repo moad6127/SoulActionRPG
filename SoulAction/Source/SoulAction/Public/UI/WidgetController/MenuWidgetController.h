@@ -34,6 +34,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	USpellMenuWidgetController* GetSpellMenuWidgetController() const;
+
+
 private:
 	void InitAttributeMenuWidgetController(const FWidgetControllerParams& WCParams);
 	void InitWeaponMenuWidgetController(const FWidgetControllerParams& WCParams);

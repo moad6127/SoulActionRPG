@@ -33,7 +33,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Menu")
 	FOnPlayerStatChangedSignature XPPointsChangeDelegate;
 
 	UFUNCTION(BlueprintCallable)

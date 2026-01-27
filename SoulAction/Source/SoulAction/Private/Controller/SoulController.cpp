@@ -11,6 +11,7 @@
 #include "AbilitySystem/SoulAbilitySystemComponent.h"
 #include "Character/SoulCharacter.h"
 #include "UI/Widget/DamageTextComponent.h"
+#include "SoulGameplayTags.h"
 
 
 void ASoulController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
@@ -60,6 +61,14 @@ USoulAbilitySystemComponent* ASoulController::GetASC()
 
 void ASoulController::Input_Move(const FInputActionValue& InputActionValue)
 {
+	if (GetASC() == nullptr)
+	{
+		return;
+	}
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Status_UI_Open))
+	{
+		return;
+	}
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -88,7 +97,13 @@ void ASoulController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void ASoulController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+
 	if (GetASC() == nullptr)
+	{
+		return;
+	}
+
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Status_UI_Open))
 	{
 		return;
 	}
@@ -97,7 +112,13 @@ void ASoulController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void ASoulController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+
 	if (GetASC() == nullptr)
+	{
+		return;
+	}
+
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Status_UI_Open))
 	{
 		return;
 	}
@@ -124,6 +145,7 @@ void ASoulController::OpenMenu()
 	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
 	{
 		SoulHUD->DisplayMenu();
+		GetASC()->AddLooseGameplayTag(SoulGameplayTags::Status_UI_Open);
 	}
 }
 
@@ -132,6 +154,7 @@ void ASoulController::HideMenu()
 	if (ASoulHUD* SoulHUD = Cast<ASoulHUD>(GetHUD()))
 	{
 		SoulHUD->HideMenu();
+		GetASC()->RemoveLooseGameplayTag(SoulGameplayTags::Status_UI_Open);
 	}
 }
 

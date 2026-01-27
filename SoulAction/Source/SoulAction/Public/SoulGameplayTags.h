@@ -104,6 +104,9 @@ namespace SoulGameplayTags
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
 
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_UI_Open);
+
 	extern TArray<FGameplayTag> DamageTypes;
 	
 }

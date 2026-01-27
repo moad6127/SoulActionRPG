@@ -251,6 +251,7 @@ void USoulAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientUpdateAbiltiyStatus(Info.AbilityTag, SoulGameplayTags::Abilities_Status_Eligible);
 		}
 	}
 }
@@ -264,6 +265,11 @@ void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGivenDelegate.Broadcast();
 	}
+}
+
+void USoulAbilitySystemComponent::ClientUpdateAbiltiyStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 

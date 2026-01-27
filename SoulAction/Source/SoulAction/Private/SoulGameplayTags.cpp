@@ -87,5 +87,7 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Rolling, "Abilities.Rolling", "Rolling Ability Tag");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effects_HitReact, "Effects.HitReact", "HitReact");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_UI_Open, "Status.UI.Open", "MenuOpenTag");
 }
 
