@@ -43,3 +43,8 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		}
 	);
 }
+
+void USpellMenuWidgetController::SelectAbility(USoulUserWidget* AbilityButton)
+{
+	AbilitySelecteDelegate.Broadcast(AbilityButton);
+}
