@@ -79,6 +79,8 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_4);
 
 	/*Ability Tag*/
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_None);
+
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Summon);
 
