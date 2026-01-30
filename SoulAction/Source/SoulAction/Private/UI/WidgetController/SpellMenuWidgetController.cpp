@@ -26,6 +26,15 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	GetSoulASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag) 
 		{
+			if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
+			{
+				SelectedAbility.Status = StatusTag;
+
+				bool bEnableSpendPoint = false;
+				bool bEnableEquip = false;
+				ShouldEnableButtons(StatusTag, CurrentXP, SelectedAbility.SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
+				SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
+			}
 			if (AbilityInfo)
 			{
 				FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -33,14 +42,25 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 				AbilityInfoDelegate.Broadcast(Info);
 			}
 		});
+
+	// SpellPoint를 사용할경우 Point를 델리게이트로 보내기
+	/*
 	GetSoulPS()->OnSpellPointsChangedDelegate.AddLambda([this](int32 SpellPoints)
 		{
 			SpellPointChanged.Broadcast(SpellPoints);
 		});
+		*/
+
 	GetSoulPS()->OnXPChangedDelegate.AddLambda(
 		[this](int32 InXP)
 		{
 			XPPointsChangeDelegate.Broadcast(InXP);
+			CurrentXP = InXP;
+
+			bool bEnableSpendPoint = false;
+			bool bEnableEquip = false;
+			ShouldEnableButtons(SelectedAbility.Status, CurrentXP, SelectedAbility.SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
+			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
 		}
 	);
 }
@@ -54,7 +74,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 {
 	// XPPoint
 	const int32 XPPoints = GetSoulPS()->GetXP();
-	int32 AbilityLevel;
+	int32 AbilityLevel = 0;
 	FGameplayTag AbilityStatus;
 
 	const bool bTagValid = AbilityTag.IsValid();
@@ -74,6 +94,11 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	{
 		AbilityStatus = GetSoulASC()->GetStatusFromSpec(*AbilitySpec);
 	}
+
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatus;
+	SelectedAbility.SelectedAbilityLevel = AbilityLevel;
+
 	bool bEnableSpendPoint = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, XPPoints, AbilityLevel, bEnableSpendPoint, bEnableEquip);

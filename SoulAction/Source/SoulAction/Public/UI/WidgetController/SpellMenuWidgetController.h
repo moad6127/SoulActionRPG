@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI/WidgetController/SoulWidgetController.h"
 #include "GameplayTagContainer.h"
+#include "SoulGameplayTags.h"
 #include "SpellMenuWidgetController.generated.h"
 
 /**
@@ -13,6 +14,14 @@
 class USoulUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilitySelctedSignature, USoulUserWidget*, AbilityButton);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectedSignatrue, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled);
+
+
+struct FSelectedAbility
+{
+	FGameplayTag Ability = FGameplayTag();
+	FGameplayTag Status = FGameplayTag();
+	int32 SelectedAbilityLevel = 0;
+};
 
 UCLASS(BlueprintType, Blueprintable)
 class SOULACTION_API USpellMenuWidgetController : public USoulWidgetController
@@ -45,4 +54,7 @@ public:
 private:
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton);
+
+	FSelectedAbility SelectedAbility = { SoulGameplayTags::Abilities_None, SoulGameplayTags::Abilities_Status_Locked };
+	int32 CurrentXP = 0;
 };
