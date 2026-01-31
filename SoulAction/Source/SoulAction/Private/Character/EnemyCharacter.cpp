@@ -20,6 +20,8 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
+	
+
 	AttributeSet = CreateDefaultSubobject<USoulAttributeSet>("AttributeSet");
 
 	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>("HealthBar");

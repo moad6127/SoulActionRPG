@@ -251,9 +251,46 @@ void USoulAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
-			ClientUpdateAbiltiyStatus(Info.AbilityTag, SoulGameplayTags::Abilities_Status_Eligible);
+			ClientUpdateAbiltiyStatus(Info.AbilityTag, SoulGameplayTags::Abilities_Status_Eligible, 1);
 		}
 	}
+}
+
+void USoulAbilitySystemComponent::ServerSpendSpellXPPoint_Implementation(const FGameplayTag& AbilityTag)
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		FGameplayTag Status = GetStatusFromSpec(*AbilitySpec);
+		if (!GetAvatarActor()->Implements<UPlayerInterface>())
+		{
+			return;
+		}
+		if (Status.MatchesTagExact(SoulGameplayTags::Abilities_Status_Eligible))
+		{
+			//어빌리티 언락
+			if (IPlayerInterface::Execute_GetXP(GetAvatarActor()) < 1000)
+			{
+				return;
+			}
+			AbilitySpec->DynamicAbilityTags.RemoveTag(SoulGameplayTags::Abilities_Status_Eligible);
+			AbilitySpec->DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Unlocked);
+			Status = SoulGameplayTags::Abilities_Status_Unlocked;
+			IPlayerInterface::Execute_AddToXP(GetAvatarActor(), -1000);
+		}
+		else if (Status.MatchesTagExact(SoulGameplayTags::Abilities_Status_Equipped) || Status.MatchesTagExact(SoulGameplayTags::Abilities_Status_Unlocked))
+		{
+			if (IPlayerInterface::Execute_GetXP(GetAvatarActor()) < AbilitySpec->Level * 100)
+			{
+				return;
+			}
+			//어빌리티 레벨업
+			IPlayerInterface::Execute_AddToXP(GetAvatarActor(), -1 * (AbilitySpec->Level * 100));
+			AbilitySpec->Level += 1;
+		}
+		ClientUpdateAbiltiyStatus(AbilityTag, Status, AbilitySpec->Level);
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+
 }
 
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
@@ -267,9 +304,9 @@ void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 	}
 }
 
-void USoulAbilitySystemComponent::ClientUpdateAbiltiyStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+void USoulAbilitySystemComponent::ClientUpdateAbiltiyStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel)
 {
-	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag, AbilityLevel);
 }
 
 

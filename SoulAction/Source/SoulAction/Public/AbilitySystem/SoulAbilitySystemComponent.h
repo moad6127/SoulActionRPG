@@ -26,7 +26,7 @@ struct FWeaponDataRow : public FTableRowBase
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */);
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged, const FGameplayTag& /*AbiltiyTag*/, const FGameplayTag& /*StatusTag*/);
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbiltiyTag*/, const FGameplayTag& /*StatusTag*/,int32 /*AbilityLevel*/);
 
 
 UCLASS()
@@ -68,6 +68,9 @@ public:
 	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);
 
 	void UpdateAbilityStatus(int32 Level);
+
+	UFUNCTION(Server,Reliable)
+	void ServerSpendSpellXPPoint(const FGameplayTag& AbilityTag);
 protected:
 
 	virtual void OnRep_ActivateAbilities() override;
@@ -76,7 +79,7 @@ protected:
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 	
 	UFUNCTION(Client, Reliable)
-	void ClientUpdateAbiltiyStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag);
+	void ClientUpdateAbiltiyStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,int32 AbilityLevel);
 
 	UFUNCTION(Server, Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);

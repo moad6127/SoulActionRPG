@@ -20,7 +20,6 @@ struct FSelectedAbility
 {
 	FGameplayTag Ability = FGameplayTag();
 	FGameplayTag Status = FGameplayTag();
-	int32 SelectedAbilityLevel = 0;
 };
 
 UCLASS(BlueprintType, Blueprintable)
@@ -38,6 +37,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
+
+	UFUNCTION(BlueprintCallable)
+	void SpendPointButtonPressed();
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStatChangedSignature SpellPointChanged;

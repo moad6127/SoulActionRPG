@@ -6,6 +6,7 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Controller/SoulPlayerState.h"
 #include "SoulGameplayTags.h"
+#include "AbilitySystem/SoulAttributeSet.h"
 
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
@@ -24,15 +25,21 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
-	GetSoulASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag) 
+	GetSoulASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,int32 NewLevel) 
 		{
 			if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 			{
 				SelectedAbility.Status = StatusTag;
 
+				int32 SelectedAbilityLevel = 0;
+				if (FGameplayAbilitySpec* Spec = GetSoulASC()->GetSpecFromAbilityTag(AbilityTag))
+				{
+					SelectedAbilityLevel = Spec->Level;
+				}
+
 				bool bEnableSpendPoint = false;
 				bool bEnableEquip = false;
-				ShouldEnableButtons(StatusTag, CurrentXP, SelectedAbility.SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
+				ShouldEnableButtons(StatusTag, CurrentXP, SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
 				SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
 			}
 			if (AbilityInfo)
@@ -57,9 +64,16 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			XPPointsChangeDelegate.Broadcast(InXP);
 			CurrentXP = InXP;
 
+			int32 SelectedAbilityLevel = 0;
+			if (FGameplayAbilitySpec* Spec = GetSoulASC()->GetSpecFromAbilityTag(SelectedAbility.Ability))
+			{
+				SelectedAbilityLevel = Spec->Level;
+			}
+
 			bool bEnableSpendPoint = false;
 			bool bEnableEquip = false;
-			ShouldEnableButtons(SelectedAbility.Status, CurrentXP, SelectedAbility.SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
+			ShouldEnableButtons(SelectedAbility.Status, CurrentXP, SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
+			
 			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
 		}
 	);
@@ -74,16 +88,16 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 {
 	// XPPoint
 	const int32 XPPoints = GetSoulPS()->GetXP();
-	int32 AbilityLevel = 0;
 	FGameplayTag AbilityStatus;
-
+	int32 AbilityLevel = 0;
 	const bool bTagValid = AbilityTag.IsValid();
 	const bool bTagNone = AbilityTag.MatchesTag(SoulGameplayTags::Abilities_None);
 	FGameplayAbilitySpec* AbilitySpec = GetSoulASC()->GetSpecFromAbilityTag(AbilityTag);
 	const bool bSpecValid = AbilitySpec != nullptr;
+
 	if (bSpecValid)
 	{
-		AbilityLevel = AbilitySpec->Ability->GetAbilityLevel();
+		AbilityLevel = AbilitySpec->Level;
 	}
 	
 	if (!bTagValid || bTagNone || !bSpecValid)
@@ -97,12 +111,21 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 
 	SelectedAbility.Ability = AbilityTag;
 	SelectedAbility.Status = AbilityStatus;
-	SelectedAbility.SelectedAbilityLevel = AbilityLevel;
+
 
 	bool bEnableSpendPoint = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, XPPoints, AbilityLevel, bEnableSpendPoint, bEnableEquip);
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
+}
+
+void USpellMenuWidgetController::SpendPointButtonPressed()
+{
+	if (GetSoulASC())
+	{
+		GetSoulASC()->ServerSpendSpellXPPoint(SelectedAbility.Ability);
+
+	}
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton)
