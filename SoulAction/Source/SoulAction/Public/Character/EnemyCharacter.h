@@ -32,6 +32,7 @@ public:
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget);
 	virtual AActor* GetCombatTarget_Implementation() const;
 
+
 	UFUNCTION(BlueprintCallable)
 	float GetMaxHealth();
 
