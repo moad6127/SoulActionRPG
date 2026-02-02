@@ -86,23 +86,7 @@ void USoulAbilitySystemComponent::InitEquipWeapon(const FGameplayTag& WeaponTag)
 		return;
 	}
 
-	if (!GetOwner() || !GetOwner()->HasAuthority())
-	{
-		return;
-	}
-
-	WeaponDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/Blueprint/AbilitySystem/Data/DT_WeaponDataTable"));
-	if (!WeaponDataTable)
-	{
-		return;
-	}
-	
-	FName RowName = WeaponTag.GetTagName();
-	if (const FWeaponDataRow* Row = WeaponDataTable->FindRow<FWeaponDataRow>(RowName, FString("")))
-	{
-		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
-		ICombatInterface::Execute_Equip(GetAvatarActor(), SpawnedWeapon);
-	}
+	EquipWeaponBody(WeaponTag);
 }
 
 void USoulAbilitySystemComponent::EquiWeaponByTag(const FGameplayTag& WeaponTag)

@@ -50,6 +50,7 @@ public:
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual FVector GetMovementDirection_Implementation() override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual TArray<TSubclassOf<UGameplayAbility>> GetGrantedAbilitiesFromEquipWeapon_Implementation() const override;
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 

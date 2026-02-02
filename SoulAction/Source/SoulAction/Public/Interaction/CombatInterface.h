@@ -35,6 +35,7 @@ class UCombatInterface : public UInterface
 
 class UAnimMontage;
 class UNiagaraSystem;
+class UGameplayAbility;
 /**
  * 
  */
@@ -53,6 +54,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	int32 GetPlayerLevel();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	TArray<TSubclassOf<UGameplayAbility>> GetGrantedAbilitiesFromEquipWeapon() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);

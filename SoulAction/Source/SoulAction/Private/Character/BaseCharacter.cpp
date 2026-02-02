@@ -131,6 +131,15 @@ ECharacterClass ABaseCharacter::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
+TArray<TSubclassOf<UGameplayAbility>> ABaseCharacter::GetGrantedAbilitiesFromEquipWeapon_Implementation() const
+{
+	if (EquippedWeapon)
+	{
+		return EquippedWeapon->GetGrantedAbilities();
+	}
+	return TArray<TSubclassOf<UGameplayAbility>>();
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
@@ -141,7 +150,9 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
-	//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 
 	Dissolve();
 	OnDied.Broadcast();
