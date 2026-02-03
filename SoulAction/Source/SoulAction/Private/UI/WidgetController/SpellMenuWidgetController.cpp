@@ -40,7 +40,10 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 				bool bEnableSpendPoint = false;
 				bool bEnableEquip = false;
 				ShouldEnableButtons(StatusTag, CurrentXP, SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
-				SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
+				FString Description;
+				FString NextLevelDescription;
+				GetSoulASC()->GetDescriptionByAbilityTag(AbilityTag, Description, NextLevelDescription);
+				SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip, Description, NextLevelDescription);
 			}
 			if (AbilityInfo)
 			{
@@ -73,8 +76,10 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			bool bEnableSpendPoint = false;
 			bool bEnableEquip = false;
 			ShouldEnableButtons(SelectedAbility.Status, CurrentXP, SelectedAbilityLevel, bEnableSpendPoint, bEnableEquip);
-			
-			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
+			FString Description;
+			FString NextLevelDescription;
+			GetSoulASC()->GetDescriptionByAbilityTag(SelectedAbility.Ability, Description, NextLevelDescription);
+			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip, Description, NextLevelDescription);
 		}
 	);
 }
@@ -116,7 +121,10 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	bool bEnableSpendPoint = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, XPPoints, AbilityLevel, bEnableSpendPoint, bEnableEquip);
-	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip);
+	FString Description;
+	FString NextLevelDescription;
+	GetSoulASC()->GetDescriptionByAbilityTag(AbilityTag, Description, NextLevelDescription);
+	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoint, bEnableEquip, Description, NextLevelDescription);
 }
 
 void USpellMenuWidgetController::SpendPointButtonPressed()

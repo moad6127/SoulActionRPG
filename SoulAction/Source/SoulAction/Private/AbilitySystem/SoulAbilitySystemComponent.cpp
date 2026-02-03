@@ -277,6 +277,23 @@ void USoulAbilitySystemComponent::ServerSpendSpellXPPoint_Implementation(const F
 
 }
 
+bool USoulAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription)
+{
+	if (const FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (USoulGameplayAbility* SoulAbility = Cast<USoulGameplayAbility>(AbilitySpec->Ability))
+		{
+			OutDescription = SoulAbility->GetDescription(AbilitySpec->Level);
+			OutNextLevelDescription = SoulAbility->GetNextLevelDescription(AbilitySpec->Level + 1);
+			return true;
+		}
+	}
+	const UAbilityInfo* AbilityInfo = USoulAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	OutDescription = USoulGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	OutNextLevelDescription = FString();
+	return false;
+}
+
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();
