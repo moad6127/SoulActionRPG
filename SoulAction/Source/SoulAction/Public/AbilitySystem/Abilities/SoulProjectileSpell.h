@@ -17,6 +17,8 @@ UCLASS()
 class SOULACTION_API USoulProjectileSpell : public USoulDamageGameplayAbility
 {
 	GENERATED_BODY()
+public:
+
 	
 
 protected:
@@ -28,6 +30,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ASoulProjectile> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	int32 NumProjectiles = 5;
 
 
 };
