@@ -51,6 +51,8 @@ public:
 	virtual FVector GetMovementDirection_Implementation() override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual TArray<TSubclassOf<UGameplayAbility>> GetGrantedAbilitiesFromEquipWeapon_Implementation() const override;
+	virtual FName GetEquippedWeaponName_Implementation() const override;
+	
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 

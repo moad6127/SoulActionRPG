@@ -36,10 +36,16 @@ public:
 	void SelectAbility(USoulUserWidget* AbilityButton);
 
 	UFUNCTION(BlueprintCallable)
+	void DeselectAbility();
+
+	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
 
 	UFUNCTION(BlueprintCallable)
 	void SpendPointButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
+	FName GetEquippedWeaponName();
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStatChangedSignature SpellPointChanged;
@@ -52,6 +58,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeSelectedSignatrue SpellGlobeSelectedDelegate;
+
 
 private:
 

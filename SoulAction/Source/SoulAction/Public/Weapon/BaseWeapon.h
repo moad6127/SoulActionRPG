@@ -25,6 +25,7 @@ public:
 	const TArray<TSubclassOf<UGameplayAbility>>& GetGrantedAbilities() const { return GrantedAbilities; }
 	FVector GetTipSocketLocation() const;
 	FName GetAttachWeaponSocketName() const;
+	FName GetWeaponName() const { return WeaponName; }
 	USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -42,6 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	FName WeaponTipSocketName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	FName WeaponName;
+
 	// 이 무기가 제공하는 Ability (추후 GAS 연결)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TArray<TSubclassOf<UGameplayAbility>> GrantedAbilities;
@@ -50,6 +54,8 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Dropped)
 	bool bIsDropped = false;
+
+
 
 	UFUNCTION()
 	void OnRep_Dropped();

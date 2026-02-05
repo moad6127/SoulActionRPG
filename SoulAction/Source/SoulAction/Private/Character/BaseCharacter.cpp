@@ -140,6 +140,15 @@ TArray<TSubclassOf<UGameplayAbility>> ABaseCharacter::GetGrantedAbilitiesFromEqu
 	return TArray<TSubclassOf<UGameplayAbility>>();
 }
 
+FName ABaseCharacter::GetEquippedWeaponName_Implementation() const
+{
+	if (EquippedWeapon)
+	{
+		return EquippedWeapon->GetWeaponName();
+	}
+	return FName();
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {

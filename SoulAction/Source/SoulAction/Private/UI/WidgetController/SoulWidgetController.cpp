@@ -30,6 +30,9 @@ void USoulWidgetController::BroadcastAbilityInfo()
 	{
 		return;
 	}
+	
+
+	OnAbilityListChanged.Broadcast();
 
 	FForEachAbility BroadcastDelegate;
 	BroadcastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)

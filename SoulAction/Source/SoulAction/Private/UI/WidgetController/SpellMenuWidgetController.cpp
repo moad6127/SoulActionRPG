@@ -89,6 +89,14 @@ void USpellMenuWidgetController::SelectAbility(USoulUserWidget* AbilityButton)
 	AbilitySelecteDelegate.Broadcast(AbilityButton);
 }
 
+void USpellMenuWidgetController::DeselectAbility()
+{
+	SelectedAbility.Ability = SoulGameplayTags::Abilities_None;
+	SelectedAbility.Status = SoulGameplayTags::Abilities_Status_Locked;
+
+	SpellGlobeSelectedDelegate.Broadcast(false, false, FString(), FString());
+}
+
 void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
 {
 	// XPPoint
@@ -134,6 +142,15 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 		GetSoulASC()->ServerSpendSpellXPPoint(SelectedAbility.Ability);
 
 	}
+}
+
+FName USpellMenuWidgetController::GetEquippedWeaponName()
+{
+	if (GetSoulASC())
+	{
+		return GetSoulASC()->GetEquippedWeaponName();
+	}
+	return FName();
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton)

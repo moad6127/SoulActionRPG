@@ -50,7 +50,10 @@ public:
 	void Equip(class ABaseWeapon* Weapon);
 
 	UFUNCTION(BlueprintNativeEvent)
-	bool bInitWeaponGet() const ;
+	bool bInitWeaponGet() const;
+
+	UFUNCTION(BlueprintNativeEvent)
+	FName GetEquippedWeaponName() const;
 
 	UFUNCTION(BlueprintNativeEvent)
 	int32 GetPlayerLevel();

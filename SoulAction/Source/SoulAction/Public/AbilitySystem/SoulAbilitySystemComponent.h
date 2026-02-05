@@ -52,6 +52,7 @@ public:
 	void InitEquipWeapon(const FGameplayTag& WeaponTag);
 	void EquiWeaponByTag(const FGameplayTag& WeaponTag);
 	void EquipWeaponBody(const FGameplayTag& WeaponTag);
+	FName GetEquippedWeaponName() const;
 
 	UFUNCTION(Server, Reliable)
 	void ServerEqiupWeaponByTag(const FGameplayTag& WeaponTag);

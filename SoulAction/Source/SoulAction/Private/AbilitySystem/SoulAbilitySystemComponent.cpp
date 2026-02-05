@@ -131,6 +131,15 @@ void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 	}
 }
 
+FName USoulAbilitySystemComponent::GetEquippedWeaponName() const
+{
+	if (GetAvatarActor()->Implements<UCombatInterface>())
+	{
+		return ICombatInterface::Execute_GetEquippedWeaponName(GetAvatarActor());
+	}
+	return FName();
+}
+
 void USoulAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
 {
 	FScopedAbilityListLock ActiveScopeLock(*this);
@@ -289,7 +298,14 @@ bool USoulAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag&
 		}
 	}
 	const UAbilityInfo* AbilityInfo = USoulAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-	OutDescription = USoulGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	if (!AbilityTag.IsValid() || AbilityTag.MatchesTagExact(SoulGameplayTags::Abilities_None))
+	{
+		OutDescription = FString();
+	}
+	else
+	{
+		OutDescription = USoulGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	}
 	OutNextLevelDescription = FString();
 	return false;
 }

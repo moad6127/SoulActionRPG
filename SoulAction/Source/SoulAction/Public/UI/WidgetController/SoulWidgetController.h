@@ -12,7 +12,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignature, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FSoulAbilityInfo&, Info);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityListChanged);
 
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -60,8 +60,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Level")
 	FOnPlayerStatChangedSignature OnPlayerLevelChangeDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
 	FAbilityInfoSignature AbilityInfoDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
+	FOnAbilityListChanged OnAbilityListChanged;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget|Data")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
