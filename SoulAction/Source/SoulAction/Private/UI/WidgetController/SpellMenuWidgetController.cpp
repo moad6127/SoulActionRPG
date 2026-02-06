@@ -144,6 +144,27 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 	}
 }
 
+void USpellMenuWidgetController::GetAllAbilityInfos(TArray<FSoulAbilityInfo>& OutInfos)
+{
+	OutInfos.Empty();
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this, &OutInfos](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			const FGameplayTag AbilityTag = USoulAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec);
+			if (!AbilityTag.IsValid())
+			{
+				return;
+			}
+
+			FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+			Info.InputTag = USoulAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			Info.StatusTag = USoulAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
+			OutInfos.Add(Info);
+		});
+
+	GetSoulASC()->ForEachAbility(BroadcastDelegate);
+}
+
 FName USpellMenuWidgetController::GetEquippedWeaponName()
 {
 	if (GetSoulASC())

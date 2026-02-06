@@ -45,6 +45,9 @@ public:
 	void SpendPointButtonPressed();
 
 	UFUNCTION(BlueprintCallable)
+	void GetAllAbilityInfos(TArray<FSoulAbilityInfo>& OutInfos);
+
+	UFUNCTION(BlueprintCallable)
 	FName GetEquippedWeaponName();
 
 	UPROPERTY(BlueprintAssignable)
