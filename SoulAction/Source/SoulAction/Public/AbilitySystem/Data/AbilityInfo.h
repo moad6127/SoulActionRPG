@@ -27,6 +27,9 @@ struct FSoulAbilityInfo
 	FGameplayTag CooldownTag = FGameplayTag();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilityType = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<const UTexture2D> ICon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

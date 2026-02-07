@@ -14,6 +14,7 @@
 class USoulUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilitySelctedSignature, USoulUserWidget*, AbilityButton);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignatrue, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled, FString, DescriptionString, FString, NextDescriptionString);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForEquipSelection, const FGameplayTag&, AbilityType);
 
 
 struct FSelectedAbility
@@ -50,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FName GetEquippedWeaponName();
 
+	UFUNCTION(BlueprintCallable)
+	void EquipButtonPressed();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStatChangedSignature SpellPointChanged;
 
@@ -62,11 +66,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeSelectedSignatrue SpellGlobeSelectedDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FWaitForEquipSelection WaitForEquipSelection;
 
+	UPROPERTY(BlueprintAssignable)
+	FWaitForEquipSelection StopWaitingForEquipDelegate;
 private:
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton);
 
 	FSelectedAbility SelectedAbility = { SoulGameplayTags::Abilities_None, SoulGameplayTags::Abilities_Status_Locked };
 	int32 CurrentXP = 0;
+
+	bool bWaitingForEquipSelection = false;
 };

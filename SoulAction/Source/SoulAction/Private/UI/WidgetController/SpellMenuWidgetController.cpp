@@ -91,6 +91,13 @@ void USpellMenuWidgetController::SelectAbility(USoulUserWidget* AbilityButton)
 
 void USpellMenuWidgetController::DeselectAbility()
 {
+	if (bWaitingForEquipSelection)
+	{
+		const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
+		StopWaitingForEquipDelegate.Broadcast(SelectedAbilityType);
+		bWaitingForEquipSelection = false;
+	}
+
 	SelectedAbility.Ability = SoulGameplayTags::Abilities_None;
 	SelectedAbility.Status = SoulGameplayTags::Abilities_Status_Locked;
 
@@ -99,6 +106,13 @@ void USpellMenuWidgetController::DeselectAbility()
 
 void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
 {
+	if (bWaitingForEquipSelection)
+	{
+		const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType;
+		StopWaitingForEquipDelegate.Broadcast(SelectedAbilityType);
+		bWaitingForEquipSelection = false;
+	}
+
 	// XPPoint
 	const int32 XPPoints = GetSoulPS()->GetXP();
 	FGameplayTag AbilityStatus;
@@ -172,6 +186,14 @@ FName USpellMenuWidgetController::GetEquippedWeaponName()
 		return GetSoulASC()->GetEquippedWeaponName();
 	}
 	return FName();
+}
+
+void USpellMenuWidgetController::EquipButtonPressed()
+{
+	const FGameplayTag AbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
+
+	WaitForEquipSelection.Broadcast(AbilityType);
+	bWaitingForEquipSelection = true;
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton)
