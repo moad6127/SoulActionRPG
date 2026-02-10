@@ -78,13 +78,14 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Type_Passive, "Abilities.Type.Passive", "Passive Type Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Type_None, "Abilities.Type.None", "None Type Ability Tag");
 
-
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Player_Dash, "Abilities.Player.Dash", "Dash Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Fire_FireBolt, "Abilities.Fire.FireBolt", "FireBolt Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Lightning_Electrocute, "Abilities.Lightning.Electrocute", "Electrocute Ability Tag");
 
 	
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_Fire_FireBolt, "Cooldown.Fire.FireBolt", "FireBolt Cooldown Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_Player_Dash, "Cooldown.Player.Dash", "Dash Cooldown Tag");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Rolling, "Abilities.Rolling", "Rolling Ability Tag");
 

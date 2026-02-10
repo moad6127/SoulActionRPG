@@ -15,6 +15,7 @@ class USoulUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilitySelctedSignature, USoulUserWidget*, AbilityButton);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignatrue, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled, FString, DescriptionString, FString, NextDescriptionString);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForEquipSelection, const FGameplayTag&, AbilityType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpellGlobeReassignedSignatrue, const FGameplayTag&, AbilityTag);
 
 
 struct FSelectedAbility
@@ -76,7 +77,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FWaitForEquipSelection StopWaitingForEquipDelegate;
-private:
+
+	UPROPERTY(BlueprintAssignable)
+	FSpellGlobeReassignedSignatrue SpellGlobeReassignedDelegate;
+private: 
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton);
 
