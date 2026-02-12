@@ -57,6 +57,7 @@ namespace SoulGameplayTags
 	/*WeaponTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Staff);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Bow);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Player_Sword);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Spear);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_Slingshot);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(WeaponTag_Enemy_ShamanStaff);
@@ -64,8 +65,15 @@ namespace SoulGameplayTags
 	/*Damage Tag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Lightning);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Arcane);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
+	/*Debuff*/
 
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Burn);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Stun);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Arcane);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Physical);
 	/*SocketTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);
@@ -111,5 +119,5 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_UI_Open);
 
 	extern TArray<FGameplayTag> DamageTypes;
-	
+	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
 }

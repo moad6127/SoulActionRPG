@@ -38,7 +38,8 @@ namespace SoulGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Player_Staff, "WeaponTag.Player.Staff", "WeaponTag Staff");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Player_Bow, "WeaponTag.Player.Bow", "WeaponTag Bow");
-	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Player_Sword, "WeaponTag.Player.Sword", "WeaponTag Sword");
+
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Spear, "WeaponTag.Enemy.Spear", "WeaponTag Spear");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_Slingshot, "WeaponTag.Enemy.Slingshot", "WeaponTag Slingshot");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WeaponTag_Enemy_ShamanStaff, "WeaponTag.Enemy.ShamanStaff", "WeaponTag ShamanStaff");
@@ -46,12 +47,29 @@ namespace SoulGameplayTags
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Fire, "Damage.Fire", "Fire Damage Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Lightning, "Damage.Lightning", "Lightning Damage Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Arcane, "Damage.Arcane", "Arcane Damage Type");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Physical, "Damage.Physical", "Physical Damage Type");
 	
 	TArray<FGameplayTag> DamageTypes = 
 	{
 		Damage_Fire,
-		Damage_Physical
+		Damage_Physical,
+		Damage_Lightning,
+		Damage_Arcane
+	};
+
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Burn, "Debuff.Burn", "Debuff Burn Damage Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Stun, "Debuff.Stun", "Debuff Stun Damage Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Arcane, "Debuff.Arcane", "Debuff Arcane Damage Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Physical, "Debuff.Physical", "Debuff Physical Damage Type");
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs =
+	{
+		{Damage_Fire,Debuff_Burn},
+		{Damage_Physical,Debuff_Physical},
+		{Damage_Lightning,Debuff_Stun},
+		{Damage_Arcane,Debuff_Arcane}
 	};
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(CombatSocket_Weapon, "CombatSocket.Weapon", "Weapon CombatSocket Ability Tag");

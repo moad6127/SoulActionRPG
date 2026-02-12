@@ -7,7 +7,7 @@
 FString USoulFireBolt::GetDescription(int32 Level)
 {
 
-	const int32 Damage = GetDamageByDamageType(Level, SoulGameplayTags::Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float CostValue = FMath::Abs(GetCost(Level));
 	const float CooldownValue = GetCooldown(Level);
 
@@ -34,7 +34,7 @@ FString USoulFireBolt::GetDescription(int32 Level)
 			Level,
 			CostValue,
 			CooldownValue,
-			Damage
+			ScaledDamage
 			);
 	}
 	else
@@ -60,13 +60,13 @@ FString USoulFireBolt::GetDescription(int32 Level)
 			CostValue,
 			CooldownValue,
 			FMath::Min(Level,NumProjectiles),
-			Damage);
+			ScaledDamage);
 	}
 }
 
 FString USoulFireBolt::GetNextLevelDescription(int32 Level)
 {
-	const int32 Damage = GetDamageByDamageType(Level, SoulGameplayTags::Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float CostValue = FMath::Abs(GetCost(Level));
 	const float CooldownValue = GetCooldown(Level);
 
@@ -91,5 +91,5 @@ FString USoulFireBolt::GetNextLevelDescription(int32 Level)
 		CostValue,
 		CooldownValue,
 		FMath::Min(Level, NumProjectiles),
-		Damage);
+		ScaledDamage);
 }
