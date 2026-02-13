@@ -74,6 +74,13 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Stun);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Arcane);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Physical);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Params_Chance);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Params_Damage);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Params_Durtion);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Params_Frequency);
+
+
 	/*SocketTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);

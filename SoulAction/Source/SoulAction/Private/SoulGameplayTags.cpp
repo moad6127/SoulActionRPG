@@ -71,6 +71,11 @@ namespace SoulGameplayTags
 		{Damage_Lightning,Debuff_Stun},
 		{Damage_Arcane,Debuff_Arcane}
 	};
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Params_Chance, "Debuff.Params.Chance", "Debuff Chance Params Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Params_Damage, "Debuff.Params.Damage", "Debuff Damage Params Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Params_Durtion, "Debuff.Params.Durtion", "Debuff Durtion Params Type");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Params_Frequency, "Debuff.Params.Frequency", "Debuff Frequency Params Type");
+
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(CombatSocket_Weapon, "CombatSocket.Weapon", "Weapon CombatSocket Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(CombatSocket_RightHand, "CombatSocket.RightHand", "RightHand CombatSocket Ability Tag");
