@@ -12,6 +12,8 @@
 #include "SoulAbilityTypes.h"
 #include "Interaction/CombatInterface.h"
 #include "Engine/OverlapResult.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "SoulGameplayTags.h"
 
 bool USoulAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, ASoulHUD*& OutSoulHUD)
 {
@@ -209,6 +211,25 @@ bool USoulAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 	//const bool SecondActorIsPlayer = SecondActor->ActorHasTag(FName("Player"));
 
 	//return FirstActorIsPlayer != SecondActorIsPlayer;
+}
+
+FGameplayEffectContextHandle USoulAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
+{
+	
+	const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComp->GetAvatarActor();
+
+	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComp->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(SourceAvatarActor);
+	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComp->MakeOutgoingSpec(DamageEffectParams.DamageGameplayEffectClass, DamageEffectParams.AbilityLevel, EffectContextHandle);
+	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SoulGameplayTags::Debuff_Params_Chance,DamageEffectParams.DebuffChance);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SoulGameplayTags::Debuff_Params_Damage, DamageEffectParams.DebuffDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SoulGameplayTags::Debuff_Params_Durtion, DamageEffectParams.DebuffDuration);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SoulGameplayTags::Debuff_Params_Frequency, DamageEffectParams.DebuffFrequency);
+
+	DamageEffectParams.TargetAbilitySystemComp->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	return EffectContextHandle;
 }
 
 int32 USoulAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel)

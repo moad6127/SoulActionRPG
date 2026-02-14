@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SoulAbilityTypes.h"
 #include "AbilitySystem/Abilities/SoulGameplayAbility.h"
 #include "Interaction/CombatInterface.h"
 #include "SoulDamageGameplayAbility.generated.h"
@@ -18,6 +19,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
+
+	FDamageEffectParams MakeDamageEffectPrarmsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
 protected:
 

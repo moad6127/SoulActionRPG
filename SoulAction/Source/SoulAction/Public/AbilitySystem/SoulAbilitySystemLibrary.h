@@ -16,6 +16,7 @@ class UAttributeMenuWidgetController;
 class USpellMenuWidgetController;
 class UAbilityInfo;
 struct FWidgetControllerParams;
+struct FDamageEffectParams;
 
 UCLASS()
 class SOULACTION_API USoulAbilitySystemLibrary : public UBlueprintFunctionLibrary
@@ -64,6 +65,10 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "SoulAbilitySystemLibrary|GameplayEffects")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
+
+	UFUNCTION(BlueprintCallable, Category = "SoulAbilitySystemLibrary|DamageEffect")
+	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
+
 
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
 };
