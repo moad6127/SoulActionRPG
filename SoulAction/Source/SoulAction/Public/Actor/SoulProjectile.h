@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameplayEffectTypes.h"
+#include "SoulAbilityTypes.h"
 #include "SoulProjectile.generated.h"
 
 class USphereComponent;
@@ -22,11 +22,13 @@ public:
 
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+	FDamageEffectParams DamageEffectParans;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
+
+	void OnHit();
 
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -50,16 +50,21 @@ void ASoulProjectile::Destroyed()
 {
 	if (!bHit && !HasAuthority())
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		if (LoopingSoundComponent)
-		{
-			LoopingSoundComponent->Stop();
-		}
-		bHit = true;
+		OnHit();
 	}
 
 	Super::Destroyed();
+}
+
+void ASoulProjectile::OnHit()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+	}
+	bHit = true;
 }
 
 void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -68,23 +73,18 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 	{
 		return;
 	}
-	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
+	AActor* SourceAvatarActor = DamageEffectParans.SourceAbilitySystemComp->GetAvatarActor();
+	if (SourceAvatarActor == OtherActor)
 	{
 		return;
 	}
-	if (!USoulAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
+	if (!USoulAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor))
 	{
 		return;
 	}
 	if (!bHit)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		if (LoopingSoundComponent)
-		{
-			LoopingSoundComponent->Stop();
-		}
-		bHit = true;
+		OnHit();
 	}
 
 
@@ -92,7 +92,8 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 	{
 		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			DamageEffectParans.TargetAbilitySystemComp = TargetASC;
+			USoulAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParans);
 		}
 
 		Destroy();
