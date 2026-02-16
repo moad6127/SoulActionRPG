@@ -75,6 +75,35 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParmas.SourceTags = SourceTags;
 	EvaluationParmas.TargetTags = TargetTags;
 
+
+	/*
+	* Debuff
+	*/
+
+	for (TTuple<FGameplayTag, FGameplayTag> Pair : SoulGameplayTags::DamageTypesToDebuffs)
+	{
+		const FGameplayTag& DamageType = Pair.Key;
+		const FGameplayTag& DebuffType = Pair.Value;
+		const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType, false, -1.f);
+		if (TypeDamage > -.5f)
+		{
+			const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Chance, false, -1.f);
+		
+			//속성별 저항이 따로 존재할경우 계산한후 Resistance자리에 넣기
+			float Resistance = 10.f;
+			const float EffectiveDebuffChance = SourceDebuffChance * (100 - Resistance) / 100;
+			const int32 RandNums = FMath::RandRange(1, 100);
+			const bool bDebuff = RandNums < EffectiveDebuffChance;
+			UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %d"), RandNums);
+			UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %f"), EffectiveDebuffChance);
+			if (bDebuff)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Debuff"));
+			}
+		}
+
+	}
+
 	/*
 	* SetByCaller로 Damage 가져오기
 	*/

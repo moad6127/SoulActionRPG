@@ -10,6 +10,12 @@
 
 class UGameplayAbility;
 class ABaseCharacter;
+class UBlendSpace;
+
+struct FWeaponAinmations
+{
+	TObjectPtr<UBlendSpace> WeaponRun;
+};
 
 UCLASS()
 class SOULACTION_API ABaseWeapon : public AActor
@@ -49,6 +55,9 @@ protected:
 	// 이 무기가 제공하는 Ability (추후 GAS 연결)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TArray<TSubclassOf<UGameplayAbility>> GrantedAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TObjectPtr<UBlendSpace> WeaponRun;
 
 private:
 
