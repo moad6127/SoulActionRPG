@@ -33,6 +33,8 @@ public:
 	FName GetAttachWeaponSocketName() const;
 	FName GetWeaponName() const { return WeaponName; }
 	USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+	UBlendSpace* GetWeaponRunAnim() const { return WeaponRunAnim; }
+	UBlendSpace* GetWeaponTargetAnim() const { return WeaponTargetOnAnim; }
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
@@ -57,7 +59,10 @@ protected:
 	TArray<TSubclassOf<UGameplayAbility>> GrantedAbilities;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TObjectPtr<UBlendSpace> WeaponRun;
+	TObjectPtr<UBlendSpace> WeaponRunAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TObjectPtr<UBlendSpace> WeaponTargetOnAnim;
 
 private:
 

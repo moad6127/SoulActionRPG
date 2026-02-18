@@ -164,6 +164,55 @@ bool USoulAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle
 	return false;
 }
 
+bool USoulAbilitySystemLibrary::IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->IsSuccessfulDebuff();
+	}
+	return false;
+}
+
+float USoulAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->GetDebuffDamage();
+	}
+	return 0.f;
+}
+
+float USoulAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->GetDebuffDuration();
+	}
+	return 0.f;
+}
+
+float USoulAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return SoulEffectContext->GetDebuffFrequency();
+	}
+	return 0.f;
+}
+
+FGameplayTag USoulAbilitySystemLibrary::GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FSoulGameplayEffectContext* SoulEffectContext = static_cast<const FSoulGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		if (SoulEffectContext->GetDamageType().IsValid())
+		{
+			return *SoulEffectContext->GetDamageType();
+		}
+	}
+
+	return FGameplayTag();
+}
+
 
 void USoulAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit)
 {
