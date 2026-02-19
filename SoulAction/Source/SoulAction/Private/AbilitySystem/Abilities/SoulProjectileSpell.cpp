@@ -46,8 +46,8 @@ void USoulProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		ASoulProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASoulProjectile>(
 			ProjectileClass,
 			SpawnTransform,
-			GetOwningActorFromActorInfo(),
-			Cast<APawn>(GetOwningActorFromActorInfo()),
+			GetAvatarActorFromActorInfo(),
+			Cast<APawn>(GetAvatarActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 		Projectile->DamageEffectParans = MakeDamageEffectPrarmsFromClassDefaults();

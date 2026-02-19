@@ -73,12 +73,7 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 	{
 		return;
 	}
-	AActor* SourceAvatarActor = DamageEffectParans.SourceAbilitySystemComp->GetAvatarActor();
-	if (SourceAvatarActor == OtherActor)
-	{
-		return;
-	}
-	if (!USoulAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor))
+	if (!USoulAbilitySystemLibrary::IsNotFriend(GetOwner(), OtherActor))
 	{
 		return;
 	}
@@ -90,6 +85,7 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 
 	if (HasAuthority())
 	{
+		//check(DamageEffectParans.SourceAbilitySystemComp);
 		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
 			DamageEffectParans.TargetAbilitySystemComp = TargetASC;

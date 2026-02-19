@@ -94,11 +94,22 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 			const float EffectiveDebuffChance = SourceDebuffChance * (100 - Resistance) / 100;
 			const int32 RandNums = FMath::RandRange(1, 100);
 			const bool bDebuff = RandNums < EffectiveDebuffChance;
-			UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %d"), RandNums);
-			UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %f"), EffectiveDebuffChance);
+			//UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %d"), RandNums);
+			//UE_LOG(LogTemp, Warning, TEXT("DebuffChance : %f"), EffectiveDebuffChance);
 			if (bDebuff)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Debuff"));
+				//UE_LOG(LogTemp, Warning, TEXT("Debuff"));
+				FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
+				USoulAbilitySystemLibrary::SetIsSuccessfulDebuff(ContextHandle, true);
+				USoulAbilitySystemLibrary::SetDamageType(ContextHandle, DamageType);
+
+				const float DebuffDamage = Spec.GetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Damage, false, -1.f);
+				const float DebuffDuration = Spec.GetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Durtion, false, -1.f);
+				const float DebuffFrequency = Spec.GetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Frequency, false, -1.f);
+
+				USoulAbilitySystemLibrary::SetDebuffDamage(ContextHandle, DebuffDamage);
+				USoulAbilitySystemLibrary::SetDebuffDuration(ContextHandle, DebuffDuration);
+				USoulAbilitySystemLibrary::SetDebuffFrequency(ContextHandle, DebuffFrequency);
 			}
 		}
 

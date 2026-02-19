@@ -137,34 +137,7 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
-		const float LocalIncomingDamage = GetIncomingDamage();
-		SetIncomingDamage(0.f);
-		if (LocalIncomingDamage > 0.f)
-		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-
-			const bool bFatal = NewHealth <= 0.f;
-			if (bFatal)
-			{
-				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
-				if (CombatInterface)
-				{
-					CombatInterface->Die();
-				}
-				SendXPEvent(Props);
-			}
-			else
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(SoulGameplayTags::Effects_HitReact);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-			}
-
-			const bool bBlock = USoulAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
-			const bool bCriticalHit = USoulAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
-			ShowFloatingText(Props, LocalIncomingDamage, bBlock, bCriticalHit);
-		}
+		HandleIncomingDamage(Props);
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
 	{
@@ -176,36 +149,45 @@ void USoulAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 }
 
-void USoulAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void USoulAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
-	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	const float LocalIncomingDamage = GetIncomingDamage();
+	SetIncomingDamage(0.f);
+	if (LocalIncomingDamage > 0.f)
+	{
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
-	if (Attribute == GetMaxHealthAttribute() && bTopOfHealth)
-	{
-		SetHealth(GetMaxHealth());
-		bTopOfHealth = false;
-	}
-	if (Attribute == GetMaxStaminaAttribute() && bTopOfStamina)
-	{
-		SetStamina(GetMaxStamina());
-		bTopOfStamina = false;
+		const bool bFatal = NewHealth <= 0.f;
+		if (bFatal)
+		{
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+			if (CombatInterface)
+			{
+				CombatInterface->Die();
+			}
+			SendXPEvent(Props);
+		}
+		else
+		{
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(SoulGameplayTags::Effects_HitReact);
+			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+		}
+
+		const bool bBlock = USoulAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+		const bool bCriticalHit = USoulAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+		ShowFloatingText(Props, LocalIncomingDamage, bBlock, bCriticalHit);
+		if (USoulAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+		{
+			Debuff(Props);
+		}
 	}
 }
 
-void USoulAttributeSet::SendXPEvent(const FEffectProperties& Props)
+void USoulAttributeSet::Debuff(const FEffectProperties& Props)
 {
-	if (Props.TargetCharacter->Implements<UCombatInterface>())
-	{
-		const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter);
-		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
-		const int32 XPReward = USoulAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
-		
-		FGameplayEventData Payload;
-		Payload.EventTag = SoulGameplayTags::Attributes_Meta_IncomingXP;
-		Payload.EventMagnitude = XPReward;
 
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, SoulGameplayTags::Attributes_Meta_IncomingXP, Payload);
-	}
 }
 
 void USoulAttributeSet::IncomingXPWithLevelUp(const FEffectProperties& Props)
@@ -213,7 +195,6 @@ void USoulAttributeSet::IncomingXPWithLevelUp(const FEffectProperties& Props)
 	const float LocalIncomingXP = GetIncomingXP();
 	SetIncomingXP(0.f);
 
-	//TODO : (나중에 엘든링 스타일로 바꾸기)
 	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
 	{
 		const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
@@ -247,6 +228,38 @@ void USoulAttributeSet::IncomingXPOther(const FEffectProperties& Props)
 	if (Props.SourceCharacter->Implements<UPlayerInterface>())
 	{
 		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+	}
+}
+
+void USoulAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetMaxHealthAttribute() && bTopOfHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bTopOfHealth = false;
+	}
+	if (Attribute == GetMaxStaminaAttribute() && bTopOfStamina)
+	{
+		SetStamina(GetMaxStamina());
+		bTopOfStamina = false;
+	}
+}
+
+void USoulAttributeSet::SendXPEvent(const FEffectProperties& Props)
+{
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
+	{
+		const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetCharacter);
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 XPReward = USoulAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+		
+		FGameplayEventData Payload;
+		Payload.EventTag = SoulGameplayTags::Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, SoulGameplayTags::Attributes_Meta_IncomingXP, Payload);
 	}
 }
 

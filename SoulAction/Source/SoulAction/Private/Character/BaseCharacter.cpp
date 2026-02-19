@@ -278,6 +278,25 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 	}
 }
 
+UBlendSpace* ABaseCharacter::GetLockOnWeaponAnimation() const
+{ 
+	if (EquippedWeapon && EquippedWeapon->GetWeaponTargetAnim())
+	{
+		return EquippedWeapon->GetWeaponTargetAnim();
+	}
+	return DefaultWeaponTargetOnAnim;
+}
+
+UBlendSpace* ABaseCharacter::GetRunWeaponAnimation() const
+{
+	if (EquippedWeapon && EquippedWeapon->GetWeaponRunAnim())
+	{
+		return EquippedWeapon->GetWeaponRunAnim();
+	}
+	return DefaultWeaponRunAnim;
+}
+
+
 void ABaseCharacter::Dissolve()
 {
 	if (IsValid(DissolveMaterialInst))

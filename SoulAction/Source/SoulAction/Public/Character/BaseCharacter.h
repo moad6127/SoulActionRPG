@@ -77,6 +77,12 @@ protected:
 
 	void EquipWeapon(ABaseWeapon* WeaponToEquip);
 
+	UFUNCTION(BlueprintCallable)
+	UBlendSpace* GetLockOnWeaponAnimation() const;
+
+	UFUNCTION(BlueprintCallable)
+	UBlendSpace* GetRunWeaponAnimation() const;
+
 	void Dissolve();
 	
 	UFUNCTION()
@@ -149,4 +155,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TObjectPtr<UBlendSpace> DefaultWeaponRunAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TObjectPtr<UBlendSpace> DefaultWeaponTargetOnAnim;
 };

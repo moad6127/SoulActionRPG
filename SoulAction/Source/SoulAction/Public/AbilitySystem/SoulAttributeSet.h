@@ -204,6 +204,8 @@ private:
 	void SendXPEvent(const FEffectProperties& Props);
 	void IncomingXPWithLevelUp(const FEffectProperties& Props);
 	void IncomingXPOther(const FEffectProperties& Props);
+	void HandleIncomingDamage(const FEffectProperties& Props);
+	void Debuff(const FEffectProperties& Props);
 
 	bool bTopOfHealth = false;
 	bool bTopOfStamina = false;
