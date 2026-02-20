@@ -113,7 +113,7 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Player_Dash);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Lightning_Electrocute);
-
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Sword_MeleeAttack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Rolling);
 
 	/*CooldownTag*/

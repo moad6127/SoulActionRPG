@@ -103,6 +103,7 @@ namespace SoulGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Player_Dash, "Abilities.Player.Dash", "Dash Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Fire_FireBolt, "Abilities.Fire.FireBolt", "FireBolt Ability Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Sword_MeleeAttack, "Abilities.Sword.MeleeAttack", "Sword MeleeAttack Ability Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Lightning_Electrocute, "Abilities.Lightning.Electrocute", "Electrocute Ability Tag");
 
 	
