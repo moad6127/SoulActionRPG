@@ -13,6 +13,7 @@
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
 #include "Interaction/PlayerInterface.h"
 #include "SoulAbilityTypes.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
@@ -208,7 +209,17 @@ void USoulAttributeSet::Debuff(const FEffectProperties& Props)
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 
-	Effect->InheritableOwnedTagsContainer.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
+	//엔진 5.3이상에서는 더이상 사용하지 않는 기능이다.
+	// 	UE_DEPRECATED(5.3, "Inheritable Owned Tags Container is deprecated. To configure, add a UTargetTagsGameplayEffectComponent. To access, use GetGrantedTags.")
+	//
+	//Effect->InheritableOwnedTagsContainer.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
+
+	
+	FInheritedTagContainer TagContainer = FInheritedTagContainer();
+	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	TagContainer.Added.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
+	TagContainer.CombinedTags.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
+	Component.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;

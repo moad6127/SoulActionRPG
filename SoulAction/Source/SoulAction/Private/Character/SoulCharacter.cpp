@@ -350,6 +350,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = SoulPlayerState->GetAbilitySystemComponent();
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = SoulPlayerState->GetAttributeSet();
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
 
 	InitializeDefaultAttributes();
 	InitStartWeapon(SoulGameplayTags::WeaponTag_Player_Staff);

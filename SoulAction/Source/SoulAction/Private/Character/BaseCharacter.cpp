@@ -10,12 +10,17 @@
 #include "SoulGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
+	BurnDebuffComp = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("BurnDebuffComp"));
+	BurnDebuffComp->SetupAttachment(GetRootComponent());
+	BurnDebuffComp->DebuffTag = SoulGameplayTags::Debuff_Burn;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
@@ -149,6 +154,16 @@ FName ABaseCharacter::GetEquippedWeaponName_Implementation() const
 	return FName();
 }
 
+FOnASCRegistered ABaseCharacter::GetOnASCRegisteredDelegate()
+{
+	return OnASCRegistered;
+}
+
+FOnDeath& ABaseCharacter::GetOnDeathDelegate()
+{
+	return OnDeath;
+}
+
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
@@ -166,6 +181,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	Dissolve();
 	OnDied.Broadcast();
 	bDead = true;
+	OnDeath.Broadcast(this);
 }
 
 // Called when the game starts or when spawned

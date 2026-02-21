@@ -16,6 +16,7 @@ class UGameplayAbility;
 class ABaseWeapon;
 struct FGameplayTag;
 class UNiagaraSystem;
+class UDebuffNiagaraComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDied);
 
@@ -52,7 +53,12 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual TArray<TSubclassOf<UGameplayAbility>> GetGrantedAbilitiesFromEquipWeapon_Implementation() const override;
 	virtual FName GetEquippedWeaponName_Implementation() const override;
-	
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath& GetOnDeathDelegate() override;
+
+	FOnASCRegistered OnASCRegistered;
+	FOnDeath OnDeath;
+
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 
@@ -98,6 +104,9 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComp;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
