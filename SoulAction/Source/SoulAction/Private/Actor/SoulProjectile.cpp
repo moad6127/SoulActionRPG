@@ -88,6 +88,8 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 		//check(DamageEffectParans.SourceAbilitySystemComp);
 		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
+			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParans.DeathImpulseMagnitude;
+			DamageEffectParans.DeathImpulse = DeathImpulse;
 			DamageEffectParans.TargetAbilitySystemComp = TargetASC;
 			USoulAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParans);
 		}
