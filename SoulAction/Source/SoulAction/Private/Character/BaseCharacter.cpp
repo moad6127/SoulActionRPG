@@ -56,13 +56,13 @@ UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
-void ABaseCharacter::Die()
+void ABaseCharacter::Die(const FVector& DeathImpulse)
 {
 	if (EquippedWeapon)
 	{
 		EquippedWeapon->Unequip(this);
 	}
-	MulticastHandleDeath();
+	MulticastHandleDeath(DeathImpulse);
 
 }
 
@@ -165,7 +165,7 @@ FOnDeath& ABaseCharacter::GetOnDeathDelegate()
 }
 
 
-void ABaseCharacter::MulticastHandleDeath_Implementation()
+void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImpulse)
 {
 	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
 
@@ -173,6 +173,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	GetMesh()->AddImpulse(DeathImpulse, NAME_None, true);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
@@ -291,6 +292,11 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 
 		AttachEquippedWeapon();
 		//UE_LOG(LogTemp, Warning, TEXT("EquippedWeapon: %s"), *EquippedWeapon->GetName());
+		AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
+		if (USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent))
+		{
+			SoulASC->EquipWeaponAbilities(EquippedWeapon);
+		}
 	}
 }
 

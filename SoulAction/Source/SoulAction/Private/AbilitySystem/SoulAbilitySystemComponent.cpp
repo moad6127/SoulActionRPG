@@ -128,7 +128,41 @@ void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 	{
 		ABaseWeapon* SpawnedWeapon = GetWorld()->SpawnActor<ABaseWeapon>(Row->WeaponClass);
 		ICombatInterface::Execute_Equip(GetAvatarActor(), SpawnedWeapon);
+		//EquipWeaponAbilities(SpawnedWeapon);
 	}
+}
+
+void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapon)
+{
+
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : SpawnedWeapon->GetGrantedAbilities())
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		if (const USoulGameplayAbility* SoulAbility = Cast<USoulGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(SoulAbility->StartupInputTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Equipped);
+			FGameplayAbilitySpecHandle SpecHandle = GiveAbility(AbilitySpec);
+			//TODO Weapon클래스에 SpecHandle을 저장한후 교체할때 제거하도록 만들기
+			ServerWeaponAbilityEquip(SpecHandle);
+		}
+	}
+
+	AbilitiesGivenDelegate.Broadcast();
+
+}
+
+void USoulAbilitySystemComponent::ServerWeaponAbilityEquip_Implementation(FGameplayAbilitySpecHandle AbilitySpecHandle)
+{
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilitySpecHandle);
+	const FGameplayTag& AbilityTag = GetAbilityTagFromSpec(*AbilitySpec);
+	const FGameplayTag& Slot = GetInputTagFromSpec(*AbilitySpec);
+	ClearAbilitiesOfSlot(Slot);
+	AbilitySpec->DynamicAbilityTags.AddTag(Slot);
+	MarkAbilitySpecDirty(*AbilitySpec);
+
+	ClientEquipAbility(AbilityTag, SoulGameplayTags::Abilities_Status_Equipped, Slot, Slot);
+
 }
 
 FName USoulAbilitySystemComponent::GetEquippedWeaponName() const
@@ -212,7 +246,7 @@ FGameplayTag USoulAbilitySystemComponent::GetInputTagFromAbilityTag(const FGamep
 
 FGameplayAbilitySpec* USoulAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
 {
-	FScopedAbilityListLock ActivaeScopeLock(*this);
+	FScopedAbilityListLock ActiveScopeLock(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
@@ -224,6 +258,19 @@ FGameplayAbilitySpec* USoulAbilitySystemComponent::GetSpecFromAbilityTag(const F
 		}
 	}
 
+	return nullptr;
+}
+
+FGameplayAbilitySpec* USoulAbilitySystemComponent::GetSepcFromInputTag(const FGameplayTag& InputTag)
+{
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			return &AbilitySpec;
+		}
+	}
 	return nullptr;
 }
 
@@ -314,7 +361,7 @@ void USoulAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 		const bool bStatusValid = Status == SoulGameplayTags::Abilities_Status_Equipped || Status == SoulGameplayTags::Abilities_Status_Unlocked;
 		if (bStatusValid)
 		{
-			//현재 InputTag를 사용하는 모든 Ability제거하기
+			//현재 InputTag를 사용하는 모든 Ability제거하기()
 			ClearAbilitiesOfSlot(Slot);
 			// 현재 선택된 Ability의 Slot제거하기
 			ClearSlot(AbilitySpec);
@@ -335,6 +382,7 @@ void USoulAbilitySystemComponent::ClientEquipAbility_Implementation(const FGamep
 {
 	AbilityEquipped.Broadcast(AbilityTag, Status, Slot, PrevSlot);
 }
+
 
 bool USoulAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription)
 {
@@ -369,7 +417,7 @@ void USoulAbilitySystemComponent::ClearSlot(FGameplayAbilitySpec* Spec)
 
 void USoulAbilitySystemComponent::ClearAbilitiesOfSlot(const FGameplayTag& Slot)
 {
-	FScopedAbilityListLock ActiveSlpcedLock(*this);
+	FScopedAbilityListLock ActiveScopeLock(*this);
 	for (FGameplayAbilitySpec& Spec : GetActivatableAbilities())
 	{
 		if (AbilityHasSlot(&Spec, Slot))

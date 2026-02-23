@@ -353,7 +353,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
 
 	InitializeDefaultAttributes();
-	InitStartWeapon(SoulGameplayTags::WeaponTag_Player_Staff);
+
 
 	if (ASoulController* SoulPlayerController = Cast<ASoulController>(GetController()))
 	{
@@ -362,7 +362,7 @@ void ASoulCharacter::InitAbilityActorInfo()
 			SoulHUD->InitOverlay(SoulPlayerController, SoulPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-
+	InitStartWeapon(SoulGameplayTags::WeaponTag_Player_Staff);
 }
 
 
@@ -373,7 +373,7 @@ void ASoulCharacter::PossessedBy(AController* NewController)
 
 	//서버용 Ability Actor 초기화 하기
 	InitAbilityActorInfo();
-	AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
+	//AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
 	AddCharacterAbilities(StartupAbilities);
 	AddCharacterPassiveAbilities(StartupPassiveAbilities);
 

@@ -53,6 +53,7 @@ public:
 	void InitEquipWeapon(const FGameplayTag& WeaponTag);
 	void EquiWeaponByTag(const FGameplayTag& WeaponTag);
 	void EquipWeaponBody(const FGameplayTag& WeaponTag);
+	void EquipWeaponAbilities(ABaseWeapon* SpawnedWeapon);
 	FName GetEquippedWeaponName() const;
 
 	UFUNCTION(Server, Reliable)
@@ -68,6 +69,7 @@ public:
 
 
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayAbilitySpec* GetSepcFromInputTag(const FGameplayTag& InputTag);
 
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 	void UpgradeAttributeUseXP(const FGameplayTag& AttributeTag, int32 InXP);
@@ -79,6 +81,9 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void ServerEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
+
+	UFUNCTION(Server, Reliable)
+	void ServerWeaponAbilityEquip(FGameplayAbilitySpecHandle AbilitySpecHandle);
 
 	UFUNCTION(Client, Reliable)
 	void ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot);

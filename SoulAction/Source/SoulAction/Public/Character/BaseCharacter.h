@@ -36,7 +36,7 @@ public:
 	FVector GetLockOnPosisionLocation() const;
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	virtual bool bInitWeaponGet_Implementation() const override;
 
 	virtual void StartDash_Implementation() override;
@@ -60,7 +60,7 @@ public:
 	FOnDeath OnDeath;
 
 	UFUNCTION(NetMulticast,Reliable)
-	virtual void MulticastHandleDeath();
+	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnCharacterDied OnDied;
