@@ -90,6 +90,16 @@ void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* 
 		{
 			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParans.DeathImpulseMagnitude;
 			DamageEffectParans.DeathImpulse = DeathImpulse;
+			
+			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParans.KnockbackChance;
+			if (bKnockback)
+			{
+				FRotator Rotation = GetActorRotation();
+				Rotation.Pitch = 45.f;
+				const FVector KnockbackDirection = Rotation.Vector();
+				const FVector KnockbackForce = KnockbackDirection * DamageEffectParans.KnockbackForceMagnitude;
+				DamageEffectParans.KnockbackForce = KnockbackForce;
+			}
 			DamageEffectParans.TargetAbilitySystemComp = TargetASC;
 			USoulAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParans);
 		}

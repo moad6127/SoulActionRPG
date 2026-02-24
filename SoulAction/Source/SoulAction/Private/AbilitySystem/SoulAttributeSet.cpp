@@ -14,6 +14,7 @@
 #include "Interaction/PlayerInterface.h"
 #include "SoulAbilityTypes.h"
 #include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 USoulAttributeSet::USoulAttributeSet()
 {
@@ -180,6 +181,13 @@ void USoulAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			FGameplayTagContainer TagContainer;
 			TagContainer.AddTag(SoulGameplayTags::Effects_HitReact);
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+
+			const FVector& KnockbackForce = USoulAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
+			if (!KnockbackForce.IsNearlyZero(10.f))
+			{
+				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
+				Props.TargetCharacter->GetCharacterMovement()->StopActiveMovement();
+			}
 		}
 
 		const bool bBlock = USoulAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);

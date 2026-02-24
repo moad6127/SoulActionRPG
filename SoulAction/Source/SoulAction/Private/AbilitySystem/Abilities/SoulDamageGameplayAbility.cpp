@@ -4,15 +4,29 @@
 #include "AbilitySystem/Abilities/SoulDamageGameplayAbility.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
 
 void USoulDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
-	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1);
+	FDamageEffectParams DamageEffectParams = MakeDamageEffectPrarmsFromClassDefaults(TargetActor);
 
+	FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
+	Rotation.Pitch = 45.f;
+	const FVector ToTarget = Rotation.Vector();
+	DamageEffectParams.DeathImpulse = ToTarget * DamageEffectParams.DeathImpulseMagnitude;
+	const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
+	if (bKnockback)
+	{
+		DamageEffectParams.KnockbackForce = ToTarget * DamageEffectParams.KnockbackForceMagnitude;
+	}
+	USoulAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
+
+	/*
+	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1);
 	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, DamageType, ScaledDamage);
-
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+	*/
 }
 
 FDamageEffectParams USoulDamageGameplayAbility::MakeDamageEffectPrarmsFromClassDefaults(AActor* TargetActor) const
@@ -30,6 +44,8 @@ FDamageEffectParams USoulDamageGameplayAbility::MakeDamageEffectPrarmsFromClassD
 	Params.DebuffDuration = DebuffDuration;
 	Params.DebuffFrequency = DebuffFrequency;
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
+	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
+	Params.KnockbackChance = KnockbackChance;
 
 	return Params;
 }
