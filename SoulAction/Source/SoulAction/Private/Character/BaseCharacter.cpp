@@ -292,7 +292,7 @@ void ABaseCharacter::EquipWeapon(ABaseWeapon* WeaponToEquip)
 
 		AttachEquippedWeapon();
 		//UE_LOG(LogTemp, Warning, TEXT("EquippedWeapon: %s"), *EquippedWeapon->GetName());
-		AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
+		//AddCharacterAbilities(EquippedWeapon->GetGrantedAbilities());
 		if (USoulAbilitySystemComponent* SoulASC = CastChecked<USoulAbilitySystemComponent>(AbilitySystemComponent))
 		{
 			SoulASC->EquipWeaponAbilities(EquippedWeapon);

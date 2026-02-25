@@ -114,5 +114,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	UDataTable* WeaponDataTable;
 
+private:
+
+	TArray<FGameplayAbilitySpecHandle> EquippedWeaopnAbilitySpecHanle;
 
 };

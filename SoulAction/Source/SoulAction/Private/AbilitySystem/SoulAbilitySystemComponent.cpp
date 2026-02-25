@@ -134,6 +134,15 @@ void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 
 void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapon)
 {
+	//이전 무기의 Ability들을 제거하기
+	for (const FGameplayAbilitySpecHandle& EquippedSpecHandle : EquippedWeaopnAbilitySpecHanle)
+	{
+		if (EquippedSpecHandle.IsValid())
+		{
+			ClearAbility(EquippedSpecHandle);
+		}
+	}
+	EquippedWeaopnAbilitySpecHanle.Empty();
 
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : SpawnedWeapon->GetGrantedAbilities())
 	{
@@ -143,7 +152,7 @@ void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapo
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulAbility->StartupInputTag);
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Equipped);
 			FGameplayAbilitySpecHandle SpecHandle = GiveAbility(AbilitySpec);
-			//TODO Weapon클래스에 SpecHandle을 저장한후 교체할때 제거하도록 만들기
+			EquippedWeaopnAbilitySpecHanle.Add(SpecHandle);
 			ServerWeaponAbilityEquip(SpecHandle);
 		}
 	}

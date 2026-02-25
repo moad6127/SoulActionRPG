@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/SoulFireBolt.h"
 #include "SoulAction/Public/SoulGameplayTags.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 FString USoulFireBolt::GetDescription(int32 Level)
 {
@@ -92,4 +93,47 @@ FString USoulFireBolt::GetNextLevelDescription(int32 Level)
 		CooldownValue,
 		FMath::Min(Level, NumProjectiles),
 		ScaledDamage);
+}
+
+void USoulFireBolt::SpawnProjectiles(AActor* HomingTarget, const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride)
+{
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	if (!bIsServer)
+	{
+		return;
+	}
+	if (GetAvatarActorFromActorInfo()->Implements<UCombatInterface>())
+	{
+		const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
+			GetAvatarActorFromActorInfo(),
+			SocketTag);
+		//const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		if (bOverridePitch)
+		{
+			Rotation.Pitch = PitchOverride;
+		}
+
+		const FVector Forward = Rotation.Vector();
+		const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.f, FVector::UpVector);
+
+
+		const int32 NumFireBolt = FMath::Min(NumProjectiles, GetAbilityLevel());
+		if (NumFireBolt > 1)
+		{
+			const float DeltaSpread = ProjectileSpread / (NumFireBolt - 1);
+			for (int i = 0; i < NumFireBolt;i++)
+			{
+				const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
+			}
+		}
+		else
+		{
+			//SingleProejctile
+		}
+
+		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Rotation.Vector() * 100.f, 5, FLinearColor::Green, 120.f, 5);
+
+
+	}
 }
