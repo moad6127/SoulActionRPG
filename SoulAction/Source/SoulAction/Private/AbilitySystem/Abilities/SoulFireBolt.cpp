@@ -4,7 +4,8 @@
 #include "AbilitySystem/Abilities/SoulFireBolt.h"
 #include "SoulAction/Public/SoulGameplayTags.h"
 #include "Kismet/KismetSystemLibrary.h"
-
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
+#include "Actor/SoulProjectile.h"
 FString USoulFireBolt::GetDescription(int32 Level)
 {
 
@@ -115,25 +116,30 @@ void USoulFireBolt::SpawnProjectiles(AActor* HomingTarget, const FVector& Projec
 		}
 
 		const FVector Forward = Rotation.Vector();
-		const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.f, FVector::UpVector);
-
-
 		const int32 NumFireBolt = FMath::Min(NumProjectiles, GetAbilityLevel());
-		if (NumFireBolt > 1)
-		{
-			const float DeltaSpread = ProjectileSpread / (NumFireBolt - 1);
-			for (int i = 0; i < NumFireBolt;i++)
-			{
-				const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
-			}
-		}
-		else
-		{
-			//SingleProejctile
-		}
 
-		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Rotation.Vector() * 100.f, 5, FLinearColor::Green, 120.f, 5);
+		TArray<FRotator> Rotations = USoulAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, NumFireBolt);
 
+		for (const FRotator& Rot : Rotations)
+		{
+			FTransform SpawnTransform;
+
+			SpawnTransform.SetLocation(SocketLocation);
+			SpawnTransform.SetRotation(Rot.Quaternion());
+
+
+			ASoulProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASoulProjectile>(
+				ProjectileClass,
+				SpawnTransform,
+				GetAvatarActorFromActorInfo(),
+				Cast<APawn>(GetAvatarActorFromActorInfo()),
+				ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+			Projectile->DamageEffectParans = MakeDamageEffectPrarmsFromClassDefaults();
+
+
+			Projectile->FinishSpawning(SpawnTransform);
+		}
 
 	}
 }
