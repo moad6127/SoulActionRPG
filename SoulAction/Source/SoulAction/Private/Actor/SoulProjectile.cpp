@@ -44,6 +44,7 @@ void ASoulProjectile::BeginPlay()
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ASoulProjectile::OnSphereOverlap);
 
 	LoopingSoundComponent =  UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	SetReplicateMovement(true);
 }
 
 void ASoulProjectile::Destroyed()

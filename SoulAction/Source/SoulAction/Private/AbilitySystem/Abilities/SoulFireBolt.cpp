@@ -6,6 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
 #include "Actor/SoulProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 FString USoulFireBolt::GetDescription(int32 Level)
 {
 
@@ -137,9 +138,17 @@ void USoulFireBolt::SpawnProjectiles(AActor* HomingTarget, const FVector& Projec
 
 			Projectile->DamageEffectParans = MakeDamageEffectPrarmsFromClassDefaults();
 
+			Projectile->SetHomingTargetComponent(NewObject<USceneComponent>(USceneComponent::StaticClass()));
+			Projectile->GetHomingTargetComponent()->SetWorldLocation(ProjectileTargetLocation);
+			Projectile->GetProjectileComp()->HomingTargetComponent = Projectile->GetHomingTargetComponent();
+
+			Projectile->GetProjectileComp()->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+			Projectile->GetProjectileComp()->bIsHomingProjectile = bLaunchHomingProjectiles;
+
+
 
 			Projectile->FinishSpawning(SpawnTransform);
 		}
-
 	}
+
 }

@@ -19,7 +19,8 @@ public:
 	ASoulProjectile();
 
 	UProjectileMovementComponent* GetProjectileComp() { return ProjectileMovement; }
-
+	USceneComponent* GetHomingTargetComponent() { return HomingTargetComponent; }
+	void SetHomingTargetComponent(USceneComponent* InTarget) { HomingTargetComponent = InTarget; }
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	FDamageEffectParams DamageEffectParans;
@@ -32,6 +33,10 @@ protected:
 
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetComponent;
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
