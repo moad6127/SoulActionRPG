@@ -49,6 +49,12 @@ void ASoulProjectile::BeginPlay()
 
 void ASoulProjectile::Destroyed()
 {
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
+
 	if (!bHit && !HasAuthority())
 	{
 		OnHit();
@@ -64,6 +70,7 @@ void ASoulProjectile::OnHit()
 	if (LoopingSoundComponent)
 	{
 		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
 	}
 	bHit = true;
 }

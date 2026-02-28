@@ -67,6 +67,9 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly )
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComp;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bShockLoop = false;
+
 private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
