@@ -55,11 +55,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	int32 SourcePlayerLevel = 1;
 	int32 TargetPlayerLevel = 1;
-	if (SourceAvatar->Implements<UCombatInterface>())
+	if (SourceAvatar && SourceAvatar->Implements<UCombatInterface>())
 	{
 		SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
 	}
-	if (TargetAvatar->Implements<UCombatInterface>())
+	if (TargetAvatar && TargetAvatar->Implements<UCombatInterface>())
 	{
 		TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
 	}
@@ -80,7 +80,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	* Debuff
 	*/
 
-	for (TTuple<FGameplayTag, FGameplayTag> Pair : SoulGameplayTags::DamageTypesToDebuffs)
+	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : SoulGameplayTags::DamageTypesToDebuffs)
 	{
 		const FGameplayTag& DamageType = Pair.Key;
 		const FGameplayTag& DebuffType = Pair.Value;
@@ -181,4 +181,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	FGameplayModifierEvaluatedData EvaluatedData(USoulAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
+
+	
 }
