@@ -2,9 +2,13 @@
 
 
 #include "AbilitySystem/Abilities/SoulBeamSpell.h"
+#include "GameFramework/Character.h"
 
 void USoulBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
+	MouseHitLocation = HitResult.ImpactPoint;
+	MouseHitActor = HitResult.GetActor();
+	/*
 	if (HitResult.bBlockingHit)
 	{
 		MouseHitLocation = HitResult.ImpactPoint;
@@ -14,12 +18,15 @@ void USoulBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 	{
 		CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
 	}
+	*/
 }
 
-void USoulBeamSpell::StoreOwnerPlayerController()
+void USoulBeamSpell::StoreOwnerVariable()
 {
+
 	if (CurrentActorInfo)
 	{
 		OwnerPlayerController = CurrentActorInfo->PlayerController.Get();
+		OwnerCharacter = Cast<ACharacter>(CurrentActorInfo->AvatarActor);
 	}
 }

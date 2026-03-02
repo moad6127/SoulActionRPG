@@ -67,7 +67,7 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly )
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComp;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	bool bShockLoop = false;
 
 private:
