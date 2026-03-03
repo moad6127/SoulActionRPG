@@ -69,6 +69,10 @@ void ASoulController::Input_Move(const FInputActionValue& InputActionValue)
 	{
 		return;
 	}
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Player_Block_InputPressed))
+	{
+		return;
+	}
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -101,6 +105,10 @@ void ASoulController::AbilityInputTagPressed(FGameplayTag InputTag)
 	{
 		return;
 	}
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Player_Block_InputPressed))
+	{
+		return;
+	}
 	GetASC()->AbilityInputTagPressed(InputTag);
 }
 
@@ -116,6 +124,10 @@ void ASoulController::AbilityInputTagReleased(FGameplayTag InputTag)
 	{
 		return;
 	}
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Player_Block_InputReleased))
+	{
+		return;
+	}
 	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
@@ -126,8 +138,11 @@ void ASoulController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		return;
 	}
-
 	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Status_UI_Open))
+	{
+		return;
+	}
+	if (GetASC()->HasMatchingGameplayTag(SoulGameplayTags::Player_Block_InputHeld))
 	{
 		return;
 	}

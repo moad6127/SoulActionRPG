@@ -96,6 +96,9 @@ public:
 
 	static bool AbilityHasSlot(FGameplayAbilitySpec* Spec, const FGameplayTag& Slot); 
 
+	UFUNCTION(BlueprintCallable)
+	void CancelAbilitiesWithTag(const FGameplayTag& CancelTag);
+
 protected:
 
 	virtual void OnRep_ActivateAbilities() override;

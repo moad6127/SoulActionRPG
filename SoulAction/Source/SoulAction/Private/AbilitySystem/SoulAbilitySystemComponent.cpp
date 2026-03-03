@@ -469,6 +469,13 @@ bool USoulAbilitySystemComponent::AbilityHasSlot(FGameplayAbilitySpec* Spec, con
 	return false;
 }
 
+void USoulAbilitySystemComponent::CancelAbilitiesWithTag(const FGameplayTag& CancelTag)
+{
+	FGameplayTagContainer Tags;
+	Tags.AddTag(CancelTag);
+	CancelAbilities(&Tags, nullptr, nullptr);
+}
+
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();

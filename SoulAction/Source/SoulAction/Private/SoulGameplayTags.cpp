@@ -112,9 +112,14 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_Player_Dash, "Cooldown.Player.Dash", "Dash Cooldown Tag");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Rolling, "Abilities.Rolling", "Rolling Ability Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Knockback, "Abilities.Knockback", "Knockback Ability Tag");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effects_HitReact, "Effects.HitReact", "HitReact");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_UI_Open, "Status.UI.Open", "MenuOpenTag");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputHeld, "Player.Block.InputHeld", "InputHeld Block");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputPressed, "Player.Block.InputPressed", "InputPressed Block");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputReleased, "Player.Block.InputReleased", "InputReleased Block");
 }
 

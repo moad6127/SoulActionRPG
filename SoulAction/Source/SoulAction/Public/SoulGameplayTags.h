@@ -116,6 +116,7 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Sword_MeleeAttack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Rolling);
 
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Knockback);
 	/*CooldownTag*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Fire_FireBolt);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Player_Dash);
@@ -124,6 +125,11 @@ namespace SoulGameplayTags
 
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_UI_Open);
+
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputPressed);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputHeld);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputReleased);
 
 	extern TArray<FGameplayTag> DamageTypes;
 	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;

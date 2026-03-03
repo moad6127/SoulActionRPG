@@ -141,7 +141,7 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
 	SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
 
-
+	AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()

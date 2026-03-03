@@ -185,8 +185,28 @@ void USoulAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			const FVector& KnockbackForce = USoulAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
 			if (!KnockbackForce.IsNearlyZero(10.f))
 			{
+				/*RootMotion을 사용해서 만들어보기 나중에 Knockback을 Ability로 만들면 해보자*/
+				
+				/*GA로 만들어서 보내기*/
+				/*
+				FGameplayEventData Payload;
+				Payload.EventTag = SoulGameplayTags::Abilities_Knockback;
+				Payload.ContextHandle = Props.EffectContextHandle;
+				Payload.Instigator = Props.SourceAvatarActor;
+				Payload.Target = Props.TargetAvatarActor;
+
+				UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.TargetAvatarActor, SoulGameplayTags::Abilities_Knockback, Payload);
+				/*
+				/*
+				TSharedPtr<FRootMotionSource_ConstantForce> RMS = MakeShared<FRootMotionSource_ConstantForce>();
+				RMS->Force = KnockbackForce;
+				RMS->Duration = 0.3f;
+				RMS->StrengthOverTime = nullptr;
+				Props.TargetCharacter->GetCharacterMovement()->ApplyRootMotionSource(RMS);
+				*/
 				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
 				Props.TargetCharacter->GetCharacterMovement()->StopActiveMovement();
+
 			}
 		}
 
