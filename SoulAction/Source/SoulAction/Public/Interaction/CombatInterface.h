@@ -57,6 +57,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	bool bInitWeaponGet() const;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	ABaseWeapon* GetEquippedWeapon() const;
+
 	UFUNCTION(BlueprintNativeEvent)
 	FName GetEquippedWeaponName() const;
 

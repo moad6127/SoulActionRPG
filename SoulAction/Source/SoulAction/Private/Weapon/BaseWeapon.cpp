@@ -4,6 +4,7 @@
 #include "Weapon/BaseWeapon.h"
 #include "Character/BaseCharacter.h"
 #include "Net/UnrealNetwork.h"
+#include "Interaction/CombatInterface.h"
 
 ABaseWeapon::ABaseWeapon()
 {
@@ -13,6 +14,12 @@ ABaseWeapon::ABaseWeapon()
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	RootComponent = WeaponMesh;
+
+	TraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("TraceStart"));
+	TraceStart->SetupAttachment(GetRootComponent());
+
+	TraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("TraceEnd"));
+	TraceEnd->SetupAttachment(GetRootComponent());
 
 	WeaponMesh->SetSimulatePhysics(false);
 	WeaponMesh->SetIsReplicated(true);
@@ -71,6 +78,8 @@ void ABaseWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 	DOREPLIFETIME(ABaseWeapon, bIsDropped);
 }
 
+
+
 void ABaseWeapon::OnRep_Dropped()
 {
 	if (WeaponMesh)
@@ -82,5 +91,91 @@ void ABaseWeapon::OnRep_Dropped()
 	}
 }
 
+void ABaseWeapon::HitScan()
+{
+	TArray<FHitResult> OutHits;
+	FVector Start = TraceStart->GetComponentLocation();
+	FVector End = TraceEnd->GetComponentLocation();
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(TraceRadius);
+	
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+	
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(GetOwner());
 
+
+	bool bHit = GetWorld()->SweepMultiByObjectType(
+		OutHits,
+		Start,
+		End,
+		FQuat::Identity,
+		FCollisionObjectQueryParams::InitType::AllDynamicObjects,
+		Sphere,
+		QueryParams
+	);
+	DrawDebugCapsule(
+		GetWorld(),
+		(Start + End) * 0.5f,
+		FVector::Distance(Start, End) * 0.5f,
+		TraceRadius,
+		FRotationMatrix::MakeFromZ(End - Start).ToQuat(),
+		FColor::Purple,
+		false,
+		0.1f
+	);
+
+	FColor TraceColor = bHit ? FColor::Red : FColor::Green;
+
+	DrawDebugLine(
+		GetWorld(),
+		Start,
+		End,
+		TraceColor,
+		false,
+		0.1f,
+		0,
+		2.0f
+	);
+
+	if (!bHit)
+	{
+		return;
+	}
+	for (const FHitResult& Hit : OutHits)
+	{
+		AActor* HitActor = Hit.GetActor();
+		if (!HitActor->Implements<UCombatInterface>())	return;
+		if (ICombatInterface::Execute_IsDead(HitActor)) return;
+		if (TraceHitActors.Contains(HitActor))	continue;
+		TraceHitActors.Add(HitActor);
+		OnWeaponHit.Broadcast(HitActor);
+	}
+}
+
+void ABaseWeapon::HitScanStart()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	TraceHitActors.Empty();
+
+	GetWorld()->GetTimerManager().SetTimer(
+	HitScanTimerHandle,
+		this,
+		&ABaseWeapon::HitScan,
+		HitScanInterval,
+		true
+	);
+}
+
+void ABaseWeapon::HitScanEnd()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	GetWorld()->GetTimerManager().ClearTimer(HitScanTimerHandle);
+}
 

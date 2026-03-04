@@ -12,6 +12,8 @@ class UGameplayAbility;
 class ABaseCharacter;
 class UBlendSpace;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponHitSignature, AActor*, HitActor);
+
 struct FWeaponAinmations
 {
 	TObjectPtr<UBlendSpace> WeaponRun;
@@ -37,6 +39,14 @@ public:
 	UBlendSpace* GetWeaponTargetAnim() const { return WeaponTargetOnAnim; }
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	UFUNCTION(BlueprintCallable)
+	void HitScanStart();
+
+	UFUNCTION(BlueprintCallable)
+	void HitScanEnd();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWeaponHitSignature OnWeaponHit;
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -64,13 +74,30 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TObjectPtr<UBlendSpace> WeaponTargetOnAnim;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+	TObjectPtr<USceneComponent> TraceStart;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+	TObjectPtr<USceneComponent> TraceEnd;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float TraceRadius = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float HitScanInterval = 0.07f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	TSet<AActor*> TraceHitActors;
 private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Dropped)
 	bool bIsDropped = false;
 
+	FTimerHandle HitScanTimerHandle;
 
 
 	UFUNCTION()
 	void OnRep_Dropped();
+
+	void HitScan();
 };

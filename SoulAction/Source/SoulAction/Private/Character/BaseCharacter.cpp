@@ -71,6 +71,11 @@ bool ABaseCharacter::bInitWeaponGet_Implementation() const
 	return bInitWeapon;
 }
 
+ABaseWeapon* ABaseCharacter::GetEquippedWeapon_Implementation() const
+{
+	return EquippedWeapon;
+}
+
 void ABaseCharacter::StartDash_Implementation()
 {
 }

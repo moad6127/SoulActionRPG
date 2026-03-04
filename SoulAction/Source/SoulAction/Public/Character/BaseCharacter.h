@@ -38,6 +38,7 @@ public:
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die(const FVector& DeathImpulse) override;
 	virtual bool bInitWeaponGet_Implementation() const override;
+	virtual ABaseWeapon* GetEquippedWeapon_Implementation() const override;
 
 	virtual void StartDash_Implementation() override;
 	virtual void EndDash_Implementation() override;
