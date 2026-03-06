@@ -6,6 +6,7 @@
 //#include "GameFramework/Character.h"
 #include "Character/SoulCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "SoulAction/SoulAction.h"
 
 UTargetData* UTargetData::CreateTargetData(UGameplayAbility* OwningAbility)
 {
@@ -55,7 +56,7 @@ void UTargetData::GetTraceHitResult(FHitResult& TraceHitResult)
 			TraceHitResult,
 			Start,
 			End,
-			ECollisionChannel::ECC_Visibility);
+			ECC_Target);
 
 
 
