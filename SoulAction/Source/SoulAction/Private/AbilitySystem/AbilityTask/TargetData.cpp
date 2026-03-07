@@ -43,7 +43,7 @@ void UTargetData::GetTraceHitResult(FHitResult& TraceHitResult)
 			float DistanceToCharacter = (SoulCharacter->GetActorLocation() - Start).Size();
 			Start += CrosshairWorldDirection * (DistanceToCharacter + 100.f);
 		}
-		FVector End = Start + CrosshairWorldDirection * 500.f;
+		FVector End = Start + CrosshairWorldDirection * 1500.f;
 
 		//만약 target이 존재하면 targetActor를 End로 잡기
 		if (SoulCharacter->GetTargetActor())
