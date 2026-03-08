@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "Weapon/BaseWeapon.h"
 #include "SoulAction/SoulAction.h"
+#include "AbilitySystem/SoulAbilitySystemLibrary.h"
 
 void USoulBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
@@ -59,5 +60,30 @@ void USoulBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 			MouseHitActor = HitResult.GetActor();
 		}
 	}
+
+}
+
+void USoulBeamSpell::StoreAdditionalTarget(TArray<AActor*>& OutAdditionalTargets)
+{
+	if (!MouseHitActor)
+	{
+		return;
+	}
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
+	ActorsToIgnore.Add(MouseHitActor);
+
+	TArray<AActor*> OverlappingActors;
+
+	USoulAbilitySystemLibrary::GetLivePlayerWithRadius(
+		GetAvatarActorFromActorInfo(),
+		OverlappingActors,
+		ActorsToIgnore,
+		850.f,
+		MouseHitActor->GetActorLocation());
+
+	// int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTarget);
+
+	USoulAbilitySystemLibrary::GetClosestTargets(MaxNumShockTarget, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
 
 }

@@ -324,6 +324,58 @@ void USoulAbilitySystemLibrary::GetLivePlayerWithRadius(const UObject* WorldCont
 	}
 }
 
+void USoulAbilitySystemLibrary::GetClosestTargets(int32 MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets, const FVector& Origin)
+{
+	// 이중for문 사용
+	/*
+	if (Actors.Num() <= MaxTargets)
+	{
+		OutClosestTargets = Actors;
+		return;
+	}
+
+	TArray<AActor*> ActorsToCheck = Actors;
+	int32 NumTargetsFound = 0;
+
+	while (NumTargetsFound < MaxTargets)
+	{
+		if (ActorsToCheck.Num() == 0)
+		{
+			break;
+		}
+		double ClosestDistance = TNumericLimits<double>::Max();
+		AActor* ClosestActor;
+		for (AActor* PortentialTarget : ActorsToCheck)
+		{
+			const double Distance = (PortentialTarget->GetActorLocation() - Origin).Length();
+			if (Distance < ClosestDistance)
+			{
+				ClosestDistance = Distance;
+				ClosestActor = PortentialTarget;
+			}
+		}
+		ActorsToCheck.Remove(ClosestActor);
+		OutClosestTargets.AddUnique(ClosestActor);
+		NumTargetsFound++;
+	}*/
+	//Sort를 사용한 방법
+	if (Actors.Num() == 0)
+	{
+		return;
+	}
+	TArray<AActor*> SortedActors = Actors;
+	SortedActors.Sort([Origin](const AActor& A, const AActor& B) 
+		{
+			return FVector::DistSquared(A.GetActorLocation(), Origin) < FVector::DistSquared(B.GetActorLocation(), Origin);
+		});
+
+	const int32 NumTargts = FMath::Min(MaxTargets, SortedActors.Num());
+	for (int32 i = 0; i < NumTargts; i++)
+	{
+		OutClosestTargets.Add(SortedActors[i]);
+	}
+}
+
 bool USoulAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
 {
 	const bool bBothArePlayer = FirstActor->ActorHasTag("Player") && SecondActor->ActorHasTag("Player");
