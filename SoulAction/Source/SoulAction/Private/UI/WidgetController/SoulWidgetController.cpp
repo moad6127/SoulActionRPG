@@ -26,6 +26,9 @@ void USoulWidgetController::BindCallbacksToDependencies()
 
 void USoulWidgetController::BroadcastAbilityInfo()
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("BroadcastAbilityInfo Called"));
+
 	if (!GetSoulASC()->bStartupAbilitiesGiven)
 	{
 		return;
@@ -50,6 +53,8 @@ void USoulWidgetController::BroadcastAbilityInfo()
 		});
 
 	GetSoulASC()->ForEachAbility(BroadcastDelegate);
+
+
 }
 
 ASoulController* USoulWidgetController::GetSoulPC()

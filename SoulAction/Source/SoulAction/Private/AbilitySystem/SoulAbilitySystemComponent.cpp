@@ -179,7 +179,7 @@ void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapo
 	}
 
 	AbilitiesGivenDelegate.Broadcast();
-
+	ClientAbilitiesGiven();
 }
 
 void USoulAbilitySystemComponent::ServerWeaponAbilityEquip_Implementation(FGameplayAbilitySpecHandle AbilitySpecHandle)
@@ -202,6 +202,17 @@ FName USoulAbilitySystemComponent::GetEquippedWeaponName() const
 		return ICombatInterface::Execute_GetEquippedWeaponName(GetAvatarActor());
 	}
 	return FName();
+}
+
+void USoulAbilitySystemComponent::ClientAbilitiesGiven_Implementation()
+{
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &USoulAbilitySystemComponent::BroadcastAbilitiesGiven);
+
+}
+
+void USoulAbilitySystemComponent::BroadcastAbilitiesGiven()
+{
+	AbilitiesGivenDelegate.Broadcast();
 }
 
 void USoulAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)

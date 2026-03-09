@@ -60,6 +60,12 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerEqiupWeaponByTag(const FGameplayTag& WeaponTag);
 
+
+	UFUNCTION(Client, Reliable)
+	void ClientAbilitiesGiven();
+
+	void BroadcastAbilitiesGiven();
+
 	void ForEachAbility(const FForEachAbility& Delegate);
 
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
