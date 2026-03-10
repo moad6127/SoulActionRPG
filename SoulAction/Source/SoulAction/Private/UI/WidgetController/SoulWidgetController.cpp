@@ -22,6 +22,8 @@ void USoulWidgetController::BroadcastInitialValues()
 
 void USoulWidgetController::BindCallbacksToDependencies()
 {
+	GetSoulASC()->OnAbilitySpecAdded.AddUObject(this, &USoulWidgetController::OnAbilitySpecAdded);
+	GetSoulASC()->AbilitiesGlobeClear.AddUObject(this, &USoulWidgetController::AbilityListChanged);
 }
 
 void USoulWidgetController::BroadcastAbilityInfo()
@@ -55,6 +57,25 @@ void USoulWidgetController::BroadcastAbilityInfo()
 	GetSoulASC()->ForEachAbility(BroadcastDelegate);
 
 
+}
+
+void USoulWidgetController::AbilityListChanged()
+{
+	OnAbilityListChanged.Broadcast();
+}
+
+void USoulWidgetController::OnAbilitySpecAdded(const FGameplayAbilitySpec& Spec)
+{
+	FGameplayTag AbilityTag = USoulAbilitySystemComponent::GetAbilityTagFromSpec(Spec);
+	if (!AbilityTag.MatchesTag(FGameplayTag::RequestGameplayTag("Abilities")))
+	{
+		return;
+	}
+	FSoulAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	Info.InputTag = USoulAbilitySystemComponent::GetInputTagFromSpec(Spec);
+	Info.StatusTag = USoulAbilitySystemComponent::GetStatusFromSpec(Spec);
+
+	AbilityInfoDelegate.Broadcast(Info);
 }
 
 ASoulController* USoulWidgetController::GetSoulPC()

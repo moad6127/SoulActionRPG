@@ -155,7 +155,10 @@ void USoulAbilitySystemComponent::EquipWeaponBody(const FGameplayTag& WeaponTag)
 
 void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapon)
 {
+	AbilitiesGlobeClear.Broadcast();
+	ClientAbilitiesGiven();
 	//이전 무기의 Ability들을 제거하기
+
 	for (const FGameplayAbilitySpecHandle& EquippedSpecHandle : EquippedWeaopnAbilitySpecHanle)
 	{
 		if (EquippedSpecHandle.IsValid())
@@ -174,26 +177,11 @@ void USoulAbilitySystemComponent::EquipWeaponAbilities(ABaseWeapon* SpawnedWeapo
 			AbilitySpec.DynamicAbilityTags.AddTag(SoulGameplayTags::Abilities_Status_Equipped);
 			FGameplayAbilitySpecHandle SpecHandle = GiveAbility(AbilitySpec);
 			EquippedWeaopnAbilitySpecHanle.Add(SpecHandle);
-			ServerWeaponAbilityEquip(SpecHandle);
 		}
 	}
 
-	AbilitiesGivenDelegate.Broadcast();
-	ClientAbilitiesGiven();
 }
 
-void USoulAbilitySystemComponent::ServerWeaponAbilityEquip_Implementation(FGameplayAbilitySpecHandle AbilitySpecHandle)
-{
-	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilitySpecHandle);
-	const FGameplayTag& AbilityTag = GetAbilityTagFromSpec(*AbilitySpec);
-	const FGameplayTag& Slot = GetInputTagFromSpec(*AbilitySpec);
-	ClearAbilitiesOfSlot(Slot);
-	AbilitySpec->DynamicAbilityTags.AddTag(Slot);
-	MarkAbilitySpecDirty(*AbilitySpec);
-
-	ClientEquipAbility(AbilityTag, SoulGameplayTags::Abilities_Status_Equipped, Slot, Slot);
-
-}
 
 FName USoulAbilitySystemComponent::GetEquippedWeaponName() const
 {
@@ -206,14 +194,10 @@ FName USoulAbilitySystemComponent::GetEquippedWeaponName() const
 
 void USoulAbilitySystemComponent::ClientAbilitiesGiven_Implementation()
 {
-	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &USoulAbilitySystemComponent::BroadcastAbilitiesGiven);
+	AbilitiesGlobeClear.Broadcast();
 
 }
 
-void USoulAbilitySystemComponent::BroadcastAbilitiesGiven()
-{
-	AbilitiesGivenDelegate.Broadcast();
-}
 
 void USoulAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
 {
@@ -485,6 +469,20 @@ void USoulAbilitySystemComponent::CancelAbilitiesWithTag(const FGameplayTag& Can
 	FGameplayTagContainer Tags;
 	Tags.AddTag(CancelTag);
 	CancelAbilities(&Tags, nullptr, nullptr);
+}
+
+void USoulAbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
+{
+	Super::OnGiveAbility(AbilitySpec);
+
+	OnAbilitySpecAdded.Broadcast(AbilitySpec);
+}
+
+void USoulAbilitySystemComponent::OnRemoveAbility(FGameplayAbilitySpec& AbilitySpec)
+{
+	Super::OnRemoveAbility(AbilitySpec);
+
+	OnAbilitySpecRemoved.Broadcast(AbilitySpec);
 }
 
 void USoulAbilitySystemComponent::OnRep_ActivateAbilities()

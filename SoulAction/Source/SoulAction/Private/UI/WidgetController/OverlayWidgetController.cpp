@@ -20,7 +20,7 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-
+	Super::BindCallbacksToDependencies();
 	GetSoulPS()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
 	GetSoulPS()->OnLevelChangedDelegate.AddLambda(
 		[this](int32 NewLevel) 

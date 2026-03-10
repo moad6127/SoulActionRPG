@@ -12,10 +12,12 @@
  * 
  */
 class USoulUserWidget;
+struct FGameplayAbilitySpec;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilitySelctedSignature, USoulUserWidget*, AbilityButton);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignatrue, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled, FString, DescriptionString, FString, NextDescriptionString);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForEquipSelection, const FGameplayTag&, AbilityType);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpellGlobeReassignedSignatrue, const FGameplayTag&, AbilityTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityRemovedSignature, const FGameplayTag&, AbilityTag);
 
 
 struct FSelectedAbility
@@ -52,13 +54,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FName GetEquippedWeaponName();
 
-	UFUNCTION(BlueprintCallable)
 	void EquipButtonPressed();
 
 	UFUNCTION(BlueprintCallable)
 	void SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType);
 
 	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot);
+
+	void OnAbilitySpecRemoved(const FGameplayAbilitySpec& Spec);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStatChangedSignature SpellPointChanged;
@@ -80,6 +83,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeReassignedSignatrue SpellGlobeReassignedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FAbilityRemovedSignature AbilityRemovedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FAbilityInfoSignature AbilityAddDelegate;
 private: 
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton);

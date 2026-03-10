@@ -25,6 +25,8 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
+	Super::BindCallbacksToDependencies();
+
 	GetSoulASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,int32 NewLevel) 
 		{
 			if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
@@ -54,6 +56,8 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		});
 
 	GetSoulASC()->AbilityEquipped.AddUObject(this, &USpellMenuWidgetController::OnAbilityEquipped);
+
+	GetSoulASC()->OnAbilitySpecRemoved.AddUObject(this, &USpellMenuWidgetController::OnAbilitySpecRemoved);
 	// SpellPoint를 사용할경우 Point를 델리게이트로 보내기
 	/*
 	GetSoulPS()->OnSpellPointsChangedDelegate.AddLambda([this](int32 SpellPoints)
@@ -239,6 +243,13 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 	StopWaitingForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
 	SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
 	DeselectAbility();
+}
+
+
+void USpellMenuWidgetController::OnAbilitySpecRemoved(const FGameplayAbilitySpec& Spec)
+{
+	FGameplayTag AbilityTag = USoulAbilitySystemComponent::GetAbilityTagFromSpec(Spec);
+	AbilityRemovedDelegate.Broadcast(AbilityTag);
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 XPPoints, int32 AbilityLevel, bool& bShouldEnabledSpendPointButton, bool& bShouldEnableEquipButton)

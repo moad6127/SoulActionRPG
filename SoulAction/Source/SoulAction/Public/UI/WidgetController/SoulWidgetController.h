@@ -21,6 +21,7 @@ class ASoulPlayerState;
 class USoulAbilitySystemComponent;
 class USoulAttributeSet;
 class UAbilityInfo;
+struct FGameplayAbilitySpec;
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
@@ -70,6 +71,9 @@ public:
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 
 	void BroadcastAbilityInfo();
+	void AbilityListChanged();
+	void OnAbilitySpecAdded(const FGameplayAbilitySpec& Spec);
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")

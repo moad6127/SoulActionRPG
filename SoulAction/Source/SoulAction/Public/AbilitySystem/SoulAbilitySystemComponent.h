@@ -28,7 +28,7 @@ DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbiltiyTag*/, const FGameplayTag& /*StatusTag*/,int32 /*AbilityLevel*/);
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /*AbiltiyTag*/, const FGameplayTag& /*Status*/, const FGameplayTag& /*Slot*/, const FGameplayTag& /*PrevSlot*/);
-
+DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitySpecChanged, const FGameplayAbilitySpec& /*AbilitySepc*/);
 UCLASS()
 class SOULACTION_API USoulAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -37,10 +37,14 @@ public:
 
 	void AbilityActorInfoSet();
 
+
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven AbilitiesGivenDelegate;
+	FAbilitiesGiven AbilitiesGlobeClear;
 	FAbilityStatusChanged AbilityStatusChanged;
 	FAbilityEquipped AbilityEquipped;
+	FAbilitySpecChanged OnAbilitySpecAdded;
+	FAbilitySpecChanged OnAbilitySpecRemoved;
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
@@ -64,7 +68,6 @@ public:
 	UFUNCTION(Client, Reliable)
 	void ClientAbilitiesGiven();
 
-	void BroadcastAbilitiesGiven();
 
 	void ForEachAbility(const FForEachAbility& Delegate);
 
@@ -89,8 +92,6 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
 
-	UFUNCTION(Server, Reliable)
-	void ServerWeaponAbilityEquip(FGameplayAbilitySpecHandle AbilitySpecHandle);
 
 	UFUNCTION(Client, Reliable)
 	void ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot);
@@ -106,6 +107,9 @@ public:
 	void CancelAbilitiesWithTag(const FGameplayTag& CancelTag);
 
 protected:
+
+	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
+	virtual void OnRemoveAbility(FGameplayAbilitySpec& AbilitySpec) override;
 
 	virtual void OnRep_ActivateAbilities() override;
 
