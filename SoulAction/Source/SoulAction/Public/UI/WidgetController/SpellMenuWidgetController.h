@@ -54,6 +54,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FName GetEquippedWeaponName();
 
+	UFUNCTION(BlueprintCallable)
 	void EquipButtonPressed();
 
 	UFUNCTION(BlueprintCallable)

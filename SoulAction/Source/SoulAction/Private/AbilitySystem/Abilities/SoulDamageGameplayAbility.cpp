@@ -8,6 +8,16 @@
 
 void USoulDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
+	if (!TargetActor)
+	{
+		return;
+	}
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if (!TargetASC)
+	{
+		return;
+	}
+
 	FDamageEffectParams DamageEffectParams = MakeDamageEffectPrarmsFromClassDefaults(TargetActor);
 
 	FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
@@ -48,6 +58,11 @@ FDamageEffectParams USoulDamageGameplayAbility::MakeDamageEffectPrarmsFromClassD
 	Params.KnockbackChance = KnockbackChance;
 
 	return Params;
+}
+
+float USoulDamageGameplayAbility::GetDamageAtLevel() const
+{
+	return Damage.GetValueAtLevel(GetAbilityLevel());
 }
 
 FTaggedMontage USoulDamageGameplayAbility::GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontage) const
