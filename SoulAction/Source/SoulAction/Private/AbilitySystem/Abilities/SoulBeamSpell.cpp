@@ -60,7 +60,13 @@ void USoulBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 			MouseHitActor = HitResult.GetActor();
 		}
 	}
-
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(MouseHitActor))
+	{
+		if (!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &USoulBeamSpell::PrimaryTargetDied))
+		{
+			CombatInterface->GetOnDeathDelegate().AddDynamic(this, &USoulBeamSpell::PrimaryTargetDied);
+		}
+	}
 }
 
 void USoulBeamSpell::StoreAdditionalTarget(TArray<AActor*>& OutAdditionalTargets)
@@ -82,8 +88,18 @@ void USoulBeamSpell::StoreAdditionalTarget(TArray<AActor*>& OutAdditionalTargets
 		850.f,
 		MouseHitActor->GetActorLocation());
 
-	// int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTarget);
+	int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTarget);
 
-	USoulAbilitySystemLibrary::GetClosestTargets(MaxNumShockTarget, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
+	USoulAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
 
+	for (AActor* Target : OutAdditionalTargets)
+	{
+		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Target))
+		{
+			if (!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &USoulBeamSpell::AdditionalTargetDied))
+			{
+				CombatInterface->GetOnDeathDelegate().AddDynamic(this, &USoulBeamSpell::AdditionalTargetDied);
+			}
+		}
+	}
 }
