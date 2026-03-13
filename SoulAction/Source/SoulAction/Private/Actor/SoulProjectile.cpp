@@ -55,7 +55,7 @@ void ASoulProjectile::Destroyed()
 		LoopingSoundComponent->DestroyComponent();
 	}
 
-	if (!bHit && !HasAuthority())
+	if (!bHit)
 	{
 		OnHit();
 	}
@@ -65,6 +65,12 @@ void ASoulProjectile::Destroyed()
 
 void ASoulProjectile::OnHit()
 {
+	if (bHit)
+	{
+		return;
+	}
+	bHit = true;
+
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	if (LoopingSoundComponent)
@@ -72,7 +78,7 @@ void ASoulProjectile::OnHit()
 		LoopingSoundComponent->Stop();
 		LoopingSoundComponent->DestroyComponent();
 	}
-	bHit = true;
+
 }
 
 void ASoulProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

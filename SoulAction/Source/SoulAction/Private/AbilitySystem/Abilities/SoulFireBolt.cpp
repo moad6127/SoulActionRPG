@@ -138,12 +138,14 @@ void USoulFireBolt::SpawnProjectiles(AActor* HomingTarget, const FVector& Projec
 
 			Projectile->DamageEffectParans = MakeDamageEffectPrarmsFromClassDefaults();
 
+			//HomingTraget이 있을경우 Target을 Hoiming하도록 하기
 			Projectile->SetHomingTargetComponent(NewObject<USceneComponent>(USceneComponent::StaticClass()));
 			Projectile->GetHomingTargetComponent()->SetWorldLocation(ProjectileTargetLocation);
 			Projectile->GetProjectileComp()->HomingTargetComponent = Projectile->GetHomingTargetComponent();
 
 			Projectile->GetProjectileComp()->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
 			Projectile->GetProjectileComp()->bIsHomingProjectile = bLaunchHomingProjectiles;
+
 
 
 
