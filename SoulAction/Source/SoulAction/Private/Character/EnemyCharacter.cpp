@@ -21,7 +21,7 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
 	
-
+	
 	AttributeSet = CreateDefaultSubobject<USoulAttributeSet>("AttributeSet");
 
 	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
@@ -33,6 +33,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
+	BaseWalkSpeed = 250.f;
 }
 
 
@@ -81,7 +82,6 @@ float AEnemyCharacter::GetHealth()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	InitAbilityActorInfo();
 	if (HasAuthority())
@@ -149,6 +149,8 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
+	AbilitySystemComponent->RegisterGameplayTagEvent(SoulGameplayTags::Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AEnemyCharacter::StunTagChanged);
+
 	if (HasAuthority())
 	{
 		InitializeDefaultAttributes();
@@ -159,4 +161,14 @@ void AEnemyCharacter::InitAbilityActorInfo()
 void AEnemyCharacter::InitializeDefaultAttributes() const
 {
 	USoulAbilitySystemLibrary::InitializeDefautlAttributes(this, CharacterClass, EnemyLevel, GetAbilitySystemComponent());
+}
+
+void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+
+	if (SoulAIController && SoulAIController->GetBlackboardComponent())
+	{
+		SoulAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stun"), bIsStunned);
+	}
 }

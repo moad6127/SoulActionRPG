@@ -247,6 +247,13 @@ void USoulAttributeSet::Debuff(const FEffectProperties& Props)
 	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	TagContainer.Added.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
 	TagContainer.CombinedTags.AddTag(SoulGameplayTags::DamageTypesToDebuffs[DamageType]);
+	const FGameplayTag DebuffTag = SoulGameplayTags::DamageTypesToDebuffs[DamageType];
+	if (DebuffTag.MatchesTagExact(SoulGameplayTags::Debuff_Stun))
+	{
+		TagContainer.Added.AddTag(SoulGameplayTags::Player_Block_InputHeld);
+		TagContainer.Added.AddTag(SoulGameplayTags::Player_Block_InputPressed);
+		TagContainer.Added.AddTag(SoulGameplayTags::Player_Block_InputReleased);
+	}
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

@@ -64,6 +64,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void OnRep_Stunned() override;
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly )
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComp;
 

@@ -317,6 +317,26 @@ void ASoulCharacter::BeginPlay()
 	Tags.Emplace(ACTOR_TAG_PLAYER);
 }
 
+void ASoulCharacter::OnRep_Stunned()
+{
+	if (USoulAbilitySystemComponent* SoulASC = Cast<USoulAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		FGameplayTagContainer BlockedTags;
+		BlockedTags.AddTag(SoulGameplayTags::Player_Block_InputHeld);
+		BlockedTags.AddTag(SoulGameplayTags::Player_Block_InputPressed);
+		BlockedTags.AddTag(SoulGameplayTags::Player_Block_InputReleased);
+
+		if (bIsStunned)
+		{
+			SoulASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			SoulASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
+}
+
 void ASoulCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -351,7 +371,8 @@ void ASoulCharacter::InitAbilityActorInfo()
 	Cast<USoulAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AttributeSet = SoulPlayerState->GetAttributeSet();
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
-
+	
+	AbilitySystemComponent->RegisterGameplayTagEvent(SoulGameplayTags::Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ASoulCharacter::StunTagChanged);
 	InitializeDefaultAttributes();
 
 

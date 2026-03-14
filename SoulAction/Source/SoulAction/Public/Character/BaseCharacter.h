@@ -27,6 +27,7 @@ class SOULACTION_API ABaseCharacter : public ACharacter, public IAbilitySystemIn
 
 public:
 	ABaseCharacter();
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	bool IsAlive() { return !bDead; }
@@ -68,6 +69,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category ="Combat")
 	TArray<FTaggedMontage> AttackMontage;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
+	
+	UFUNCTION()
+	virtual void OnRep_Stunned();
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
@@ -99,6 +106,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicIns);
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> LockOnPosision;
@@ -158,6 +167,9 @@ protected:
 
 	/*Minions*/
 	int32 MinionCount = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 600.f;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Combat")

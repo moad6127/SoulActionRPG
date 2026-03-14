@@ -11,6 +11,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -43,6 +44,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABaseCharacter, EquippedWeapon);
+	DOREPLIFETIME(ABaseCharacter, bIsStunned);
 }
 
 FVector ABaseCharacter::GetLockOnPosisionLocation() const
@@ -190,10 +192,22 @@ void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	OnDeath.Broadcast(this);
 }
 
+void ABaseCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bIsStunned = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+}
+
+void ABaseCharacter::OnRep_Stunned()
+{
+
+}
+
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 }
 
 
