@@ -124,13 +124,15 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
 
 
+	/*입력 차단시 사요*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_UI_Open);
-
-
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputPressed);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputHeld);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputReleased);
 
+	/*CueDebuff에서 사용할 태그들*/
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Burn);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Stun);
 	extern TArray<FGameplayTag> DamageTypes;
 	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
 }

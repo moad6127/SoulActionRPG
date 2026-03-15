@@ -121,5 +121,8 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputHeld, "Player.Block.InputHeld", "InputHeld Block");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputPressed, "Player.Block.InputPressed", "InputPressed Block");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Block_InputReleased, "Player.Block.InputReleased", "InputReleased Block");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Burn, "GameplayCue.Debuff.Burn", "GameplayCue Debuff Burn Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Stun, "GameplayCue.Debuff.Stun", "GameplayCue Debuff Stun Tag");
 }
 

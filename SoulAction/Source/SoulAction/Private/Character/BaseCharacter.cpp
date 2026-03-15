@@ -23,6 +23,10 @@ ABaseCharacter::ABaseCharacter()
 	BurnDebuffComp->SetupAttachment(GetRootComponent());
 	BurnDebuffComp->DebuffTag = SoulGameplayTags::Debuff_Burn;
 
+	StunDebuffComp = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("StunDebuffComp"));
+	StunDebuffComp->SetupAttachment(GetRootComponent());
+	StunDebuffComp->DebuffTag = SoulGameplayTags::Debuff_Stun;
+
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 

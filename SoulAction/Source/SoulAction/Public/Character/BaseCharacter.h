@@ -118,6 +118,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComp;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComp;
+
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 

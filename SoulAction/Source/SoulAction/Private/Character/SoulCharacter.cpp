@@ -16,6 +16,7 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -329,10 +330,12 @@ void ASoulCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			SoulASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffComp->Activate();
 		}
 		else
 		{
 			SoulASC->RemoveLooseGameplayTags(BlockedTags);
+			StunDebuffComp->Deactivate();
 		}
 	}
 }
