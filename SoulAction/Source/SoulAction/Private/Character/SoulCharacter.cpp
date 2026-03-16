@@ -330,12 +330,12 @@ void ASoulCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			SoulASC->AddLooseGameplayTags(BlockedTags);
-			StunDebuffComp->Activate();
+			//StunDebuffComp->Activate();
 		}
 		else
 		{
 			SoulASC->RemoveLooseGameplayTags(BlockedTags);
-			StunDebuffComp->Deactivate();
+			//StunDebuffComp->Deactivate();
 		}
 	}
 }

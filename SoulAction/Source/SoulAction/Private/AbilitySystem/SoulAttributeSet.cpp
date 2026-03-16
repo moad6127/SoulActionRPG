@@ -215,7 +215,8 @@ void USoulAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		ShowFloatingText(Props, LocalIncomingDamage, bBlock, bCriticalHit);
 		if (USoulAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
 		{
-			Debuff(Props);
+			//Debuff(Props);
+			DebuffUseEffectAsset(Props);
 		}
 	}
 }
@@ -259,17 +260,25 @@ void USoulAttributeSet::Debuff(const FEffectProperties& Props)
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;
 
+	FGameplayEffectCue Cue;
+	const FGameplayTag CueTag = SoulGameplayTags::DebuffTypeToGameplayCue[DebuffTag];
+	Cue.GameplayCueTags.AddTag(CueTag);
+
+	Effect->GameplayCues.Add(Cue);
+
 	int32 Index = Effect->Modifiers.Num();
 	Effect->Modifiers.Add(FGameplayModifierInfo());
 	FGameplayModifierInfo& ModifierInfo = Effect->Modifiers[Index];
 
-	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);
+	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage) ;
 	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
 	ModifierInfo.Attribute = USoulAttributeSet::GetIncomingDamageAttribute();
 
 	FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f);
+
 	if (MutableSpec)
 	{
+		
 		FSoulGameplayEffectContext* SoulContext = static_cast<FSoulGameplayEffectContext*>(EffectContext.Get());
 		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
 		SoulContext->SetDamageType(DebuffDamageType);
@@ -278,6 +287,38 @@ void USoulAttributeSet::Debuff(const FEffectProperties& Props)
 	}
 
 
+}
+
+void USoulAttributeSet::DebuffUseEffectAsset(const FEffectProperties& Props)
+{
+	FGameplayEffectContextHandle EffectContext = Props.SourceASC->MakeEffectContext();
+	EffectContext.AddSourceObject(Props.SourceAvatarActor);
+
+	const FGameplayTag DamageType = USoulAbilitySystemLibrary::GetDamageType(Props.EffectContextHandle);
+	const float DebuffDamage = USoulAbilitySystemLibrary::GetDebuffDamage(Props.EffectContextHandle);
+	const float DebuffDuration = USoulAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
+	const float DebuffFrequency = USoulAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
+	const FGameplayTag DebuffTag = SoulGameplayTags::DamageTypesToDebuffs[DamageType];
+
+	if (!Props.SourceCharacter->Implements<UCombatInterface>())
+	{
+		return;
+	}
+	TSubclassOf<UGameplayEffect> DebuffEffect = ICombatInterface::Execute_GetDebuffEffect(Props.SourceCharacter, DebuffTag);
+	if (!DebuffEffect)
+	{
+		return;
+	}
+	FGameplayEffectSpecHandle SpecHandle = Props.SourceASC->MakeOutgoingSpec(DebuffEffect, 1.f, EffectContext);
+	if (SpecHandle.IsValid())
+	{
+		FGameplayEffectSpec* Spec = SpecHandle.Data.Get();
+		Spec->SetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Damage, DebuffDamage);
+		Spec->SetSetByCallerMagnitude(SoulGameplayTags::Debuff_Params_Durtion, DebuffDuration);
+		Spec->Period = DebuffFrequency;
+		
+		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*Spec);
+	}
 }
 
 void USoulAttributeSet::IncomingXPWithLevelUp(const FEffectProperties& Props)

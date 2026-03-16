@@ -135,4 +135,5 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Stun);
 	extern TArray<FGameplayTag> DamageTypes;
 	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
+	extern TMap<FGameplayTag, FGameplayTag> DebuffTypeToGameplayCue;
 }

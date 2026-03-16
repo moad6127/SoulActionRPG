@@ -57,7 +57,8 @@ public:
 	virtual FName GetEquippedWeaponName_Implementation() const override;
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
-
+	virtual TSubclassOf<UGameplayEffect> GetDebuffEffect_Implementation(const FGameplayTag& DebuffTag) override;
+	
 	FOnASCRegistered OnASCRegistered;
 	FOnDeath OnDeath;
 
@@ -115,12 +116,14 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
+	//NiagaraComponent기반 Debuff VFX사용(Cue로 교체하기)
+	/*
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComp;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComp;
-
+	*/
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
@@ -156,6 +159,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
+
+	UPROPERTY(EditAnywhere, Category = "Ability")
+	TMap<FGameplayTag ,TSubclassOf<UGameplayEffect>> DebuffGameplayEffects;
 
 	bool bDead = false;
 

@@ -118,4 +118,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetInShockLoop(bool InLoop);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	TSubclassOf<UGameplayEffect> GetDebuffEffect(const FGameplayTag& DebuffTag);
 };

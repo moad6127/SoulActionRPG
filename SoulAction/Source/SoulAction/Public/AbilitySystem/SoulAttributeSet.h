@@ -206,7 +206,7 @@ private:
 	void IncomingXPOther(const FEffectProperties& Props);
 	void HandleIncomingDamage(const FEffectProperties& Props);
 	void Debuff(const FEffectProperties& Props);
-
+	void DebuffUseEffectAsset(const FEffectProperties& Props);
 	bool bTopOfHealth = false;
 	bool bTopOfStamina = false;
 };

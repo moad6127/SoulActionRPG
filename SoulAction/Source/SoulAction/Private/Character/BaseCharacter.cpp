@@ -19,6 +19,8 @@ ABaseCharacter::ABaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	/*
+	* 	
 	BurnDebuffComp = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("BurnDebuffComp"));
 	BurnDebuffComp->SetupAttachment(GetRootComponent());
 	BurnDebuffComp->DebuffTag = SoulGameplayTags::Debuff_Burn;
@@ -26,7 +28,7 @@ ABaseCharacter::ABaseCharacter()
 	StunDebuffComp = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("StunDebuffComp"));
 	StunDebuffComp->SetupAttachment(GetRootComponent());
 	StunDebuffComp->DebuffTag = SoulGameplayTags::Debuff_Stun;
-
+	*/
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 
@@ -173,6 +175,15 @@ FOnASCRegistered ABaseCharacter::GetOnASCRegisteredDelegate()
 FOnDeath& ABaseCharacter::GetOnDeathDelegate()
 {
 	return OnDeath;
+}
+
+TSubclassOf<UGameplayEffect> ABaseCharacter::GetDebuffEffect_Implementation(const FGameplayTag& DebuffTag)
+{
+	if (DebuffGameplayEffects.Find(DebuffTag))
+	{
+		return DebuffGameplayEffects[DebuffTag];
+	}
+	return nullptr;
 }
 
 
