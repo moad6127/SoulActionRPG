@@ -124,11 +124,13 @@ namespace SoulGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Burn, "GameplayCue.Debuff.Burn", "GameplayCue Debuff Burn Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Stun, "GameplayCue.Debuff.Stun", "GameplayCue Debuff Stun Tag");
-	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Bleeding, "GameplayCue.Debuff.Bleeding", "GameplayCue Debuff Bleeding Tag");
+
 	TMap<FGameplayTag, FGameplayTag> DebuffTypeToGameplayCue =
 	{
 		{Debuff_Burn,GameplayCue_Debuff_Burn},
-		{Debuff_Stun,GameplayCue_Debuff_Stun}
+		{Debuff_Stun,GameplayCue_Debuff_Stun},
+		{Debuff_Physical,GameplayCue_Debuff_Bleeding}
 	};
 }
 

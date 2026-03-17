@@ -133,6 +133,8 @@ namespace SoulGameplayTags
 	/*CueDebuff에서 사용할 태그들*/
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Burn);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Stun);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Bleeding);
+
 	extern TArray<FGameplayTag> DamageTypes;
 	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
 	extern TMap<FGameplayTag, FGameplayTag> DebuffTypeToGameplayCue;
