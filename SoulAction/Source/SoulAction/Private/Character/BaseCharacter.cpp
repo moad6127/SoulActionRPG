@@ -51,6 +51,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(ABaseCharacter, EquippedWeapon);
 	DOREPLIFETIME(ABaseCharacter, bIsStunned);
+	DOREPLIFETIME(ABaseCharacter, bIsBeingShocked);
 }
 
 FVector ABaseCharacter::GetLockOnPosisionLocation() const
@@ -184,6 +185,16 @@ TSubclassOf<UGameplayEffect> ABaseCharacter::GetDebuffEffect_Implementation(cons
 		return DebuffGameplayEffects[DebuffTag];
 	}
 	return nullptr;
+}
+
+bool ABaseCharacter::IsBeingShocked_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
+void ABaseCharacter::SetIsBeingShocked_Implementation(bool bInShock)
+{
+	bIsBeingShocked = bInShock;
 }
 
 

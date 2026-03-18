@@ -58,7 +58,9 @@ public:
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
 	virtual TSubclassOf<UGameplayEffect> GetDebuffEffect_Implementation(const FGameplayTag& DebuffTag) override;
-	
+	virtual bool IsBeingShocked_Implementation() const override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+
 	FOnASCRegistered OnASCRegistered;
 	FOnDeath OnDeath;
 
@@ -73,6 +75,9 @@ public:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly)
 	bool bIsStunned = false;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
 	
 	UFUNCTION()
 	virtual void OnRep_Stunned();
