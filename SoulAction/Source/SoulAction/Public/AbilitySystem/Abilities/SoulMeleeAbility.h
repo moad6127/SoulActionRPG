@@ -14,4 +14,16 @@ class SOULACTION_API USoulMeleeAbility : public USoulDamageGameplayAbility
 {
 	GENERATED_BODY()
 	
+public:
+
+protected:
+
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	bool bIsComboWindow = false;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	bool bReceivedInputAction = false;
+
+private:
 };

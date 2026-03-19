@@ -126,6 +126,10 @@ namespace SoulGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Stun, "GameplayCue.Debuff.Stun", "GameplayCue Debuff Stun Tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Debuff_Bleeding, "GameplayCue.Debuff.Bleeding", "GameplayCue Debuff Bleeding Tag");
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Combo_Start, "Event.Combo.Start", "Combo Event Start Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Combo_End, "Event.Combo.End", "Combo Event End Tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Combo_Input, "Event.Combo.Input", "Combo Event Input Tag");
+
 	TMap<FGameplayTag, FGameplayTag> DebuffTypeToGameplayCue =
 	{
 		{Debuff_Burn,GameplayCue_Debuff_Burn},

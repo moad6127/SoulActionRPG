@@ -7,6 +7,7 @@
 #include "AbilitySystem/SoulAbilitySystemLibrary.h"
 #include "Actor/SoulProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+
 FString USoulFireBolt::GetDescription(int32 Level)
 {
 

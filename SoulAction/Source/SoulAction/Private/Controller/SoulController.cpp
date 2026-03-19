@@ -97,6 +97,7 @@ void ASoulController::Input_Look(const FInputActionValue& InputActionValue)
 void ASoulController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+
 	if (GetASC() == nullptr)
 	{
 		return;

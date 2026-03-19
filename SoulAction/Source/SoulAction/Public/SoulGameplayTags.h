@@ -135,6 +135,13 @@ namespace SoulGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Stun);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Debuff_Bleeding);
 
+	
+	/*Combo에서 사용할 Start, end, Input들*/
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Combo_Start);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Combo_End);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Combo_Input);
+
+
 	extern TArray<FGameplayTag> DamageTypes;
 	extern TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
 	extern TMap<FGameplayTag, FGameplayTag> DebuffTypeToGameplayCue;
